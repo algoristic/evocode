@@ -1,4 +1,4 @@
-package de.algoristic.evocode;
+package de.algoristic.evocode.poc;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -27,7 +27,7 @@ import robocode.control.events.RoundStartedEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.events.TurnStartedEvent;
 
-public class PrototypeProgram {
+public class POC {
 
 	public static void main(String[] args) throws Throwable {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
