@@ -29,6 +29,9 @@ public class Evocode {
 				// generation = // create new generation
 			}
 			// generation.runTournament();
+			// TODO here -> write results (per individual) in detailed CSV for generation (i corresponding dir
+			//           -> write results of generation in global results CSV
+			//              => content: gen_number, avg_firsts (=avg_survival), avg_fitness, ...
 		}
 	}
 }
