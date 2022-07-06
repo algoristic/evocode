@@ -5,13 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map.Entry;
 import java.util.Properties;
-
-import de.algoristic.evocode.context.EvocodeContext;
-import de.algoristic.evocode.run.ProjectFiles;
-import de.algoristic.evocode.run.ProjectSettings;
-import de.algoristic.evocode.run.RunConditions;
-import de.algoristic.evocode.util.PropertyFacade;
+import java.util.Set;
 
 public class EvocodeApplication {
 
@@ -28,33 +24,34 @@ public class EvocodeApplication {
 	}
 
 	private void runApplication() {
-		EvocodeContext context = prepareContext();
-		Evocode evocode = new Evocode(context);
+		loadProperties();
+		Evocode evocode = new Evocode();
 		evocode.run();
 	}
 
-	private EvocodeContext prepareContext() {
-		ProjectSettings settings = loadProjectSettings();
-		ProjectFiles files = loadProjectFiles(settings);
-		RunConditions runConditions = determinRunConditions(settings, files);
-		EvocodeContext context = new EvocodeContext(settings, files, runConditions);
-		return context;
+	private void loadProperties() {
+		final String projectLocationKey = "evo.project.location";
+		final String projectLocation = determineProjectLocation();
+		System.setProperty(projectLocationKey, projectLocation);
+
+		Properties projectProperties = loadProjectProperties();
+		Set<Entry<Object, Object>> entries = projectProperties.entrySet();
+		for(Entry<Object, Object> entry : entries) {
+			String key = (String) entry.getKey();
+			String value = (String) entry.getValue();
+			// TODO check key by whitelist
+			System.setProperty(key, value);
+		}
 	}
 
-	private ProjectSettings loadProjectSettings() {
-		File projectLocation = determineProjectLocation();
-		PropertyFacade projectProperties = loadProjectPropertiesFile();
-		ProjectSettings settings = new ProjectSettings(projectLocation, projectProperties);
-		return settings;
-	}
-
-	private File determineProjectLocation() {
+	private String determineProjectLocation() {
 		File anchorFile = new File(propertiesFileName);
 		File projectDirectory = anchorFile.getParentFile();
-		return projectDirectory;
+		String location = projectDirectory.getAbsolutePath();
+		return location;
 	}
 
-	private PropertyFacade loadProjectPropertiesFile() {
+	private Properties loadProjectProperties() {
 		Properties properties = new Properties();
 		try (InputStream in = new FileInputStream(propertiesFileName)) {
 			properties.load(in);
@@ -65,20 +62,6 @@ public class EvocodeApplication {
 			System.err.println("IOException happened during loading");
 			e.printStackTrace();
 		}
-		PropertyFacade projectProperties = new PropertyFacade(properties);
-		return projectProperties;
-	}
-	
-	private ProjectFiles loadProjectFiles(ProjectSettings settings) {
-		File rootDiretory = settings.getProjectLocation();
-		ProjectFiles projectFiles = new ProjectFiles(rootDiretory);
-		return projectFiles;
-	}
-	
-	private RunConditions determinRunConditions(ProjectSettings settings, ProjectFiles files) {
-		int runIterations = RunConditions.detectRunIterations(settings);
-		int startGeneration = RunConditions.detectStartGeneration(settings, files);
-		RunConditions runConditions = new RunConditions(runIterations, startGeneration);
-		return runConditions;
+		return properties;
 	}
 }

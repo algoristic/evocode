@@ -1,4 +1,4 @@
-package de.algoristic.evocode.run;
+package de.algoristic.evocode._poc;
 
 import java.io.File;
 import java.io.FileReader;

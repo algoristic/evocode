@@ -1,4 +1,4 @@
-package de.algoristic.evocode.run;
+package de.algoristic.evocode._poc;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -33,10 +33,5 @@ public class ProjectFiles {
 		File convertedPath = path.toFile();
 		boolean exists = convertedPath.exists();
 		return exists;
-	}
-
-	public List<File> getDirectoriesToBeDeleted(int startGeneration, GenerationProvider provider) {
-		// check for (startGeneration+[offset]) if generations exist - and DELETE them
-		// also rework the access to file naming etc.... provider may be placed badly
 	}
 }

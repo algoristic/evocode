@@ -1,36 +1,90 @@
 package de.algoristic.evocode.context;
 
-import de.algoristic.evocode.run.GenerationProvider;
-import de.algoristic.evocode.run.ProjectFiles;
-import de.algoristic.evocode.run.ProjectSettings;
-import de.algoristic.evocode.run.RunConditions;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.run.GenerationBuildingTask;
 
 public class EvocodeContext {
-
-	private final ProjectSettings settings;
-	private final ProjectFiles files;
-	private final RunConditions runConditions;
-
-	public EvocodeContext(ProjectSettings settings, ProjectFiles files, RunConditions runConditions) {
+	
+	private final EvocodeSettings settings;
+	
+	public EvocodeContext() {
+		this(new EvocodeSettings());
+	}
+	
+	private EvocodeContext(final EvocodeSettings settings) {
 		this.settings = settings;
-		this.files = files;
-		this.runConditions = runConditions;
 	}
 
-	public ProjectSettings getSettings() {
-		return settings;
+	public List<GenerationBuildingTask> getTasks() {
+		List<GenerationBuildingTask> tasks = new ArrayList<>();
+		int startGeneration = determineStartGeneration();
+		int lastGeneration = calculateLastGeneration(startGeneration);
+		for(int generation = startGeneration; generation <= lastGeneration; generation++) {
+			GenerationBuildingTask task = new GenerationBuildingTask(generation);
+			tasks.add(task);
+		}
+		return tasks;
 	}
 
-	public ProjectFiles getFiles() {
-		return files;
+	private int calculateLastGeneration(int startGeneration) {
+		int iterations = settings.getRunIterations();
+		return (startGeneration + iterations);
 	}
 
-	public RunConditions getRunConditions() {
-		return runConditions;
+	private int determineStartGeneration() {
+		int startGeneration = readStartGenerationFromSettings();
+		if(isUndetermined(startGeneration)) {
+			startGeneration = detectStartGenerationFromFileSystem();
+		}
+		return startGeneration;
 	}
 
-	public GenerationProvider getGenerationProvider() {
-		String directoryPattern = settings.getGenerationDirectoryPattern();
-		return new GenerationProvider(directoryPattern);
+	private int readStartGenerationFromSettings() {
+		return settings.getStartGeneration();
+	}
+	
+	private boolean isUndetermined(int startGeneration) {
+		return (startGeneration == -1);
+	}
+	
+	private int detectStartGenerationFromFileSystem() {
+		File projectLocation = settings.getProjectLocation();
+		String generationDirectoryPrefix = settings.getGenerationDirectoryPrefix();
+		List<Integer> presentGenerations = new ArrayList<>();
+		Consumer<Integer> filterCallback = generation -> presentGenerations.add(generation);
+		projectLocation.list(new GenerationDirectoryFilter(generationDirectoryPrefix, filterCallback));
+		return presentGenerations.stream()
+			.mapToInt(Integer::intValue)
+			.map(i -> i + 1)
+			.max()
+			.orElse(0);
+	};
+	
+	private static class GenerationDirectoryFilter implements FilenameFilter {
+		
+		private final String prefix;
+		private final Consumer<Integer> callback;
+
+		public GenerationDirectoryFilter(final String prefix, final Consumer<Integer> callback) {
+			this.prefix = prefix;
+			this.callback = callback;
+		}
+
+		@Override
+		public boolean accept(File dir, String name) {
+			if(! name.startsWith(prefix)) return false;
+			int prefixLength = prefix.length();
+			String generationDenominator = name.substring(prefixLength);
+			Integer generationNumber = Integer.valueOf(generationDenominator);
+			callback.accept(generationNumber);
+			return true;
+		}
+		
 	}
 }

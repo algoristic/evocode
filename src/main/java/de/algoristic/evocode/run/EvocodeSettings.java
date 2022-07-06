@@ -4,18 +4,14 @@ import java.io.File;
 
 import de.algoristic.evocode.util.PropertyFacade;
 
-public class ProjectSettings {
+public class EvocodeSettings {
 
-	private final File projectLocation;
-	private final PropertyFacade properties;
-
-	public ProjectSettings(final File projectLocation, final PropertyFacade properties) {
-		this.projectLocation = projectLocation;
-		this.properties = properties;
-	}
+	private final PropertyFacade properties = new PropertyFacade();
 
 	public File getProjectLocation() {
-		return projectLocation;
+		return properties.getProperty("evo.project.location")
+			.map(File::new)
+			.orElseThrow();
 	}
 
 	public File getRobocodeLocation() {
@@ -29,18 +25,18 @@ public class ProjectSettings {
 			.orElse("n. a.");
 	}
 
-	public String getGenerationDirectoryPattern() {
-		return properties.getProperty("evo.project.generationDirectoryName")
-			.orElse("gen_{{generation}}");
+	public String getGenerationDirectoryPrefix() {
+		return properties.getProperty("evo.project.generationDirectoryPrefix")
+			.orElse("gen_");
 	}
 
-	int getRunIterations() {
+	public int getRunIterations() {
 		return properties.getProperty("evo.run.iterations")
 			.map(Integer::parseInt)
 			.orElse(1);
 	}
 	
-	int getStartGeneration() {
+	public int getStartGeneration() {
 		return properties.getProperty("evo.run.startGeneration")
 			.map(Integer::parseInt)
 			.orElse(-1);

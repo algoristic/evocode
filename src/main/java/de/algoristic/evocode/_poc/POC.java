@@ -1,4 +1,4 @@
-package de.algoristic.evocode.poc;
+package de.algoristic.evocode._poc;
 
 import java.io.File;
 import java.nio.file.Files;
