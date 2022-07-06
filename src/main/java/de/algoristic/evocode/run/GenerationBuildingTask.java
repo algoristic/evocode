@@ -1,11 +1,21 @@
 package de.algoristic.evocode.run;
 
+import java.io.File;
+
+import de.algoristic.evocode.context.GenerationBuildingTaskContext;
+
 public class GenerationBuildingTask {
 
+	private final GenerationBuildingTaskContext context;
 	private final int generationNumber;
+	
+	public GenerationBuildingTask(final int generationNumber, final GenerationBuildingTaskContext context) {
+		this.generationNumber = generationNumber;
+		this.context = context;
+	}
 
 	public GenerationBuildingTask(final int generationNumber) {
-		this.generationNumber = generationNumber;
+		this(generationNumber, new GenerationBuildingTaskContext());
 	}
 
 	public Generation determinePreviousGeneration() {
@@ -19,5 +29,9 @@ public class GenerationBuildingTask {
 
 	public boolean hasAnchestors() {
 		return (generationNumber != 0);
+	}
+
+	public void runCleanup() {
+		File generationDirectory = context.getDirectory(generationNumber);
 	}
 }

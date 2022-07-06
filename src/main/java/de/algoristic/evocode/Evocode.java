@@ -21,17 +21,28 @@ public class Evocode {
 	public void run() {
 		List<GenerationBuildingTask> tasks = evocodeContext.getTasks();
 		for(GenerationBuildingTask task : tasks) {
+			task.runCleanup();
+			// MEMO pattern
+//			EvolutionSettings evolutionSettings = new EvolutionSettings();
+//			int generationNumber = task.getGenerationNumber();
+//			int generationSize = evolutionSettings.getGenerationSize(generationNumber);
+			
 			Generation generation;
 			if(task.hasAnchestors()) {
 				Generation parents = task.determinePreviousGeneration();
-				// generation = parents.breedNextGeneration();
+				generation = parents.breedNextGeneration();
 			} else {
-				// generation = // create new generation
+				generation = buildNewGeneration();
 			}
-			// generation.runTournament();
+			generation.runTournament();
 			// TODO here -> write results (per individual) in detailed CSV for generation (i corresponding dir
 			//           -> write results of generation in global results CSV
 			//              => content: gen_number, avg_firsts (=avg_survival), avg_fitness, ...
 		}
+	}
+
+	private Generation buildNewGeneration() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

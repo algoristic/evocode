@@ -11,7 +11,32 @@ public class PropertyFacade {
 		return Optional.of(value);
 	}
 
-	private Properties properties() {
+	public GenerationPropertySupplier forGeneration(int generation) {
+		return new GenerationPropertySupplier(generation); 
+	}
+	
+	public static class GenerationPropertySupplier {
+		
+		private final int generation;
+
+		public GenerationPropertySupplier(final int generation) {
+			this.generation = generation;
+		}
+
+		public Optional<String> getProperty(String key) {
+			for(int i = generation; i >= 0; i--) {
+				String replacement = String.valueOf(generation);
+				String composedKey = key.replace("[]", replacement);
+				if(properties().containsKey(composedKey)) {
+					String value = properties().getProperty(composedKey);
+					return Optional.of(value);
+				}
+			}
+			return Optional.empty();
+		}
+	}
+
+	static Properties properties() {
 		return System.getProperties();
 	}
 }

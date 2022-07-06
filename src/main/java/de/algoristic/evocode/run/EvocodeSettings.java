@@ -6,7 +6,15 @@ import de.algoristic.evocode.util.PropertyFacade;
 
 public class EvocodeSettings {
 
-	private final PropertyFacade properties = new PropertyFacade();
+	private final PropertyFacade properties;
+
+	public EvocodeSettings() {
+		this(new PropertyFacade());
+	}
+
+	private EvocodeSettings(PropertyFacade properties) {
+		this.properties = properties;
+	}
 
 	public File getProjectLocation() {
 		return properties.getProperty("evo.project.location")
