@@ -25,7 +25,7 @@ public class EvocodeContext {
 		List<GenerationBuildingTask> tasks = new ArrayList<>();
 		int startGeneration = determineStartGeneration();
 		int lastGeneration = calculateLastGeneration(startGeneration);
-		for(int generation = startGeneration; generation <= lastGeneration; generation++) {
+		for(int generation = startGeneration; generation < lastGeneration; generation++) {
 			GenerationBuildingTask task = new GenerationBuildingTask(generation);
 			tasks.add(task);
 		}

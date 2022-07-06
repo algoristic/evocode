@@ -8,10 +8,15 @@ public class GenerationBuildingTask {
 		this.generationNumber = generationNumber;
 	}
 
+	public Generation determinePreviousGeneration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public int getGenerationNumber() {
 		return generationNumber;
 	}
-	
+
 	public boolean hasAnchestors() {
 		return (generationNumber != 0);
 	}

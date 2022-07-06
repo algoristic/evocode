@@ -3,6 +3,7 @@ package de.algoristic.evocode;
 import java.util.List;
 
 import de.algoristic.evocode.context.EvocodeContext;
+import de.algoristic.evocode.run.Generation;
 import de.algoristic.evocode.run.GenerationBuildingTask;
 
 public class Evocode {
@@ -20,9 +21,9 @@ public class Evocode {
 	public void run() {
 		List<GenerationBuildingTask> tasks = evocodeContext.getTasks();
 		for(GenerationBuildingTask task : tasks) {
-			// Generation generation;
+			Generation generation;
 			if(task.hasAnchestors()) {
-				// Generation parents = task.determinePreviousGeneration();
+				Generation parents = task.determinePreviousGeneration();
 				// generation = parents.breedNextGeneration();
 			} else {
 				// generation = // create new generation
