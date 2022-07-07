@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import de.algoristic.evocode.genetic.FitnessFunction;
 import robocode.BattleResults;
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
@@ -54,6 +55,9 @@ public class POC {
 		BattlefieldSpecification battlefieldSize = new BattlefieldSpecification(800, 600);
 		RobotSpecification[] robots = engine.getLocalRepository("de.algoristic.evocode.TestingRobot*, sample.Crazy");
 		BattleSpecification battleSpecification = new BattleSpecification(numRounds, battlefieldSize, robots);
+		
+		FitnessFunction fitnessFunction = new FitnessFunction("[score]+[survival]");
+
 		engine.addBattleListener(new IBattleListener() {
 			@Override public void onTurnStarted(TurnStartedEvent event) { }
 			@Override public void onTurnEnded(TurnEndedEvent event) { }
@@ -67,9 +71,8 @@ public class POC {
 			@Override public void onBattleError(BattleErrorEvent event) { }
 			@Override public void onBattleCompleted(BattleCompletedEvent event) {
 				for(BattleResults results : event.getIndexedResults()) {
-					System.out.println("battle result: " + results);
-					System.out.println("firsts = " + results.getFirsts());
-					System.out.println("leader = " + results.getTeamLeaderName());
+					double score = fitnessFunction.evaluate(results);
+					System.out.println(results.getTeamLeaderName() + " results: " + score);
 				}
 			}
 		});
