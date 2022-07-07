@@ -1,15 +1,16 @@
 package de.algoristic.evocode.run;
 
+import de.algoristic.evocode.genetic.Breeder;
+import de.algoristic.evocode.genetic.FilialGenerationBreeder;
+
 public class Generation {
 
 	public Generation breedNextGeneration() {
-		// TODO Auto-generated method stub
-		return null;
+		Breeder breeder = new FilialGenerationBreeder(this);
+		Generation children = breeder.breedGeneration();
+		return children;
 	}
 
-	public void runTournament() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

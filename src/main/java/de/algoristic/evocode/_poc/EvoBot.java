@@ -1,10 +1,33 @@
 package de.algoristic.evocode._poc;
 
 import java.awt.Color;
+import java.text.NumberFormat;
 
 import robocode.*;
 
 public class EvoBot extends Robot {
+
+	// CONSTANTS
+	{
+		double acceleration = Rules.ACCELERATION;
+		double deceleration = Rules.DECELERATION;
+		double gunTurnRate = Rules.GUN_TURN_RATE;
+		double maxBulletPower = Rules.MAX_BULLET_POWER;
+		double maxTurnRate = Rules.MAX_TURN_RATE;
+		double maxVelocity = Rules.MAX_VELOCITY;
+		double minBulletPower = Rules.MIN_BULLET_POWER;
+		double scanRadius = Rules.RADAR_SCAN_RADIUS;
+		double radarTurnRate = Rules.RADAR_TURN_RATE;
+		double robotHitBonus = Rules.ROBOT_HIT_BONUS;
+		double robotHitDamage = Rules.ROBOT_HIT_DAMAGE;
+		
+		Rules.getBulletDamage(maxBulletPower);
+		Rules.getBulletHitBonus(maxBulletPower);
+		Rules.getBulletSpeed(maxBulletPower);
+		Rules.getGunHeat(maxBulletPower);
+		Rules.getTurnRate(maxVelocity);
+		Rules.getWallHitDamage(maxVelocity);
+	}
 
 	// SENSORS
 	{
@@ -29,18 +52,18 @@ public class EvoBot extends Robot {
 		double energy = this.getEnergy();
 	}
 	
-	{   // ACTORS
-		this.ahead(0d);
-		this.back(0d);
-		this.turnLeft(0d);
-		this.turnRight(0d);
-		this.doNothing();
-		this.fire(0d);
-		this.fireBullet(0d);
-		this.turnGunLeft(0d);
-		this.turnGunRight(0d);
-		this.turnRadarLeft(0d);
-		this.turnRadarRight(0d);
+	{   // ACTORS /* +Zahlenraum */
+		this.ahead(0d);          // in px,  z. B. -100 bis 100
+		this.back(0d);           // in px,  z. B. -100 bis 100
+		this.turnLeft(0d);       // in deg, z. B. -360 bis 360
+		this.turnRight(0d);      // in deg, z. B. -360 bis 360
+		this.doNothing();        // 
+		this.fire(0d);           // in abs, von 0.1 bis 3.0
+		this.fireBullet(0d);     // in abs, von 0.1 bis 3.0
+		this.turnGunLeft(0d);    // in deg, von -360 bis 360
+		this.turnGunRight(0d);   // in deg, von -360 bis 360
+		this.turnRadarLeft(0d);  // in deg, von -360 bis 360
+		this.turnRadarRight(0d); // in deg, von -360 bis 360
 		
 		// initializers
 		this.setAdjustGunForRobotTurn(true);

@@ -31,7 +31,23 @@ public class GenerationBuildingTask {
 		return (generationNumber != 0);
 	}
 
-	public void runCleanup() {
+	public void prepareDirectory() {
 		File generationDirectory = context.getDirectory(generationNumber);
+		if(generationDirectory.exists()) {
+			cleanup(generationDirectory);
+		} else {
+			create(generationDirectory);
+		}
+	}
+	
+	private void cleanup(File directory) {
+		File[] dismissableContent = directory.listFiles();
+		for(File dismissableFile : dismissableContent) {
+			dismissableFile.delete();
+		}
+	}
+	
+	private void create(File directory) {
+		directory.mkdir();
 	}
 }

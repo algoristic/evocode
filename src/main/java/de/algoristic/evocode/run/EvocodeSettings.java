@@ -49,4 +49,25 @@ public class EvocodeSettings {
 			.map(Integer::parseInt)
 			.orElse(-1);
 	}
+
+	public String getGenomeStructure() {
+		return properties.getProperty("evo.genome.structure")
+			.orElse("LinearGP.dnaProgramming");
+	}
+
+	public int getGeneAmount() {
+		return properties.getProperty("evo.genome.genes")
+			.map(Integer::valueOf)
+			.orElse(1);
+	}
+
+	public int getMinimumGeneSize() {
+		return 8;
+	}
+
+	public int getMaximumGeneSize() {
+		return properties.getProperty("evo.genome.gene.maxSize")
+			.map(Integer::valueOf)
+			.orElse(8);
+	}
 }
