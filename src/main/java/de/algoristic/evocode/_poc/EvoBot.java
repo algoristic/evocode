@@ -2,6 +2,7 @@ package de.algoristic.evocode._poc;
 
 import java.awt.Color;
 import java.text.NumberFormat;
+import java.util.function.ObjDoubleConsumer;
 
 import robocode.*;
 
@@ -77,6 +78,54 @@ public class EvoBot extends Robot {
 		this.resume();
 	}
 
+	{	// TRANSFORMATORS
+		
+	}
+	private double min(double value, double min) {
+		return min;
+	}
+	
+	private double max(double value, double max) {
+		return max;
+	}
+	
+	private double limit(double value, double min, double max) {
+		double minDist = Math.abs(value - min);
+		double maxDist = Math.abs(max - value);
+		if(minDist == maxDist) {
+			return value;
+		} else if(maxDist > minDist) {
+			return max;
+		} else {
+			return min;
+		}
+	}
+	
+	private boolean on = true;
+	private synchronized double osc(double value, double min, double max) {
+		try {
+			if(on) {
+				return max;
+			} else {
+				return min;
+			}
+		} finally {
+			on = !on;
+		}
+	}
+
+	private double asIs(double value) {
+		return value;
+	}
+	
+	private double half(double value, double max) {
+		return (max / 2);
+	}
+	
+	private double quarter(double value, double max) {
+		return (max / 4);
+	}
+	
 	@Override
 	public void run() {
 		{   // setup colors for better distinction of robots

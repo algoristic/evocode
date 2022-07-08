@@ -1,5 +1,6 @@
 package de.algoristic.evocode.genetic;
 
+import de.algoristic.evocode.genetic.dnaProgramming.DnaProgramming;
 import de.algoristic.evocode.run.EvocodeSettings;
 
 public class GenomeManager {

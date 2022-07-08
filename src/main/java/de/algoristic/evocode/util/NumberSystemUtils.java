@@ -9,13 +9,13 @@ import java.util.stream.IntStream;
 public class NumberSystemUtils {
 
 	public static List<String> terminatorChars() {
-		return Arrays.asList("g,h,i,j,k,l,m,n,o,p".split(","));
+		return Arrays.asList("g,h,i,j,k,l,m,n,o".split(","));
 	}
 
 	public static String terminatorCharsRegex() {
 		return terminatorChars().stream().collect(Collectors.joining("|", "[", "]"));
 	}
-	
+
 	public static String randomTerminatorChar() {
 		return pickRandom(terminatorChars());
 	}
@@ -34,6 +34,17 @@ public class NumberSystemUtils {
 
 	public static String randomHexChar() {
 		return pickRandom(hexChars());
+	}
+
+	public static String hexToBinary(String hexString) {
+		hexString = hexString.toUpperCase();
+		int val = Integer.parseInt(hexString, 16);
+		return Integer.toBinaryString(val);
+	}
+
+	public static int binaryToDecimal(String binString) {
+		if(binString.isEmpty()) return 0;
+		return Integer.parseInt(binString, 2);
 	}
 
 	private static <T> T pickRandom(List<T> ls) {
