@@ -2,20 +2,20 @@ package de.algoristic.evocode.run;
 
 import java.io.File;
 
-import de.algoristic.evocode.context.GenerationBuildingTaskContext;
+import de.algoristic.evocode.context.FilesystemContext;
 
 public class GenerationBuildingTask {
 
-	private final GenerationBuildingTaskContext context;
+	private final FilesystemContext context;
 	private final int generationNumber;
 	
-	public GenerationBuildingTask(final int generationNumber, final GenerationBuildingTaskContext context) {
+	public GenerationBuildingTask(final int generationNumber, final FilesystemContext context) {
 		this.generationNumber = generationNumber;
 		this.context = context;
 	}
 
 	public GenerationBuildingTask(final int generationNumber) {
-		this(generationNumber, new GenerationBuildingTaskContext());
+		this(generationNumber, new FilesystemContext());
 	}
 
 	public Generation determinePreviousGeneration() {
@@ -32,7 +32,7 @@ public class GenerationBuildingTask {
 	}
 
 	public void prepareDirectory() {
-		File generationDirectory = context.getDirectory(generationNumber);
+		File generationDirectory = context.getGenerationDirectory(generationNumber);
 		if(generationDirectory.exists()) {
 			cleanup(generationDirectory);
 		} else {

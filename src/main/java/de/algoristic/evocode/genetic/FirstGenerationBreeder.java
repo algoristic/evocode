@@ -2,6 +2,7 @@ package de.algoristic.evocode.genetic;
 
 import de.algoristic.evocode.run.EvolutionSettings;
 import de.algoristic.evocode.run.Generation;
+import de.algoristic.evocode.run.Individual;
 
 public class FirstGenerationBreeder implements Breeder {
 
@@ -23,9 +24,13 @@ public class FirstGenerationBreeder implements Breeder {
 		int generationSize = evolutionSettings.getGenerationSize(thisGeneration);
 		GenomeManager genomeManager = new GenomeManager();
 		Genetics genetics = genomeManager.getGenetics();
-		for(int i = 0; i < generationSize; i++) {
+		Generation generation = new Generation(thisGeneration);
+		for(int individualNumber = 0; individualNumber < generationSize; individualNumber++) {
 			Genome genome = genetics.initialize();
+			Individual individual = new Individual(thisGeneration, individualNumber, genome);
+			generation.add(individual);
 		}
+		return generation;
 	}
 
 }

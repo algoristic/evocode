@@ -38,6 +38,16 @@ public class EvocodeSettings {
 			.orElse("gen_");
 	}
 
+	public String getIndividualDirectoryPrefix() {
+		return properties.getProperty("evo.project.individualDirectoryPrefix")
+			.orElse("indiv_");
+	}
+
+	public String getRobotNamePattern() {
+		return properties.getProperty("evo.project.robotClassName")
+			.orElse("EvobotG[generation]I[individual]");
+	}
+
 	public int getRunIterations() {
 		return properties.getProperty("evo.run.iterations")
 			.map(Integer::parseInt)
@@ -62,12 +72,27 @@ public class EvocodeSettings {
 	}
 
 	public int getMinimumGeneSize() {
-		return 8;
+		if(areGenesOverlapping()) {
+			return 8;
+		} else {
+			return 12;
+		}
 	}
 
 	public int getMaximumGeneSize() {
-		return properties.getProperty("evo.genome.gene.maxSize")
+		return properties.getProperty("evo.genome.dnaProgramming.gene.maxSize")
 			.map(Integer::valueOf)
 			.orElse(8);
+	}
+
+	public boolean areGenesOverlapping() {
+		return properties.getProperty("evo.genome.dnaProgramming.gene.overlapping")
+			.map(Boolean::valueOf)
+			.orElse(true);
+	}
+
+	public String getPackageName() {
+		return properties.getProperty("evo.project.packageName")
+			.orElse("de.algoristic.evocode");
 	}
 }

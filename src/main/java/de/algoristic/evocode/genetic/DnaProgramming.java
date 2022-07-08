@@ -1,7 +1,10 @@
 package de.algoristic.evocode.genetic;
 
-import static de.algoristic.evocode.util.NumberSystemUtils.*;
+import static de.algoristic.evocode.util.NumberSystemUtils.randomHexChar;
+import static de.algoristic.evocode.util.NumberSystemUtils.randomTerminatorChar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import de.algoristic.evocode.run.EvocodeSettings;
@@ -26,16 +29,20 @@ public class DnaProgramming implements Genetics {
 		int minGeneSize = evocodeSettings.getMinimumGeneSize();
 		int maxGeneSize = evocodeSettings.getMaximumGeneSize();
 		int geneAmount = evocodeSettings.getGeneAmount();
-		String geneCode = "";
-		for(int i = 0; i < geneAmount; i++) {
+
+		List<DnaProgrammingGene> genes = new ArrayList<>();
+		for (int i = 0; i < geneAmount; i++) {
 			String startCodon = randomTerminatorChar();
-			geneCode += startCodon;
 			int geneSize = minGeneSize + (new Random()).nextInt(maxGeneSize - minGeneSize);
-			for(int j = 0; j < geneSize; j++) {
-				geneCode += randomHexChar();
+			StringBuffer baseChain = new StringBuffer();
+			for (int j = 0; j < geneSize; j++) {
+				baseChain.append(randomHexChar());
 			}
+			DnaProgrammingGene gene = new DnaProgrammingGene(startCodon, baseChain.toString());
+			genes.add(gene);
 		}
-		
+		Genome genome = new DnaProgram(genes);
+		return genome;
 	}
 
 }

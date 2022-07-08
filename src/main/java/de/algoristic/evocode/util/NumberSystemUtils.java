@@ -12,6 +12,10 @@ public class NumberSystemUtils {
 		return Arrays.asList("g,h,i,j,k,l,m,n,o,p".split(","));
 	}
 
+	public static String terminatorCharsRegex() {
+		return terminatorChars().stream().collect(Collectors.joining("|", "[", "]"));
+	}
+	
 	public static String randomTerminatorChar() {
 		return pickRandom(terminatorChars());
 	}

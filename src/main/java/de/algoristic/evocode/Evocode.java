@@ -5,7 +5,10 @@ import java.util.List;
 import de.algoristic.evocode.context.EvocodeContext;
 import de.algoristic.evocode.genetic.Breeder;
 import de.algoristic.evocode.genetic.Enviroment;
+import de.algoristic.evocode.genetic.FilialGenerationBreeder;
 import de.algoristic.evocode.genetic.FirstGenerationBreeder;
+import de.algoristic.evocode.run.EvocodeFiles;
+import de.algoristic.evocode.run.FieldData;
 import de.algoristic.evocode.run.Generation;
 import de.algoristic.evocode.run.GenerationBuildingTask;
 
@@ -26,23 +29,19 @@ public class Evocode {
 		for(GenerationBuildingTask task : tasks) {
 			task.prepareDirectory();
 			Generation generation;
+			Breeder breeder;
 			if(task.hasAnchestors()) {
 				Generation parents = task.determinePreviousGeneration();
-				generation = parents.breedNextGeneration();
+				breeder = new FilialGenerationBreeder(parents);
+				generation = breeder.breedGeneration();
 			} else {
-				generation = createNewGeneration();
+				breeder = new FirstGenerationBreeder();
+				generation = breeder.breedGeneration();
 			}
 			Enviroment enviroment = new Enviroment();
-			enviroment.test(generation);
-			// TODO here -> write results (per individual) in detailed CSV for generation (i corresponding dir
-			//           -> write results of generation in global results CSV
-			//              => content: gen_number, avg_firsts (=avg_survival), avg_fitness, ...
+			FieldData fieldData = enviroment.test(generation);
+			EvocodeFiles files = new EvocodeFiles();
+			files.writeProtocol(generation);
 		}
-	}
-
-	private Generation createNewGeneration() {
-		Breeder breeder = new FirstGenerationBreeder();
-		Generation generation = breeder.breedGeneration();
-		return generation;
 	}
 }

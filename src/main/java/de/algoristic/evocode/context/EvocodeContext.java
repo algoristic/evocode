@@ -54,6 +54,7 @@ public class EvocodeContext {
 	}
 	
 	private int detectStartGenerationFromFileSystem() {
+		// TODO detect a VALID generation, not empty directories...
 		File projectLocation = settings.getProjectLocation();
 		String generationDirectoryPrefix = settings.getGenerationDirectoryPrefix();
 		List<Integer> presentGenerations = new ArrayList<>();
