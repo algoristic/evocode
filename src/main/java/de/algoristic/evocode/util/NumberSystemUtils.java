@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 public class NumberSystemUtils {
 
 	public static List<String> terminatorChars() {
-		return Arrays.asList("g,h,i,j,k,l,m,n,o".split(","));
+		return Arrays.asList("g,h,i,j,k,l,m,n".split(","));
 	}
 
 	public static String terminatorCharsRegex() {
@@ -40,6 +40,11 @@ public class NumberSystemUtils {
 		hexString = hexString.toUpperCase();
 		int val = Integer.parseInt(hexString, 16);
 		return Integer.toBinaryString(val);
+	}
+
+	public static int hexToDecimal(String hexString) {
+		hexString = hexString.toUpperCase();
+		return Integer.parseInt(hexString, 16);
 	}
 
 	public static int binaryToDecimal(String binString) {

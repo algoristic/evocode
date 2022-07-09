@@ -30,6 +30,7 @@ public class GenomeTranscriptor {
 
 	public Genotype transcribe(final Genome genome) {
 		final File individualDirectory = context.getIndividualDirectoryName(generationNumber, individualNumber);
+		if(!individualDirectory.exists()) individualDirectory.mkdir();
 		final String robotNamePattern = settings.getRobotNamePattern();
 		Pattern pattern = new Pattern(robotNamePattern);
 		pattern = pattern
@@ -37,7 +38,8 @@ public class GenomeTranscriptor {
 			.addVariable("[individual]", individualNumber);
 		final String robotName = pattern.compile();
 		final String packageName = settings.getPackageName();
-		final GeneTranscriptionParameters parameters = new GeneTranscriptionParameters(individualDirectory, packageName, robotName);
+		final GeneTranscriptionParameters parameters =
+			new GeneTranscriptionParameters(individualDirectory, packageName, robotName);
 		Genotype genotype = genome.transcribe(parameters);
 		return genotype;
 	}

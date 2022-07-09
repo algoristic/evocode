@@ -18,4 +18,16 @@ public class RobotMethod {
 	public void add(ControlStructure controlStructure) {
 		this.controlStructures.add(controlStructure);
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getEvent() {
+		return event;
+	}
+
+	public List<ControlStructure> getControlStructures() {
+		return controlStructures;
+	}
 }

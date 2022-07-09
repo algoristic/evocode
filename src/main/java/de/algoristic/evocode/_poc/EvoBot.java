@@ -1,10 +1,19 @@
 package de.algoristic.evocode._poc;
 
 import java.awt.Color;
-import java.text.NumberFormat;
-import java.util.function.ObjDoubleConsumer;
 
-import robocode.*;
+import robocode.Bullet;
+import robocode.BulletHitBulletEvent;
+import robocode.BulletHitEvent;
+import robocode.BulletMissedEvent;
+import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
+import robocode.HitWallEvent;
+import robocode.Robot;
+import robocode.RobotStatus;
+import robocode.Rules;
+import robocode.ScannedRobotEvent;
+import robocode.StatusEvent;
 
 public class EvoBot extends Robot {
 
@@ -32,8 +41,8 @@ public class EvoBot extends Robot {
 
 	// SENSORS
 	{
-		double battleFieldWidth = this.getBattleFieldWidth();
-		double battleFieldHeight = this.getBattleFieldHeight();
+		double battleFieldWidth = this.getBattleFieldWidth();//
+		double battleFieldHeight = this.getBattleFieldHeight();//
 		double heading = this.getHeading();
 		double height = this.getHeight();
 		double width = this.getWidth();
@@ -43,7 +52,7 @@ public class EvoBot extends Robot {
 		double gunHeading = this.getGunHeading();
 		double gunHeat = this.getGunHeat();
 		int numRounds = this.getNumRounds();
-		int sentryBorderSize = this.getSentryBorderSize();
+		int sentryBorderSize = this.getSentryBorderSize();//
 		int others = this.getOthers();
 		int numSentries = this.getNumSentries();
 		double radarHeading = this.getRadarHeading();

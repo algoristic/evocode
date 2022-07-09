@@ -41,7 +41,7 @@ public class Evocode {
 			Enviroment enviroment = new Enviroment();
 			FieldData fieldData = enviroment.test(generation);
 			EvocodeFiles files = new EvocodeFiles();
-			files.writeProtocol(generation);
+			files.writeProtocol(fieldData);
 		}
 	}
 }

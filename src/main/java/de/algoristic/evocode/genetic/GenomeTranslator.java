@@ -10,25 +10,34 @@ import java.nio.file.StandardCopyOption;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import de.algoristic.evocode.run.EvocodeSettings;
+
 public class GenomeTranslator {
 
 	private final JavaCompilerAdaptor compiler;
-	
+	private final EvocodeSettings settings;
+
 	public GenomeTranslator() {
 		compiler = JavaCompilerAdaptor.getInstance();
+		settings = new EvocodeSettings();
 	}
 
 	public Phaenotype translate(final Genotype genotype) {
 		final Path javaFileSource = genotype.getJavaFile().toPath();
 		final Path classFileSource = compiler.compile(javaFileSource).toPath();
+
+		final Path robotLocation = settings.getRobocodeLocation().toPath().resolve("robots");
+		final Path targetPath = robotLocation.resolve(genotype.getCompilationTargetPathName());
 		
-		final String targetPathName = genotype.getCompilationTargetPathName();
-		final Path javaFileTarget = Paths.get(targetPathName).resolve(javaFileSource.getFileName());
-		final Path classFileTarget = Paths.get(targetPathName).resolve(classFileSource.getFileName());
+		File targetDir = targetPath.toFile();
+		if(!targetDir.exists()) targetDir.mkdirs();
+		
+		final Path javaFileTarget = targetPath.resolve(javaFileSource.getFileName());
+		final Path classFileTarget = targetPath.resolve(classFileSource.getFileName());
 		
 		try {
-			Files.copy(javaFileSource, javaFileTarget, StandardCopyOption.REPLACE_EXISTING);
-			Files.copy(classFileSource, classFileTarget, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(javaFileSource, javaFileTarget);
+			Files.copy(classFileSource, classFileTarget);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

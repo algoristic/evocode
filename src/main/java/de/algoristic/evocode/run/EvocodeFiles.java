@@ -15,7 +15,7 @@ public class EvocodeFiles {
 	// TODO here -> write results (per individual) in detailed CSV for generation (i corresponding dir
 	//           -> write results of generation in global results CSV
 	//              => content: gen_number, avg_firsts (=avg_survival), avg_fitness, ...
-	public void writeProtocol(Generation generation) {
+	public void writeProtocol(FieldData fieldData) {
 		
 	}
 }

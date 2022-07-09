@@ -19,10 +19,15 @@ public class CodonParser implements Iterator<ProgramCodon> {
 	}
 
 	public ControlCodon getControlCodon() {
-		int delimiter = settings.areGenesOverlapping() ? 2 : 3;
 		String codon = chain.substring(0, 3);
-		chain = chain.substring(delimiter);
-		return new ControlCodon(codon.charAt(0), codon.charAt(1), codon.charAt(2));
+		// the control codon doesn't get transcribed with overlapping pattern
+		// becaus that would drastically reducde the number of possible sensor/actor
+		// combinations at each control block
+		chain = chain.substring(3);
+		return new ControlCodon(
+			codon.charAt(0),
+			codon.charAt(1),
+			codon.charAt(2));
 	}
 
 	@Override
