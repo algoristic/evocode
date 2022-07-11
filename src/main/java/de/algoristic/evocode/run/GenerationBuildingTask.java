@@ -1,6 +1,7 @@
 package de.algoristic.evocode.run;
 
 import java.io.File;
+import java.io.IOException;
 
 import de.algoristic.evocode.context.FilesystemContext;
 
@@ -37,6 +38,12 @@ public class GenerationBuildingTask {
 			cleanup(generationDirectory);
 		} else {
 			create(generationDirectory);
+		}
+		GenerationProperties generationProperties = context.getGenerationProperties(generationNumber);
+		try {
+			generationProperties.createNewFile();
+		} catch (IOException e) {
+			throw new RuntimeException("Could not create props file for generation" + generationNumber, e);
 		}
 	}
 	

@@ -19,16 +19,15 @@ public class [robotName] extends Robot {
 	
 	@Override
 	public void run() {
-		{   // setup colors for better distinction of robots
+		// setup colors for better distinction of robots
+		{
 			this.setBodyColor(Color.RED);
 			this.setGunColor(Color.RED);
 			this.setBulletColor(Color.MAGENTA);
 			this.setRadarColor(Color.ORANGE);
 			this.setScanColor(Color.ORANGE);
 		}
-		this.setAdjustGunForRobotTurn(true);
-		this.setAdjustRadarForGunTurn(true);
-		this.setAdjustRadarForRobotTurn(true);
+		[mainMethod]
 	}
 	
 [implementation]

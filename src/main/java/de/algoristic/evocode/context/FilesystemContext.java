@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 
 import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.run.GenerationProperties;
 
 public class FilesystemContext {
 
@@ -45,5 +46,11 @@ public class FilesystemContext {
 		final String prefix = settings.getGenerationDirectoryPrefix();
 		final String fullName = (prefix + generationNumber);
 		return fullName;
+	}
+
+	public GenerationProperties getGenerationProperties(int generationNumber) {
+		File generationDirectory = getGenerationDirectory(generationNumber);
+		File generationPropertiesFile = generationDirectory.toPath().resolve("generation.properties").toFile();
+		return new GenerationProperties(generationPropertiesFile);
 	}
 }

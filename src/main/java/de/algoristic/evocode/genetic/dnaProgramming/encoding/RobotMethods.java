@@ -1,24 +1,36 @@
 package de.algoristic.evocode.genetic.dnaProgramming.encoding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class RobotMethods implements Iterable<RobotMethod> {
+
+	private static final Map<String, RobotMethod> ALL_METHODS;
+
+	static {
+		ALL_METHODS = new HashMap<>();
+		ALL_METHODS.put("g", new RobotMethod("onBulletHit", "BulletHitEvent"));
+		ALL_METHODS.put("h", new RobotMethod("onBulletHitBullet", "BulletHitBulletEvent"));
+		ALL_METHODS.put("i", new RobotMethod("onBulletMissed", "BulletMissedEvent"));
+		ALL_METHODS.put("j", new RobotMethod("onHitByBullet", "HitByBulletEvent"));
+		ALL_METHODS.put("k", new RobotMethod("onHitRobot", "HitRobotEvent"));
+		ALL_METHODS.put("l", new RobotMethod("onHitWall", "HitWallEvent"));
+		ALL_METHODS.put("m", new RobotMethod("onScannedRobot", "ScannedRobotEvent"));
+//		ALL_METHODS.put("n", new RobotMethod("onStatus", "StatusEvent"));
+	}
 
 	private final Map<String, RobotMethod> methods;
 	
 	{
 		methods = new HashMap<>();
-		methods.put("g", new RobotMethod("onBulletHit", "BulletHitEvent"));
-		methods.put("h", new RobotMethod("onBulletHitBullet", "BulletHitBulletEvent"));
-		methods.put("i", new RobotMethod("onBulletMissed", "BulletMissedEvent"));
-		methods.put("j", new RobotMethod("onHitByBullet", "HitByBulletEvent"));
-		methods.put("k", new RobotMethod("onHitRobot", "HitRobotEvent"));
-		methods.put("l", new RobotMethod("onHitWall", "HitWallEvent"));
-		methods.put("m", new RobotMethod("onScannedRobot", "ScannedRobotEvent"));
-		methods.put("n", new RobotMethod("onStatus", "StatusEvent"));
+		for(String terminatorChar : ALL_METHODS.keySet()) {
+			RobotMethod method = ALL_METHODS.get(terminatorChar).clone();
+			methods.put(terminatorChar, method);
+		}
 	}
 
 	public RobotMethod getMethod(StartCodon startCodon) {
@@ -40,7 +52,7 @@ public class RobotMethods implements Iterable<RobotMethod> {
 				.replace("[methodName]", method.getName())
 				.replace("[eventName]", method.getEvent());
 			buffer = buffer.append(methodHead);
-			
+
 			for(ControlStructure controlStructure : controlStructures) {
 				String structureHead = "\t\t" + controlStructure.getStart() + "\n";
 				String structureEnd = "\t\t" + controlStructure.getEnd() + "\n";
@@ -56,4 +68,9 @@ public class RobotMethods implements Iterable<RobotMethod> {
 		return buffer.toString();
 	}
 
+	public static String randomTerminatorChar() {
+		List<String> ls = new ArrayList<>(ALL_METHODS.keySet());
+		int random = (new Random()).nextInt(ls.size());
+		return ls.get(random);
+	}
 }

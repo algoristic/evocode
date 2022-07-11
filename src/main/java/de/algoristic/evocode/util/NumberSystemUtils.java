@@ -8,18 +8,6 @@ import java.util.stream.IntStream;
 
 public class NumberSystemUtils {
 
-	public static List<String> terminatorChars() {
-		return Arrays.asList("g,h,i,j,k,l,m,n".split(","));
-	}
-
-	public static String terminatorCharsRegex() {
-		return terminatorChars().stream().collect(Collectors.joining("|", "[", "]"));
-	}
-
-	public static String randomTerminatorChar() {
-		return pickRandom(terminatorChars());
-	}
-
 	public static List<String> decimalChars() {
 		return IntStream.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).mapToObj(String::valueOf).collect(Collectors.toList());
 	}
@@ -52,7 +40,7 @@ public class NumberSystemUtils {
 		return Integer.parseInt(binString, 2);
 	}
 
-	private static <T> T pickRandom(List<T> ls) {
+	public static <T> T pickRandom(List<T> ls) {
 		int max = ls.size();
 		int random = (new Random()).nextInt(max);
 		return ls.get(random);

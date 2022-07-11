@@ -1,7 +1,6 @@
 package de.algoristic.evocode.genetic;
 
-import java.io.File;
-
+import de.algoristic.evocode.FitnessValue;
 import de.algoristic.evocode.run.FieldData;
 import de.algoristic.evocode.run.Generation;
 import de.algoristic.evocode.run.Individual;
@@ -17,15 +16,16 @@ public class Enviroment {
 	
 	public FieldData test(final Generation generation) {
 		final int generationNumber = generation.getGenerationNumber();
-		for(Individual individual : generation) {
-			final int individualNumber = individual.getIndividualNumber();
-			final GenomeTranscriptor transkriptor = new GenomeTranscriptor(generationNumber, individualNumber);
-			final Genome genome = individual.getGenome();
-			final Genotype genotype = transkriptor.transcribe(genome);
-			final GenomeTranslator translator = new GenomeTranslator();
-			final Phaenotype phaenotype = translator.translate(genotype);
+		final FieldData data = new FieldData(generationNumber);
+		for(final Individual individual : generation) {
+			final GenomeExpressor expressor = new GenomeExpressor(individual);
+			final Phaenotype phaenotype = expressor.expressGenome();
+			final FitnessFunction fitnessFunction = FitnessFunction.getFunctionFor(generationNumber);
+			final FitnessValue fitness = robocode.eval(phaenotype, fitnessFunction);
+			data.addValues(individual, fitness);
+			robocode.cleanupBattlefield();
 		}
-		return null;
+		return data;
 	}
 
 }

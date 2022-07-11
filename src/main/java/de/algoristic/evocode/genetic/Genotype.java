@@ -25,4 +25,5 @@ public class Genotype {
 	public String getRobotName() {
 		return robotName;
 	}
+
 }

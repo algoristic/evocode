@@ -12,7 +12,7 @@ public class ProgramCodon {
 		return value.substring(0, 1);
 	}
 
-	public String lastHalf() {
+	public String secondHalf() {
 		return value.substring(1, 2);
 	}
 }

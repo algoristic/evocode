@@ -72,17 +72,17 @@ public class EvocodeSettings {
 	}
 
 	public int getMinimumGeneSize() {
-		if(areGenesOverlapping()) {
-			return 8;
-		} else {
-			return 12;
-		}
+		int absoluteMinimum = 5;
+		int configuredMinimum = properties.getProperty("evo.genome.dnaProgramming.gene.minSize")
+			.map(Integer::valueOf)
+			.orElse(5);
+		return Math.max(absoluteMinimum, configuredMinimum);
 	}
 
 	public int getMaximumGeneSize() {
 		return properties.getProperty("evo.genome.dnaProgramming.gene.maxSize")
 			.map(Integer::valueOf)
-			.orElse(8);
+			.orElse(5);
 	}
 
 	public boolean areGenesOverlapping() {
@@ -94,5 +94,10 @@ public class EvocodeSettings {
 	public String getPackageName() {
 		return properties.getProperty("evo.project.packageName")
 			.orElse("de.algoristic.evocode");
+	}
+
+	public String getMainMethod() {
+		return properties.getProperty("evo.genome.mainMethod")
+			.orElse("");
 	}
 }

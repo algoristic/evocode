@@ -12,9 +12,11 @@ public class DnaProgrammingGene implements Gene, Iterable<ProgramCodon> {
 
 	private final String startCode;
 	private final CodonParser parser;
+	private final String baseChain;
 
 	public DnaProgrammingGene(final String startCode, final String baseChain) {
 		this.startCode = startCode;
+		this.baseChain = baseChain;
 		parser = new CodonParser(baseChain);
 	}
 
@@ -25,6 +27,10 @@ public class DnaProgrammingGene implements Gene, Iterable<ProgramCodon> {
 
 	public ControlCodon getControlCodon() {
 		return parser.getControlCodon();
+	}
+
+	public String getBaseChain() {
+		return baseChain;
 	}
 
 	@Override

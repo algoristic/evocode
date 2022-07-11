@@ -2,17 +2,17 @@ package de.algoristic.evocode.genetic.dnaProgramming.encoding;
 
 public class Actor {
 
-	private final AcceptedType acceptedType;
+	private final AcceptedType<?> acceptedType;
 	private final String name;
-	private final ValueRange valueRange;
 
-	public Actor(final AcceptedType acceptedType, final String name, final ValueRange valueRange) {
+	private ActorValue value;
+
+	public Actor(final AcceptedType<?> acceptedType, final String name) {
 		this.acceptedType = acceptedType;
 		this.name = name;
-		this.valueRange = valueRange;
 	}
 
-	public AcceptedType getAcceptedType() {
+	public AcceptedType<?> getAcceptedType() {
 		return acceptedType;
 	}
 
@@ -20,7 +20,16 @@ public class Actor {
 		return name;
 	}
 
-	public ValueRange getValueRange() {
-		return valueRange;
+	public void setValue(ActorValue value) {
+		this.value = value;
+	}
+
+	public ActorValue getValue() {
+		return value;
+	}
+
+	@Override
+	public Actor clone() {
+		return new Actor(this.acceptedType, this.name);
 	}
 }

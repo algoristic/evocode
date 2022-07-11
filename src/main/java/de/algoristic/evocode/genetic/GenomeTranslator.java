@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -22,7 +20,7 @@ public class GenomeTranslator {
 		settings = new EvocodeSettings();
 	}
 
-	public Phaenotype translate(final Genotype genotype) {
+	public Phaenotype translate(final Genotype genotype, final int generation) {
 		final Path javaFileSource = genotype.getJavaFile().toPath();
 		final Path classFileSource = compiler.compile(javaFileSource).toPath();
 
@@ -43,7 +41,8 @@ public class GenomeTranslator {
 		}
 		return new Phaenotype(
 			javaFileTarget.toFile(),
-			classFileTarget.toFile());
+			classFileTarget.toFile(),
+			generation);
 	}
 
 	private static class JavaCompilerAdaptor {

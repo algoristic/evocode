@@ -1,7 +1,7 @@
 package de.algoristic.evocode.genetic.dnaProgramming;
 
 import static de.algoristic.evocode.util.NumberSystemUtils.randomHexChar;
-import static de.algoristic.evocode.util.NumberSystemUtils.randomTerminatorChar;
+import static de.algoristic.evocode.genetic.dnaProgramming.encoding.RobotMethods.randomTerminatorChar;
 
 import java.util.ArrayList;
 import java.util.List;

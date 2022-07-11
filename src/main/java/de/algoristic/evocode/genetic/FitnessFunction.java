@@ -8,6 +8,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import de.algoristic.evocode.run.EvolutionSettings;
 import robocode.BattleResults;
 
 public class FitnessFunction {
@@ -34,10 +35,10 @@ public class FitnessFunction {
 	
 	private final String function;
 
-	public FitnessFunction(String function) {
+	public FitnessFunction(final String function) {
 		this.function = function;
 	}
-	
+
 	public double evaluate(final BattleResults results) {
 		String resolvableFunction = resolveVariables(results);
 		ScriptEngineAdaptor scriptEngine = ScriptEngineAdaptor.getInstance();
@@ -61,7 +62,13 @@ public class FitnessFunction {
 		}
 		return resolvableFunction;
 	}
-	
+
+	public static FitnessFunction getFunctionFor(int generationNumber) {
+		EvolutionSettings settings = new EvolutionSettings();
+		String function = settings.getFitnessFunction(generationNumber);
+		return new FitnessFunction(function);
+	}
+
 	private interface ScriptEngineAdaptor {
 		public double evaluate(String expression);
 		

@@ -30,4 +30,9 @@ public class RobotMethod {
 	public List<ControlStructure> getControlStructures() {
 		return controlStructures;
 	}
+
+	@Override
+	public RobotMethod clone() {
+		return new RobotMethod(this.name, this.event);
+	}
 }

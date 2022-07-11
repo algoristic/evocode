@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.algoristic.evocode.genetic.GeneTranscriptionParameters;
 import de.algoristic.evocode.genetic.Genome;
@@ -62,5 +63,18 @@ public class DnaProgram implements Genome {
 			method.add(controlStructure);
 		}
 		return methodSet;
+	}
+
+	@Override
+	public String serialize() {
+		String serialized = genes.stream()
+			.map(gene -> {
+				StartCodon startCodon = gene.getStartCodon();
+				String code = startCodon.getCode();
+				String baseChain = gene.getBaseChain();
+				return (code + baseChain);
+			})
+			.collect(Collectors.joining(" "));
+		return serialized;
 	}
 }

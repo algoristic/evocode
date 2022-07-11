@@ -1,16 +1,9 @@
 package de.algoristic.evocode.genetic.dnaProgramming.encoding;
 
-public enum AcceptedType {
+public interface AcceptedType<T> {
 
-	DOUBLE("double"), BOOLEAN("boolean"), NONE("");
+	int numberOfOptions();
 
-	private String value;
+	ActorValue getOption(int position);
 
-	private AcceptedType(String value) {
-		this.value = value;
-	}
-
-	public String getValue() {
-		return value;
-	}
 }

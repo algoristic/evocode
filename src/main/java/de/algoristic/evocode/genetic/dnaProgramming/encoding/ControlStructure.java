@@ -56,7 +56,19 @@ public abstract class ControlStructure {
 	public abstract String getEnd();
 
 	public String resolve(String indent) {
-		return indent + "\n";
+		StringBuffer buffer = new StringBuffer();
+		for(Actor actor : actors) {
+			String name = actor.getName();
+			ActorValue actorValue = actor.getValue();
+			String value = actorValue.getRepresentation();
+			buffer = buffer.append(indent)
+				.append("this.")
+				.append(name)
+				.append("(")
+				.append(value)
+				.append(");\n");
+		}
+		return buffer.toString();
 	}
 
 	public static ControlStructure of(ControlCodon controlCodon, Sensor leftOperand, Sensor rightOperand) {
