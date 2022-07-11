@@ -7,6 +7,7 @@ import de.algoristic.evocode.genetic.Breeder;
 import de.algoristic.evocode.genetic.Enviroment;
 import de.algoristic.evocode.genetic.FilialGenerationBreeder;
 import de.algoristic.evocode.genetic.FirstGenerationBreeder;
+import de.algoristic.evocode.run.EvaluatedGeneration;
 import de.algoristic.evocode.run.EvocodeFiles;
 import de.algoristic.evocode.run.FieldData;
 import de.algoristic.evocode.run.Generation;
@@ -29,21 +30,20 @@ public class Evocode {
 		ProjectSetupTask setupTask = evocodeContext.getSetupTask();
 		setupTask.prepareProject();
 		List<GenerationBuildingTask> buildingTasks = evocodeContext.getBuildingTasks();
+		EvocodeFiles files = new EvocodeFiles();
 		for(GenerationBuildingTask task : buildingTasks) {
 			task.prepareDirectory();
 			Generation generation;
 			Breeder breeder;
 			if(task.hasAnchestors()) {
-				Generation parents = task.determinePreviousGeneration();
+				EvaluatedGeneration parents = task.determinePreviousGeneration();
 				breeder = new FilialGenerationBreeder(parents);
-				generation = breeder.breedGeneration();
 			} else {
 				breeder = new FirstGenerationBreeder();
-				generation = breeder.breedGeneration();
 			}
+			generation = breeder.breedGeneration();
 			Enviroment enviroment = new Enviroment();
 			FieldData fieldData = enviroment.test(generation);
-			EvocodeFiles files = new EvocodeFiles();
 			files.writeProtocols(fieldData);
 		}
 	}

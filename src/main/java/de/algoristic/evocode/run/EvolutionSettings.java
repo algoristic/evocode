@@ -1,16 +1,16 @@
 package de.algoristic.evocode.run;
 
-import de.algoristic.evocode.util.PropertyFacade;
+import de.algoristic.evocode.util.SystemPropertyFacade;
 
 public class EvolutionSettings {
 
-	private final PropertyFacade properties;
+	private final SystemPropertyFacade properties;
 
 	public EvolutionSettings() {
-		this(new PropertyFacade());
+		this(new SystemPropertyFacade());
 	}
 	
-	private EvolutionSettings(PropertyFacade properties) {
+	private EvolutionSettings(SystemPropertyFacade properties) {
 		this.properties = properties;
 	}
 

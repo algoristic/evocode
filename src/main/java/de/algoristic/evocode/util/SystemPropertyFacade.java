@@ -3,7 +3,7 @@ package de.algoristic.evocode.util;
 import java.util.Optional;
 import java.util.Properties;
 
-public class PropertyFacade {
+public class SystemPropertyFacade {
 
 	public Optional<String> getProperty(String key) {
 		if (!properties().containsKey(key)) return Optional.empty();

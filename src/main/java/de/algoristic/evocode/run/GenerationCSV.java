@@ -14,9 +14,10 @@ public final class GenerationCSV extends RunningFile {
 	}
 
 	@Override
-	public void createIfNotExists() throws IOException {
-		super.createIfNotExists();
-		writeLine("individual,fitness,rank,firsts,seconds,thirds,score,survival,bulletDamage,bulletDamageBonus,ramDamage,ramDamageBonus,lastSurvivorBonus");
+	public boolean createIfNotExists() throws IOException {
+		boolean created = super.createIfNotExists();
+		if(created) writeLine("individual;fitness;rank;firsts;seconds;thirds;score;survival;bulletDamage;bulletDamageBonus;ramDamage;ramDamageBonus;lastSurvivorBonus");
+		return created;
 	}
 
 	public void writeFitness(final int individual, final FitnessValue wrapper) {
@@ -33,7 +34,11 @@ public final class GenerationCSV extends RunningFile {
 		int ramDamage = wrapper.getRamDamage();
 		int ramDamageBonus = wrapper.getRamDamageBonus();
 		int lastSurvivorBonus = wrapper.getLastSurvivorBonus();
-		String line = IntStream.of(individual, fitness, rank, firsts, seconds, thirds, score, survival, bulletDamage, bulletDamageBonus, ramDamage, ramDamageBonus, lastSurvivorBonus).mapToObj(String::valueOf).collect(Collectors.joining(","));
+		String line = IntStream.of(
+			individual, fitness, rank, firsts, seconds, thirds, score, survival, bulletDamage, bulletDamageBonus, ramDamage, ramDamageBonus, lastSurvivorBonus)
+			.mapToObj(String::valueOf)
+			.collect(Collectors.joining(";"))
+			.replace(".", ",");
 		writeLine(line);
 	}
 }

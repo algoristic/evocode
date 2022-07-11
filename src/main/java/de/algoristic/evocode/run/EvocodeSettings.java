@@ -2,17 +2,17 @@ package de.algoristic.evocode.run;
 
 import java.io.File;
 
-import de.algoristic.evocode.util.PropertyFacade;
+import de.algoristic.evocode.util.SystemPropertyFacade;
 
 public class EvocodeSettings {
 
-	private final PropertyFacade properties;
+	private final SystemPropertyFacade properties;
 
 	public EvocodeSettings() {
-		this(new PropertyFacade());
+		this(new SystemPropertyFacade());
 	}
 
-	private EvocodeSettings(PropertyFacade properties) {
+	private EvocodeSettings(SystemPropertyFacade properties) {
 		this.properties = properties;
 	}
 

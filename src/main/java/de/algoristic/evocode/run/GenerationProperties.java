@@ -3,12 +3,16 @@ package de.algoristic.evocode.run;
 import java.io.File;
 
 import de.algoristic.evocode.genetic.Genome;
+import de.algoristic.evocode.util.LazyPropertyFacade;
 import de.algoristic.evocode.util.Pattern;
 
 public final class GenerationProperties extends RunningFile {
 
+	private LazyPropertyFacade properties;
+
 	public GenerationProperties(final File file) {
 		super(file);
+		properties = new LazyPropertyFacade(file);
 	}
 
 	public void writeGenome(int individualNumber, Genome genome) {
@@ -26,5 +30,22 @@ public final class GenerationProperties extends RunningFile {
 			.addVariable("[fitness]", fitness);
 		String line = linePattern.compile();
 		writeLine(line);
+	}
+
+	public String getGenome(int individual) {
+		String key = new Pattern("individual.$indiv.genome")
+			.addVariable("$indiv", individual)
+			.compile();
+		return properties.getProperty(key)
+			.orElseThrow();
+	}
+
+	public double getFitness(int individual) {
+		String key = new Pattern("individual.$indiv.fitness")
+			.addVariable("$indiv", individual)
+			.compile();
+		return properties.getProperty(key)
+			.map(Double::valueOf)
+			.orElseThrow();
 	}
 }

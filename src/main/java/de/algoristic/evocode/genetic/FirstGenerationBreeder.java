@@ -6,16 +6,14 @@ import de.algoristic.evocode.run.Individual;
 
 public class FirstGenerationBreeder implements Breeder {
 
-	private final GeneticsContext context;
 	private final EvolutionSettings evolutionSettings;
 
-	private FirstGenerationBreeder(final GeneticsContext context, final EvolutionSettings evolutionSettings) {
-		this.context = context;
+	private FirstGenerationBreeder(final EvolutionSettings evolutionSettings) {
 		this.evolutionSettings = evolutionSettings;
 	}
 
 	public FirstGenerationBreeder() {
-		this(new GeneticsContext(), new EvolutionSettings());
+		this(new EvolutionSettings());
 	}
 
 	@Override

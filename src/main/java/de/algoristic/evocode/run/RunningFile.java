@@ -14,10 +14,8 @@ public abstract class RunningFile {
 		this.file = file;
 	}
 
-	public void createIfNotExists() throws IOException {
-		if (!file.exists()) {
-			file.createNewFile();
-		}
+	public boolean createIfNotExists() throws IOException {
+		return file.createNewFile();
 	}
 
 	protected void writeLine(String line) {

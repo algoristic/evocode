@@ -12,19 +12,21 @@ public class ProjectCSV extends RunningFile {
 	}
 
 	@Override
-	public void createIfNotExists() throws IOException {
-		super.createIfNotExists();
-		writeLine("generation,min,max,avg,median");
+	public boolean createIfNotExists() throws IOException {
+		boolean created = super.createIfNotExists();
+		if(created) writeLine("generation;min;max;avg;median");
+		return created;
 	}
 
 	public void writeLine(int generation, double min, double max, double avg, double median) {
-		String line = new Pattern("$generation,$min,$max,$avg,$median")
+		String line = new Pattern("$generation;$min;$max;$avg;$median")
 			.addVariable("$generation", generation)
 			.addVariable("$min", min)
 			.addVariable("$max", max)
 			.addVariable("$avg", avg)
 			.addVariable("$median", median)
-			.compile();
+			.compile()
+			.replace(".", ",");
 		writeLine(line);
 	}
 }

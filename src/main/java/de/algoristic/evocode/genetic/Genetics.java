@@ -2,6 +2,7 @@ package de.algoristic.evocode.genetic;
 
 public interface Genetics {
 
-	public Genome initialize();
+	Genome initialize();
+	Genome readFrom(String serialized);
 
 }
