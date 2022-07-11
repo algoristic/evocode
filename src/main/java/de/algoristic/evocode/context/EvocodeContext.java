@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import de.algoristic.evocode.run.EvocodeSettings;
 import de.algoristic.evocode.run.GenerationBuildingTask;
+import de.algoristic.evocode.run.ProjectSetupTask;
 
 public class EvocodeContext {
 	
@@ -21,7 +22,11 @@ public class EvocodeContext {
 		this.settings = settings;
 	}
 
-	public List<GenerationBuildingTask> getTasks() {
+	public ProjectSetupTask getSetupTask() {
+		return new ProjectSetupTask();
+	}
+
+	public List<GenerationBuildingTask> getBuildingTasks() {
 		List<GenerationBuildingTask> tasks = new ArrayList<>();
 		int startGeneration = determineStartGeneration();
 		int lastGeneration = calculateLastGeneration(startGeneration);

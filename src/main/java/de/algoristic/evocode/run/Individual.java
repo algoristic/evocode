@@ -28,4 +28,9 @@ public class Individual {
 	public int getIndividualNumber() {
 		return individualNumber;
 	}
+
+	@Override
+	public String toString() {
+		return ("[g=" + generationNumber + ", i=" + individualNumber + "]");
+	}
 }

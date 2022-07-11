@@ -39,6 +39,9 @@ public class GenomeTranslator {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		javaFileSource.toFile().delete();
+		classFileSource.toFile().delete();
+		classFileSource.getParent().toFile().delete();
 		return new Phaenotype(
 			javaFileTarget.toFile(),
 			classFileTarget.toFile(),

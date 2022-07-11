@@ -40,8 +40,10 @@ public class GenerationBuildingTask {
 			create(generationDirectory);
 		}
 		GenerationProperties generationProperties = context.getGenerationProperties(generationNumber);
+		GenerationCSV generationCSV = context.getGenerationCSV(generationNumber);
 		try {
-			generationProperties.createNewFile();
+			generationProperties.createIfNotExists();
+			generationCSV.createIfNotExists();
 		} catch (IOException e) {
 			throw new RuntimeException("Could not create props file for generation" + generationNumber, e);
 		}

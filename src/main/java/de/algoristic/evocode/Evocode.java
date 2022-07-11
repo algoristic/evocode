@@ -11,6 +11,7 @@ import de.algoristic.evocode.run.EvocodeFiles;
 import de.algoristic.evocode.run.FieldData;
 import de.algoristic.evocode.run.Generation;
 import de.algoristic.evocode.run.GenerationBuildingTask;
+import de.algoristic.evocode.run.ProjectSetupTask;
 
 public class Evocode {
 
@@ -25,8 +26,10 @@ public class Evocode {
 	}
 
 	public void run() {
-		List<GenerationBuildingTask> tasks = evocodeContext.getTasks();
-		for(GenerationBuildingTask task : tasks) {
+		ProjectSetupTask setupTask = evocodeContext.getSetupTask();
+		setupTask.prepareProject();
+		List<GenerationBuildingTask> buildingTasks = evocodeContext.getBuildingTasks();
+		for(GenerationBuildingTask task : buildingTasks) {
 			task.prepareDirectory();
 			Generation generation;
 			Breeder breeder;
@@ -41,7 +44,7 @@ public class Evocode {
 			Enviroment enviroment = new Enviroment();
 			FieldData fieldData = enviroment.test(generation);
 			EvocodeFiles files = new EvocodeFiles();
-			files.writeProtocol(fieldData);
+			files.writeProtocols(fieldData);
 		}
 	}
 }

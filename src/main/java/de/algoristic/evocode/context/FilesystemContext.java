@@ -4,7 +4,9 @@ import java.io.File;
 import java.nio.file.Path;
 
 import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.run.GenerationCSV;
 import de.algoristic.evocode.run.GenerationProperties;
+import de.algoristic.evocode.run.ProjectCSV;
 
 public class FilesystemContext {
 
@@ -48,9 +50,21 @@ public class FilesystemContext {
 		return fullName;
 	}
 
+	public ProjectCSV getProjectCSV() {
+		File projectLocation = settings.getProjectLocation();
+		File projectCSVFile = projectLocation.toPath().resolve("project.csv").toFile();
+		return new ProjectCSV(projectCSVFile);
+	}
+
 	public GenerationProperties getGenerationProperties(int generationNumber) {
 		File generationDirectory = getGenerationDirectory(generationNumber);
 		File generationPropertiesFile = generationDirectory.toPath().resolve("generation.properties").toFile();
 		return new GenerationProperties(generationPropertiesFile);
+	}
+
+	public GenerationCSV getGenerationCSV(int generationNumber) {
+		File generationDirectory = getGenerationDirectory(generationNumber);
+		File generationCSVFile = generationDirectory.toPath().resolve("generation.csv").toFile();
+		return new GenerationCSV(generationCSVFile);
 	}
 }

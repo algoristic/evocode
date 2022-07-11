@@ -13,20 +13,45 @@ public class EvocodeApplication {
 
 	public static void main(String[] args) {
 		if (args.length == 0) throw new RuntimeException("No arguments provided; provide on argument for project properties");
-		EvocodeApplication application = new EvocodeApplication(args[0]);
+		EvocodeApplication application;
+		if(args.length == 1) application = new EvocodeApplication(args[0]);
+		else application = new EvocodeApplication(args[0]);
 		application.runApplication();
 	}
 
 	private final String propertiesFileName;
 
+	private String compileGen;
+	private String compileIndiv;
+
 	private EvocodeApplication(final String propertiesFileName) {
 		this.propertiesFileName = propertiesFileName;
 	}
 
+	private EvocodeApplication(
+		final String propertiesFileName,
+		final String compileGen,
+		final String compileIndiv) {
+		this(propertiesFileName);
+		this.compileGen = compileGen;
+		this.compileIndiv = compileIndiv;
+	}
+
 	private void runApplication() {
 		loadProperties();
-		Evocode evocode = new Evocode();
-		evocode.run();
+		if(compileMode()) {
+			int generation = Integer.valueOf(compileGen);
+			int individual = Integer.valueOf(compileIndiv);
+			EvoCompile evoCompile = new EvoCompile(generation, individual);
+			evoCompile.run();
+		} else {
+			Evocode evocode = new Evocode();
+			evocode.run();
+		}
+	}
+
+	private boolean compileMode() {
+		return ((compileGen != null) && (compileIndiv != null));
 	}
 
 	private void loadProperties() {

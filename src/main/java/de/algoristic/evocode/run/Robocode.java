@@ -80,12 +80,15 @@ public class Robocode {
 					if(results.getTeamLeaderName().equalsIgnoreCase(robotName)) {
 						double fitness = fitnessFunction.evaluate(results);
 						fitnessValue.setValue(fitness);
+						fitnessValue.setRawData(results);
 						break;
 					}
 				}
 			}
 		});
 		engine.runBattle(spec);
+		engine.waitTillBattleOver();
+		System.out.println("Ran battle: " + robotName + ", eval: " + fitnessValue);
 		return fitnessValue;
 	}
 
