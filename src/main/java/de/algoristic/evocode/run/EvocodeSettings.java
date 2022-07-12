@@ -1,6 +1,7 @@
 package de.algoristic.evocode.run;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import de.algoristic.evocode.util.SystemPropertyFacade;
 
@@ -99,5 +100,35 @@ public class EvocodeSettings {
 	public String getMainMethod() {
 		return properties.getProperty("evo.genome.mainMethod")
 			.orElse("");
+	}
+
+	public boolean isIslandsEvolution() {
+		return properties.getProperty("evo.strategy.name")
+			.map(strategy -> "islands".equalsIgnoreCase(strategy))
+			.orElse(false);
+	}
+
+	public int getNumberOfIslands() {
+		return properties.getProperty("evo.strategy.islands.num")
+			.map(Integer::valueOf)
+			.orElseThrow();
+	}
+
+	public String getTerminationCondition() {
+		return properties.getProperty("evo.run.termination")
+			.orElse("iterations");
+	}
+
+	public TimeUnit getTerminatorTimeUnit() {
+		return properties.getProperty("evo.run.timer.unit")
+			.map(String::toUpperCase)
+			.map(TimeUnit::valueOf)
+			.orElse(TimeUnit.SECONDS);
+	}
+
+	public long getTerminatorTime() {
+		return properties.getProperty("evo.run.timer.time")
+			.map(Long::valueOf)
+			.orElse(60L);
 	}
 }

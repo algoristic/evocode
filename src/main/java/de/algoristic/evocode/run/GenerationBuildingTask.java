@@ -3,6 +3,8 @@ package de.algoristic.evocode.run;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 import de.algoristic.evocode.context.FilesystemContext;
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
@@ -29,12 +31,12 @@ public class GenerationBuildingTask {
 	}
 
 	public EvaluatedGeneration determinePreviousGeneration() {
-		EvaluatedGeneration parents = new EvaluatedGeneration();
-		GenomeManager genomeManager = new GenomeManager();
-		Genetics genetics = genomeManager.getGenetics();
-
 		final int parentalGenerationNumber = (generationNumber - 1);
 		final int parentalGenerationSize = settings.getGenerationSize(parentalGenerationNumber);
+
+		EvaluatedGeneration parents = new EvaluatedGeneration(parentalGenerationNumber);
+		GenomeManager genomeManager = new GenomeManager();
+		Genetics genetics = genomeManager.getGenetics();
 
 		GenerationProperties properties = context.getGenerationProperties(parentalGenerationNumber);
 		for(int individualNumber = 0; individualNumber < parentalGenerationSize; individualNumber++) {
@@ -72,7 +74,21 @@ public class GenerationBuildingTask {
 			throw new RuntimeException("Could not create props file for generation" + generationNumber, e);
 		}
 	}
-	
+
+	public void breakdown() {
+		File currentDirectoryFile = context.getGenerationDirectory(generationNumber);
+		try {
+			deleteRecursive(currentDirectoryFile);
+		} catch (Exception e) {
+			System.err.println("Fatal error: could not breakdown task: " + this);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "[build generation=" + generationNumber + "]";
+	}
+
 	private void cleanup(File directory) {
 		File[] dismissableContent = directory.listFiles();
 		for(File dismissableFile : dismissableContent) {
@@ -82,5 +98,9 @@ public class GenerationBuildingTask {
 	
 	private void create(File directory) {
 		directory.mkdir();
+	}
+
+	private void deleteRecursive(File directory) throws IOException {
+		FileUtils.deleteDirectory(directory);
 	}
 }

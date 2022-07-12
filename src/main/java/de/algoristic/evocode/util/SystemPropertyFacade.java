@@ -25,7 +25,7 @@ public class SystemPropertyFacade {
 
 		public Optional<String> getProperty(String key) {
 			for(int i = generation; i >= 0; i--) {
-				String replacement = String.valueOf(generation);
+				String replacement = String.valueOf(i);
 				String composedKey = key.replace("[]", replacement);
 				if(properties().containsKey(composedKey)) {
 					String value = properties().getProperty(composedKey);

@@ -1,5 +1,9 @@
 package de.algoristic.evocode.run;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import de.algoristic.evocode.util.SystemPropertyFacade;
 
 public class EvolutionSettings {
@@ -50,6 +54,30 @@ public class EvolutionSettings {
 	public int getBattleRounds(int generation) {
 		return properties.forGeneration(generation)
 			.getProperty("evo.gen.[].battleRounds")
+			.map(Integer::valueOf)
+			.orElse(10);
+	}
+
+	public List<String> getSelectorSpecs(int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].selectors")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.collect(Collectors.toList());
+	}
+
+	public int getSelectorOutput(String selector, int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].selector." + selector + ".out")
+			.map(Integer::valueOf)
+			.orElseThrow();
+	}
+
+	public int getTournamentSampleSize(int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].selector.tournament.sample_size")
 			.map(Integer::valueOf)
 			.orElse(10);
 	}

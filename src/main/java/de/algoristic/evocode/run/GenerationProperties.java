@@ -32,6 +32,14 @@ public final class GenerationProperties extends RunningFile {
 		writeLine(line);
 	}
 
+	public void writeIslandSpec(int island, String spec) {
+		Pattern linePattern = new Pattern("island.[island].spec=[spec]")
+			.addVariable("[island]", island)
+			.addVariable("[spec]", spec);
+		String line = linePattern.compile();
+		writeLine(line);
+	}
+
 	public String getGenome(int individual) {
 		String key = new Pattern("individual.$indiv.genome")
 			.addVariable("$indiv", individual)

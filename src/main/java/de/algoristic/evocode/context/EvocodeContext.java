@@ -4,11 +4,15 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import de.algoristic.evocode.run.EvocodeSettings;
 import de.algoristic.evocode.run.GenerationBuildingTask;
+import de.algoristic.evocode.run.GenerationNumberTerminator;
 import de.algoristic.evocode.run.ProjectSetupTask;
+import de.algoristic.evocode.run.Terminator;
+import de.algoristic.evocode.run.TimerTerminator;
 
 public class EvocodeContext {
 	
@@ -26,6 +30,13 @@ public class EvocodeContext {
 		return new ProjectSetupTask();
 	}
 
+	public Terminator getTerminator() {
+		String terminatorName = settings.getTerminationCondition();
+		Terminator terminator = getInstance(terminatorName);
+		return terminator;
+	}
+
+	@Deprecated
 	public List<GenerationBuildingTask> getBuildingTasks() {
 		List<GenerationBuildingTask> tasks = new ArrayList<>();
 		int startGeneration = determineStartGeneration();
@@ -71,7 +82,21 @@ public class EvocodeContext {
 			.max()
 			.orElse(0);
 	};
-	
+
+	private Terminator getInstance(String terminator) {
+		int startGeneration = determineStartGeneration();
+		if("iterations".equalsIgnoreCase(terminator)) {
+			int lastGeneration = calculateLastGeneration(startGeneration);
+			return new GenerationNumberTerminator(startGeneration, lastGeneration);
+		}
+		if("timer".equalsIgnoreCase(terminator)) {
+			TimeUnit timeUnit = settings.getTerminatorTimeUnit();
+			long duration = settings.getTerminatorTime();
+			return new TimerTerminator(startGeneration, duration, timeUnit);
+		}
+		throw new IllegalArgumentException("Insufficient terminator definition: " + terminator);
+	}
+
 	private static class GenerationDirectoryFilter implements FilenameFilter {
 		
 		private final String prefix;

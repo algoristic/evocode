@@ -21,6 +21,10 @@ public class Generation implements Iterable<Individual> {
 		this.individuals.addAll(individuals);
 	}
 
+	public void add(Individuals individuals) {
+		add(individuals.getList());
+	}
+
 	@Override
 	public Iterator<Individual> iterator() {
 		return individuals.iterator();

@@ -8,15 +8,15 @@ import java.util.Map.Entry;
 import de.algoristic.evocode.FitnessValue;
 import de.algoristic.evocode.context.FilesystemContext;
 
-public class EvocodeFiles {
+public class EvocodeProtocol {
 
 	private final FilesystemContext context;
 
-	private EvocodeFiles(final FilesystemContext context) {
+	private EvocodeProtocol(final FilesystemContext context) {
 		this.context = context;
 	}
 
-	public EvocodeFiles() {
+	public EvocodeProtocol() {
 		this(new FilesystemContext());
 	}
 
