@@ -1,7 +1,10 @@
 package de.algoristic.evocode.run;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import de.algoristic.evocode.util.SystemPropertyFacade;
 
@@ -130,5 +133,26 @@ public class EvocodeSettings {
 		return properties.getProperty("evo.run.timer.time")
 			.map(Long::valueOf)
 			.orElse(60L);
+	}
+
+	public List<String> getMigrationSpecs() {
+		return properties.getProperty("evo.strategy.islands.migration")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.collect(Collectors.toList());
+	}
+
+	public int getMigrationEpoch(String spec) {
+		return properties.getProperty("evo.strategy.islands.migration." + spec + ".epoch")
+			.map(Integer::valueOf)
+			.orElse(50);
+	}
+
+	public double getMigrationChance(String spec) {
+		return properties.getProperty("evo.strategy.islands.migration." + spec + ".chance")
+			.map(Double::valueOf)
+			.orElse(.001d);
 	}
 }

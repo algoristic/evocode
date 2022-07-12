@@ -39,7 +39,7 @@ public class FilialGenerationBreeder implements Breeder {
 		AlterationPipeline alterers = alterationManager.getAlterers();
 
 		PopulationManager populationManager = new PopulationManager();
-		Populations populations = populationManager.getPopulations(parents);
+		Populations populations = populationManager.preparePopulations(parents);
 		for(Population population : populations) {
 			for(Selector selector : selectors) {
 				Selection selection = selector.getSelection(population);

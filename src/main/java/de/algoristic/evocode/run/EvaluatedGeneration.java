@@ -24,4 +24,15 @@ public class EvaluatedGeneration {
 	public List<EvaluatedIndividual> getIndividuals() {
 		return individuals;
 	}
+
+	public EvaluatedIndividual get(int id) {
+		EvaluatedIndividual result = null;
+		for (EvaluatedIndividual individual : individuals) {
+			if (id == individual.getIndividualNumber()) {
+				result = individual;
+				break;
+			}
+		}
+		return result;
+	}
 }

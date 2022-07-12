@@ -9,4 +9,8 @@ public class EvaluatedIndividual {
 		this.base = base;
 		this.fitness = fitness;
 	}
+
+	public int getIndividualNumber() {
+		return base.getIndividualNumber();
+	}
 }

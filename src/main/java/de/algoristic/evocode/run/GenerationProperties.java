@@ -1,6 +1,9 @@
 package de.algoristic.evocode.run;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import de.algoristic.evocode.genetic.Genome;
 import de.algoristic.evocode.util.LazyPropertyFacade;
@@ -40,6 +43,11 @@ public final class GenerationProperties extends RunningFile {
 		writeLine(line);
 	}
 
+	public void writeIslandSpec(int id, List<Integer> specs) {
+		String spec = specs.stream().map(String::valueOf).collect(Collectors.joining(","));
+		writeIslandSpec(id, spec);
+	}
+
 	public String getGenome(int individual) {
 		String key = new Pattern("individual.$indiv.genome")
 			.addVariable("$indiv", individual)
@@ -55,5 +63,18 @@ public final class GenerationProperties extends RunningFile {
 		return properties.getProperty(key)
 			.map(Double::valueOf)
 			.orElseThrow();
+	}
+
+	public List<Integer> getIslandSpec(int island) {
+		String key = new Pattern("island.$island.spec")
+			.addVariable("$island", island)
+			.compile();
+		return properties.getProperty(key)
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.map(Integer::valueOf)
+			.collect(Collectors.toList());
 	}
 }
