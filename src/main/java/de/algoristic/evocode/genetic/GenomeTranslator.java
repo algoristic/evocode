@@ -15,6 +15,8 @@ public class GenomeTranslator {
 	private final JavaCompilerAdaptor compiler;
 	private final EvocodeSettings settings;
 
+	private boolean readyForRun = true;
+
 	public GenomeTranslator() {
 		compiler = JavaCompilerAdaptor.getInstance();
 		settings = new EvocodeSettings();
@@ -23,6 +25,8 @@ public class GenomeTranslator {
 	public Phaenotype translate(final Genotype genotype, final int generation) {
 		final Path javaFileSource = genotype.getJavaFile().toPath();
 		final Path classFileSource = compiler.compile(javaFileSource).toPath();
+
+		if (!readyForRun) return new Phaenotype(javaFileSource.toFile(), classFileSource.toFile(), generation);
 
 		final Path robotLocation = settings.getRobocodeLocation().toPath().resolve("robots");
 		final Path targetPath = robotLocation.resolve(genotype.getCompilationTargetPathName());
@@ -46,6 +50,10 @@ public class GenomeTranslator {
 			javaFileTarget.toFile(),
 			classFileTarget.toFile(),
 			generation);
+	}
+
+	public void setReadyForRun(final boolean readyForRun) {
+		this.readyForRun = readyForRun;
 	}
 
 	private static class JavaCompilerAdaptor {

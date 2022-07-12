@@ -15,7 +15,7 @@ public class EvocodeApplication {
 		if (args.length == 0) throw new RuntimeException("No arguments provided; provide on argument for project properties");
 		EvocodeApplication application;
 		if(args.length == 1) application = new EvocodeApplication(args[0]);
-		else application = new EvocodeApplication(args[0]);
+		else application = new EvocodeApplication(args[0], args[1], args[2]);
 		application.runApplication();
 	}
 

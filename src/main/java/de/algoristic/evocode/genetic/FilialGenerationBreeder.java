@@ -27,7 +27,6 @@ public class FilialGenerationBreeder implements Breeder {
 		   // MEMO Alter von Individuen (wo speichern?)
 		// TODO GeneAlteration
 		
-		
 		return null;
 	}
 
