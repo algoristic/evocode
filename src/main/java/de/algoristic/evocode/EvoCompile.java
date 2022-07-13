@@ -1,6 +1,7 @@
 package de.algoristic.evocode;
 
-import de.algoristic.evocode.context.FilesystemContext;
+import de.algoristic.evocode.app.conf.FilesystemContext;
+import de.algoristic.evocode.app.io.files.GenerationProperties;
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
 import de.algoristic.evocode.genetic.GenomeManager;
@@ -8,7 +9,6 @@ import de.algoristic.evocode.genetic.GenomeTranscriptor;
 import de.algoristic.evocode.genetic.GenomeTranslator;
 import de.algoristic.evocode.genetic.Genotype;
 import de.algoristic.evocode.genetic.Phaenotype;
-import de.algoristic.evocode.run.GenerationProperties;
 
 public class EvoCompile {
 

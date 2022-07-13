@@ -1,6 +1,6 @@
 package de.algoristic.evocode.genetic.alteration;
 
-import de.algoristic.evocode.run.Individuals;
+import de.algoristic.evocode.app.Individuals;
 
 public class AlterationPipeline {
 

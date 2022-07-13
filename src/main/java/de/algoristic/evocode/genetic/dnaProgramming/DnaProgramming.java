@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
-import de.algoristic.evocode.run.EvocodeSettings;
 
 public class DnaProgramming implements Genetics {
 

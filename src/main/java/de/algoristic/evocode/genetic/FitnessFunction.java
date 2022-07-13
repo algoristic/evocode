@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import de.algoristic.evocode.run.EvolutionSettings;
+import de.algoristic.evocode.app.conf.EvolutionSettings;
+import de.algoristic.evocode.app.periphery.ScriptEngineAdaptor;
 import robocode.BattleResults;
 
 public class FitnessFunction {
@@ -69,42 +66,6 @@ public class FitnessFunction {
 		return new FitnessFunction(function);
 	}
 
-	private interface ScriptEngineAdaptor {
-		public double evaluate(String expression);
-		
-		public static ScriptEngineAdaptor getInstance() {
-			return new InternalScriptEngine();
-		}
-	}
-	
-	private static class InternalScriptEngine implements ScriptEngineAdaptor {
-
-		static ScriptEngine internalScriptEngineSingleton;
-		
-		static {
-			ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-			internalScriptEngineSingleton = scriptEngineManager.getEngineByName("JavaScript");
-			
-		}
-		
-		@Override
-		public double evaluate(String expression) {
-			Object result;
-			try {
-				result = internalScriptEngineSingleton.eval(expression);
-			} catch (ScriptException e) {
-				throw new RuntimeException("Fitness function could not be evaluated", e);
-			}
-			double evaluated = 0;
-			if(result instanceof Double) {
-				evaluated = (double) result;
-			} else if(result instanceof Integer) {
-				evaluated = (double) (int) result;
-			}
-			return evaluated;
-		}	
-	}
-	
 	private interface ValueExractor extends Function<BattleResults, Integer> {
 		
 		default public Integer extractValue(BattleResults battleResults) {

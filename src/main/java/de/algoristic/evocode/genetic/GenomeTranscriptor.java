@@ -2,9 +2,9 @@ package de.algoristic.evocode.genetic;
 
 import java.io.File;
 
-import de.algoristic.evocode.context.FilesystemContext;
-import de.algoristic.evocode.run.EvocodeSettings;
-import de.algoristic.evocode.run.GenerationProperties;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
+import de.algoristic.evocode.app.conf.FilesystemContext;
+import de.algoristic.evocode.app.io.files.GenerationProperties;
 import de.algoristic.evocode.util.Pattern;
 
 public class GenomeTranscriptor {

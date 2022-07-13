@@ -2,7 +2,7 @@ package de.algoristic.evocode.genetic.strategy;
 
 import java.util.List;
 
-import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class MigrationManager {
 

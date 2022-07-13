@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotFile {
 

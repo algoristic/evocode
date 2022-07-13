@@ -1,6 +1,6 @@
 package de.algoristic.evocode.genetic;
 
-import de.algoristic.evocode.run.Individual;
+import de.algoristic.evocode.app.Individual;
 
 public class GenomeExpressor {
 

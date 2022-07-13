@@ -2,8 +2,8 @@ package de.algoristic.evocode.genetic.strategy;
 
 import java.util.List;
 
-import de.algoristic.evocode.run.EvaluatedGeneration;
-import de.algoristic.evocode.run.EvaluatedIndividual;
+import de.algoristic.evocode.app.EvaluatedGeneration;
+import de.algoristic.evocode.app.EvaluatedIndividual;
 
 public class Population {
 

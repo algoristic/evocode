@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class Phaenotype implements Closeable {
 

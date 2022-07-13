@@ -2,7 +2,7 @@ package de.algoristic.evocode.genetic.selection;
 
 import java.util.List;
 
-import de.algoristic.evocode.run.EvolutionSettings;
+import de.algoristic.evocode.app.conf.EvolutionSettings;
 
 public class SelectorManager {
 

@@ -2,7 +2,7 @@ package de.algoristic.evocode.genetic.dnaProgramming.encoding;
 
 import java.util.Iterator;
 
-import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class CodonParser implements Iterator<ProgramCodon> {
 

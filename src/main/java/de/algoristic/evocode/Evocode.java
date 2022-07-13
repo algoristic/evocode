@@ -1,17 +1,17 @@
 package de.algoristic.evocode;
 
-import de.algoristic.evocode.context.EvocodeContext;
-import de.algoristic.evocode.genetic.Breeder;
-import de.algoristic.evocode.genetic.Enviroment;
-import de.algoristic.evocode.genetic.FilialGenerationBreeder;
-import de.algoristic.evocode.genetic.FirstGenerationBreeder;
-import de.algoristic.evocode.run.EvaluatedGeneration;
-import de.algoristic.evocode.run.EvocodeProtocol;
-import de.algoristic.evocode.run.FieldData;
-import de.algoristic.evocode.run.Generation;
-import de.algoristic.evocode.run.GenerationBuildingTask;
-import de.algoristic.evocode.run.ProjectSetupTask;
-import de.algoristic.evocode.run.Terminator;
+import de.algoristic.evocode.app.Enviroment;
+import de.algoristic.evocode.app.EvaluatedGeneration;
+import de.algoristic.evocode.app.Generation;
+import de.algoristic.evocode.app.conditions.Terminator;
+import de.algoristic.evocode.app.conf.EvocodeContext;
+import de.algoristic.evocode.app.io.EvocodeProtocol;
+import de.algoristic.evocode.app.io.FieldData;
+import de.algoristic.evocode.app.io.tasks.GenerationBuildingTask;
+import de.algoristic.evocode.app.io.tasks.ProjectSetupTask;
+import de.algoristic.evocode.genetic.breeding.Breeder;
+import de.algoristic.evocode.genetic.breeding.FilialGenerationBreeder;
+import de.algoristic.evocode.genetic.breeding.FirstGenerationBreeder;
 
 public class Evocode {
 

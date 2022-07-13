@@ -1,7 +1,7 @@
 package de.algoristic.evocode.genetic.strategy;
 
-import de.algoristic.evocode.run.EvaluatedGeneration;
-import de.algoristic.evocode.run.EvocodeSettings;
+import de.algoristic.evocode.app.EvaluatedGeneration;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class IslandManager {
 

@@ -5,22 +5,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import de.algoristic.evocode.context.FilesystemContext;
-import de.algoristic.evocode.run.EvaluatedGeneration;
-import de.algoristic.evocode.run.EvaluatedIndividual;
-import de.algoristic.evocode.run.GenerationProperties;
+import de.algoristic.evocode.app.EvaluatedGeneration;
+import de.algoristic.evocode.app.EvaluatedIndividual;
 
 public class Islands implements Iterable<Island> {
 
 	private final int numberOfIslands;
 	private final EvaluatedGeneration generation;
-	private final FilesystemContext context;
+	private final IslandSettings settings;
 	private List<ProtoIsland> protoIslands;
 
 	public Islands(final int numberOfIslands, final EvaluatedGeneration generation) {
 		this.numberOfIslands = numberOfIslands;
 		this.generation = generation;
-		context = new FilesystemContext();
+		settings = new IslandSettings();
 		protoIslands = new ArrayList<>();
 		init();
 	}
@@ -47,7 +45,7 @@ public class Islands implements Iterable<Island> {
 		IntStream.range(0, numberOfIslands).forEach(id -> afterMigration.add(new ProtoIsland(id)));
 		int nextGeneration = (1 + generation.getGenerationNumber());
 
-		// FIXME this needs refactoring
+		// FIXME this needs refactoring for better readability
 		for (ProtoIsland island : protoIslands) {
 			int currentIslandId = island.getId();
 			List<Integer> individuals = island.getIndividualIDs();
@@ -71,20 +69,13 @@ public class Islands implements Iterable<Island> {
 			afterMigration.get(currentIslandId).addAll(individuals);
 		}
 		protoIslands = afterMigration;
-		GenerationProperties properties = context.getGenerationProperties(nextGeneration);
-		for(ProtoIsland island : protoIslands) {
-			int id = island.getId();
-			List<Integer> specs = island.getIndividualIDs();
-			properties.writeIslandSpec(id, specs);
-		}
 	}
 
 	private void init() {
 		final int generationNumber = generation.getGenerationNumber();
-		GenerationProperties properties = context.getGenerationProperties(generationNumber);
-		for (int i = 0; i < numberOfIslands; i++) {
-			List<Integer> individuals = properties.getIslandSpec(i);
-			protoIslands.add(new ProtoIsland(i, individuals));
+		for(int island = 0; island < numberOfIslands; island++) {
+			List<Integer> individuals = settings.getIndividualsOnIsland(island, generationNumber);
+			protoIslands.add(new ProtoIsland(island, individuals));
 		}
 	}
 
