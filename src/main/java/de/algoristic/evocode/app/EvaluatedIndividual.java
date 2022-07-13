@@ -1,16 +1,24 @@
 package de.algoristic.evocode.app;
 
-public class EvaluatedIndividual {
+public class EvaluatedIndividual extends Individual {
 
-	private final Individual base;
 	private final double fitness;
 
 	public EvaluatedIndividual(final Individual base, final double fitness) {
-		this.base = base;
+		super(base);
 		this.fitness = fitness;
 	}
 
-	public int getIndividualNumber() {
-		return base.getIndividualNumber();
+	public double getFitness() {
+		return fitness;
+	}
+
+	public Individual getIndividual() {
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return ("[" + fitness + "]");
 	}
 }

@@ -4,9 +4,9 @@ import de.algoristic.evocode.genetic.Genome;
 
 public class Individual {
 
-	private final int generationNumber;
-	private final int individualNumber;
-	private final Genome genome;
+	protected final int generationNumber;
+	protected final int individualNumber;
+	protected final Genome genome;
 
 	public Individual(
 		final int generationNumber,
@@ -15,6 +15,12 @@ public class Individual {
 		this.generationNumber = generationNumber;
 		this.individualNumber = individualNumber;
 		this.genome = genome;
+	}
+
+	public Individual(Individual individual) {
+		this.generationNumber = individual.getGenerationNumber();
+		this.individualNumber = individual.getIndividualNumber();
+		this.genome = individual.getGenome();
 	}
 
 	public Genome getGenome() {
@@ -31,6 +37,6 @@ public class Individual {
 
 	@Override
 	public String toString() {
-		return ("[g=" + generationNumber + ", i=" + individualNumber + "]");
+		return ("[i=" + individualNumber + "]");
 	}
 }

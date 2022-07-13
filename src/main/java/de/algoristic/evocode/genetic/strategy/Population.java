@@ -2,7 +2,6 @@ package de.algoristic.evocode.genetic.strategy;
 
 import java.util.List;
 
-import de.algoristic.evocode.app.EvaluatedGeneration;
 import de.algoristic.evocode.app.EvaluatedIndividual;
 
 public class Population {
@@ -13,8 +12,7 @@ public class Population {
 		this.individuals = individuals;
 	}
 
-	public static Population ofWholeGeneration(final EvaluatedGeneration generation) {
-		final List<EvaluatedIndividual> individuals = generation.getIndividuals();
-		return new Population(individuals);
+	public List<EvaluatedIndividual> getIndividuals() {
+		return individuals;
 	}
 }

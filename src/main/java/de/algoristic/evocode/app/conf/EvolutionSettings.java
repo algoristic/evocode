@@ -81,4 +81,21 @@ public class EvolutionSettings {
 			.map(Integer::valueOf)
 			.orElse(10);
 	}
+
+	public List<String> getMutatorSpecs(int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].mutators")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.collect(Collectors.toList());
+	}
+
+	public double getMutationRate(String mutator, int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].mutator." + mutator + ".mutationRate")
+			.map(Double::valueOf)
+			.orElseThrow();
+	}
 }

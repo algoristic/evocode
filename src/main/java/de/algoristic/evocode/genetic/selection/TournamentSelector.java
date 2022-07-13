@@ -1,8 +1,12 @@
 package de.algoristic.evocode.genetic.selection;
 
-import de.algoristic.evocode.genetic.strategy.Population;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class TournamentSelector extends AbstractSelector {
+import de.algoristic.evocode.app.EvaluatedIndividual;
+
+public class TournamentSelector extends MatingSelector {
 
 	private final int sampleSize;
 
@@ -12,9 +16,15 @@ public class TournamentSelector extends AbstractSelector {
 	}
 
 	@Override
-	public Selection getSelection(Population population) {
-		// TODO Auto-generated method stub
-		return null;
+	protected int selectIndividual(List<EvaluatedIndividual> individuals) {
+		individuals = copy(individuals);
+		List<EvaluatedIndividual> tournament = new ArrayList<>();
+		for(int k = 0; k < sampleSize; k++) {
+			int pos = (new Random()).nextInt(individuals.size());
+			EvaluatedIndividual participant = individuals.remove(pos);
+			tournament.add(participant);
+		}
+		tournament = sortDescending(tournament);
+		return tournament.get(0).getIndividualNumber();
 	}
-
 }

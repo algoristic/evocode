@@ -22,5 +22,4 @@ public class GenomeManager {
 		}
 		return null;
 	}
-
 }

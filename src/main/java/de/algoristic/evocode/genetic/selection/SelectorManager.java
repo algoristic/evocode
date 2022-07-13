@@ -37,6 +37,9 @@ public class SelectorManager {
 		if("rouletteWheel".equalsIgnoreCase(spec)) {
 			selector = new RouletteWheelSelector(out);
 		}
+		if("rank".equalsIgnoreCase(spec)) {
+			selector = new RankSelector(out);
+		}
 		if("tournament".equalsIgnoreCase(spec)) {
 			int sampleSize = settings.getTournamentSampleSize(generation);
 			selector = new TournamentSelector(out, sampleSize);

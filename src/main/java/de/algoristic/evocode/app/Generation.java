@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.algoristic.evocode.genetic.Genome;
+
 public class Generation implements Iterable<Individual> {
 
 	private final int generationNumber;
@@ -22,7 +24,11 @@ public class Generation implements Iterable<Individual> {
 	}
 
 	public void add(Individuals individuals) {
-		add(individuals.getList());
+		for(Genome genome : individuals.getOffspringDna()) {
+			int id = this.individuals.size();
+			Individual individual = new Individual(generationNumber, id, genome);
+			add(individual);
+		}
 	}
 
 	@Override
@@ -32,5 +38,9 @@ public class Generation implements Iterable<Individual> {
 
 	public int getGenerationNumber() {
 		return generationNumber;
+	}
+
+	public int size() {
+		return individuals.size();
 	}
 }

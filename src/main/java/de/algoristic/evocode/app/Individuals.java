@@ -2,15 +2,21 @@ package de.algoristic.evocode.app;
 
 import java.util.List;
 
+import de.algoristic.evocode.genetic.Genome;
+
 public class Individuals {
 
-	private final List<Individual> inner;
+	private final List<Genome> offspringDna;
 
-	public Individuals(List<Individual> individuals) {
-		inner = individuals;
+	public Individuals(List<Genome> offspringDna) {
+		this.offspringDna = offspringDna;
 	}
 
-	public List<Individual> getList() {
-		return inner;
+	public List<Genome> getOffspringDna() {
+		return offspringDna;
+	}
+
+	public int size() {
+		return offspringDna.size();
 	}
 }
