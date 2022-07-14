@@ -82,6 +82,30 @@ public class EvolutionSettings {
 			.orElse(10);
 	}
 
+	public List<String> getMigrationSpecs(int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].islands.migration")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.collect(Collectors.toList());
+	}
+
+	public int getMigrationEpoch(int generation, String spec) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].islands.migration." + spec + ".epoch")
+			.map(Integer::valueOf)
+			.orElse(1);
+	}
+
+	public double getMigrationChance(int generation, String spec) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.gen.[].islands.migration." + spec + ".chance")
+			.map(Double::valueOf)
+			.orElse(.0d);
+	}
+
 	public List<String> getMutatorSpecs(int generation) {
 		return properties.forGeneration(generation)
 			.getProperty("evo.gen.[].mutators")

@@ -105,12 +105,6 @@ public class EvocodeSettings {
 			.orElse("");
 	}
 
-	public int getNumberOfIslands() {
-		return properties.getProperty("evo.strategy.islands.num")
-			.map(Integer::valueOf)
-			.orElse(1);
-	}
-
 	public String getTerminationCondition() {
 		return properties.getProperty("evo.run.termination")
 			.orElse("iterations");
@@ -129,25 +123,10 @@ public class EvocodeSettings {
 			.orElse(60L);
 	}
 
-	public List<String> getMigrationSpecs() {
-		return properties.getProperty("evo.strategy.islands.migration")
-			.map(specs -> specs.split(","))
-			.stream()
-			.flatMap(Arrays::stream)
-			.map(String::trim)
-			.collect(Collectors.toList());
-	}
-
-	public int getMigrationEpoch(String spec) {
-		return properties.getProperty("evo.strategy.islands.migration." + spec + ".epoch")
+	public int getNumberOfIslands() {
+		return properties.getProperty("evo.strategy.islands.num")
 			.map(Integer::valueOf)
 			.orElse(1);
-	}
-
-	public double getMigrationChance(String spec) {
-		return properties.getProperty("evo.strategy.islands.migration." + spec + ".chance")
-			.map(Double::valueOf)
-			.orElse(.0d);
 	}
 
 	public boolean writeLogfile() {
