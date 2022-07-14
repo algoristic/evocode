@@ -2,7 +2,7 @@ package de.algoristic.evocode.genetic.alteration;
 
 import de.algoristic.evocode.genetic.Genome;
 
-public interface Mutator<T extends Genome> {
+public interface MutatorFactory<T extends Genome> {
 
-	T apply();
+	Mutator<T> getMutator(String spec);
 }

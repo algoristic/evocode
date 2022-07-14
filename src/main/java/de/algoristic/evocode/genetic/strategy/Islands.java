@@ -25,6 +25,7 @@ public class Islands implements Iterable<Island> {
 
 	@Override
 	public Iterator<Island> iterator() {
+		int generationNumber = generation.getGenerationNumber();
 		List<Island> islands = new ArrayList<>();
 		for(ProtoIsland island : protoIslands) {
 			List<Integer> individuals = island.getIndividualIDs();
@@ -34,7 +35,7 @@ public class Islands implements Iterable<Island> {
 				EvaluatedIndividual evaluatedIndividual = generation.get(individual);
 				evaluatedIndividuals.add(evaluatedIndividual);
 			}
-			Population islandPopulation = new Population(evaluatedIndividuals);
+			Population islandPopulation = new Population(evaluatedIndividuals, generationNumber);
 			islands.add(new Island(islandPopulation));
 		}
 		return islands.iterator();

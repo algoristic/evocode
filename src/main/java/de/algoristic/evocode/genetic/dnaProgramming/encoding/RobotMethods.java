@@ -69,8 +69,12 @@ public class RobotMethods implements Iterable<RobotMethod> {
 	}
 
 	public static String randomTerminatorChar() {
-		List<String> ls = new ArrayList<>(ALL_METHODS.keySet());
+		List<String> ls = terminatorChars();
 		int random = (new Random()).nextInt(ls.size());
 		return ls.get(random);
+	}
+
+	public static List<String> terminatorChars() {
+		return new ArrayList<>(ALL_METHODS.keySet());
 	}
 }

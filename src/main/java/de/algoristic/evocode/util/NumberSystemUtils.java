@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class NumberSystemUtils {
 
 	public static List<String> decimalChars() {
@@ -28,6 +30,32 @@ public class NumberSystemUtils {
 		hexString = hexString.toUpperCase();
 		int val = Integer.parseInt(hexString, 16);
 		return Integer.toBinaryString(val);
+	}
+
+	public static String hexToBinary(Character hexChar) {
+		String hexString = String.valueOf(hexChar);
+		String binaryString = hexToBinary(hexString);
+		binaryString = StringUtils.leftPad(binaryString, 4, '0');
+		return binaryString;
+	}
+
+	public static String binaryFlip(String binaryString, double chance) {
+		StringBuffer resultBuffer = new StringBuffer();
+		for(int i = 0; i < binaryString.length(); i++) {
+			Character zeroOrOne = binaryString.charAt(i);
+			if(! ((zeroOrOne == '1') || (zeroOrOne == '0'))) throw new RuntimeException("Unintended use: " + binaryString + "is no binary string.");
+			double rnd = Math.random();
+			if(rnd <= chance) {
+				zeroOrOne = flip(zeroOrOne);
+			}
+			resultBuffer.append(zeroOrOne);
+		}
+		return resultBuffer.toString();
+	}
+
+	private static Character flip(Character zeroOrOne) {
+		if(zeroOrOne == '1') return '0';
+		else return '1';
 	}
 
 	public static int hexToDecimal(String hexString) {

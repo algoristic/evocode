@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.algoristic.evocode.app.Individuals;
+import de.algoristic.evocode.app.conf.EvolutionSettings;
 import de.algoristic.evocode.genetic.Genome;
 import de.algoristic.evocode.genetic.alteration.AlterationPipeline;
 
 public class DefaultBreedingPipeline extends AbstractBreedingPipeline {
 
-	public DefaultBreedingPipeline(List<Genome> offspringDna) {
+	private final int generation;
+	private final EvolutionSettings settings;
+
+	public DefaultBreedingPipeline(List<Genome> offspringDna, int generation) {
 		super(offspringDna);
+		this.generation = generation;
+		settings = new EvolutionSettings();
 	}
 
 	@Override
@@ -19,7 +25,8 @@ public class DefaultBreedingPipeline extends AbstractBreedingPipeline {
 		for (Genome genome : offspringDna) {
 			Genome alteredGenome = genome;
 			for (String mutatorSpec : alterers) {
-				alteredGenome = alteredGenome.mutate(mutatorSpec);
+				double mutationRate = settings.getMutationRate(mutatorSpec, generation);
+				alteredGenome = alteredGenome.mutate(mutatorSpec, mutationRate);
 			}
 			alteredOffsprings.add(alteredGenome);
 		}

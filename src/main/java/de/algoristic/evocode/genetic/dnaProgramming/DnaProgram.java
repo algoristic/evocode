@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import de.algoristic.evocode.genetic.GeneTranscriptionParameters;
+import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
 import de.algoristic.evocode.genetic.Genotype;
 import de.algoristic.evocode.genetic.dnaProgramming.encoding.Actor;
@@ -21,6 +22,7 @@ import de.algoristic.evocode.genetic.dnaProgramming.encoding.RobotMethods;
 import de.algoristic.evocode.genetic.dnaProgramming.encoding.Sensor;
 import de.algoristic.evocode.genetic.dnaProgramming.encoding.Sensors;
 import de.algoristic.evocode.genetic.dnaProgramming.encoding.StartCodon;
+import de.algoristic.evocode.util.NumberSystemUtils;
 
 public class DnaProgram implements Genome {
 
@@ -79,6 +81,11 @@ public class DnaProgram implements Genome {
 		return serialized;
 	}
 
+	/**
+	 * MEMO dieses Schema, also die Aufteilung in Gene, die dann per crossover kombiniert werden etc.,
+	 *      kann ich an anderer Stelle, wenn ich einen zweiten Typ DNA einbaue einfach abstrahieren und
+	 *      wiederverwenden. (Das generische Interface &lt;Gene&gt; gibt es ja bereits...
+	 * */
 	@Override
 	public Genome crossover(Genome other) {
 		if(other == null) throw new NullPointerException();
@@ -93,9 +100,34 @@ public class DnaProgram implements Genome {
 		return new DnaProgram(offspringDna);
 	}
 
+	/**
+	 * Currently uses only point mutation to mutate a genome. Other mutation types like
+	 * swap are reserved for genomes where it is expected for each gene to appear just once.
+	 * Those mutations are insufficient in creating enough randomness in this type of genome.
+	 * */
 	@Override
-	public Genome mutate(String mutatorSpec) {
-		
+	public Genome mutate(String mutatorSpec, double mutationRate) {
+		List<Character> ignoreList = RobotMethods.terminatorChars()
+			.stream()
+			.map(s -> s.charAt(0))
+			.collect(Collectors.toList());
+		ignoreList.add(' ');
+		String serialized = serialize();
+		StringBuffer copyBuffer = new StringBuffer();
+		for(int point = 0; point < serialized.length(); point++) {
+			Character c = serialized.charAt(point);
+			if(ignoreList.contains(c)) {
+				copyBuffer.append(c);
+			} else {
+				String binaryString = NumberSystemUtils.hexToBinary(c);
+				binaryString = NumberSystemUtils.binaryFlip(binaryString, mutationRate);
+				copyBuffer.append(binaryString);
+			}
+		}
+		String alteredCopy = copyBuffer.toString();
+		Genetics genetics = new DnaProgramming();
+		Genome alteredGenome = genetics.readFrom(alteredCopy);
+		return alteredGenome ;
 	}
 
 	private List<DnaProgrammingGene> copyGenesFrom(int crossoverInclusive) {
