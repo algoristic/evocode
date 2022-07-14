@@ -1,5 +1,11 @@
 package de.algoristic.evocode;
 
+import java.util.Arrays;
+import java.util.List;
+
+import de.algoristic.evocode.app.Enviroment;
+import de.algoristic.evocode.app.Generation;
+import de.algoristic.evocode.app.Individual;
 import de.algoristic.evocode.app.conf.FilesystemContext;
 import de.algoristic.evocode.app.io.files.GenerationProperties;
 import de.algoristic.evocode.genetic.Genetics;
@@ -29,11 +35,9 @@ public class EvoCompile {
 		GenomeManager manager = new GenomeManager();
 		Genetics genetics = manager.getGenetics();
 		Genome genome = genetics.readFrom(serializedGenome);
-		GenomeTranscriptor transcriptor = new GenomeTranscriptor(generation, individual);
-		Genotype genotype = transcriptor.transcribe(genome);
-		GenomeTranslator translator = new GenomeTranslator();
-		translator.setReadyForRun(false);
-		Phaenotype phaenotype = translator.translate(genotype, generation);
-		System.out.println("Translated Individual[g=" + generation + ", i=" + individual + "] to\n" + phaenotype.getJavaFile() + "\n" + phaenotype.getClassFile());
+		Individual individual = new Individual(this.generation, this.individual, genome);
+		Generation generation = new Generation(this.generation);
+		generation.add(individual);
+		new Enviroment(true).test(generation);
 	}
 }

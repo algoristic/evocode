@@ -12,9 +12,15 @@ import de.algoristic.evocode.genetic.Phaenotype;
 public class Enviroment {
 
 	private final RobocodeAdaptor robocode;
+	private final boolean visualize;
+
+	public Enviroment(boolean visualize) {
+		this.visualize = visualize;
+		robocode = RobocodeAdaptor.getInstance();
+	}
 	
 	public Enviroment() {
-		this.robocode = RobocodeAdaptor.getInstance();
+		this(false);
 	}
 	
 	public FieldData test(final Generation generation) {
@@ -24,7 +30,7 @@ public class Enviroment {
 			final GenomeExpressor expressor = new GenomeExpressor(individual);
 			try (Phaenotype phaenotype = expressor.expressGenome()) {
 				final FitnessFunction fitnessFunction = FitnessFunction.getFunctionFor(generationNumber);
-				final FitnessValue fitness = robocode.eval(phaenotype, fitnessFunction);
+				final FitnessValue fitness = robocode.eval(phaenotype, fitnessFunction, visualize);
 				data.addValues(individual, fitness);
 			} catch (IOException e) {
 				throw new RuntimeException("Cannot remove resources of " + individual, e);

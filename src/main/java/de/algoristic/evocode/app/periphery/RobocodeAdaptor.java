@@ -53,7 +53,7 @@ public class RobocodeAdaptor {
 		return new RobocodeAdaptor(ENGINE_SINGLETON);
 	}
 
-	public FitnessValue eval(Phaenotype phaenotype, FitnessFunction fitnessFunction) {
+	public FitnessValue eval(Phaenotype phaenotype, FitnessFunction fitnessFunction, boolean visualize) {
 		int generation = phaenotype.getGeneration();
 
 		String enemies = settings.getEnemies(generation);
@@ -91,6 +91,7 @@ public class RobocodeAdaptor {
 				}
 			}
 		});
+		engine.setVisible(visualize);
 		engine.runBattle(spec);
 		engine.waitTillBattleOver();
 		logger.write("Ran battle: " + robotName + ", eval: " + fitnessValue);
