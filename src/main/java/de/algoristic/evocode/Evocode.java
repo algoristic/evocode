@@ -33,7 +33,7 @@ public class Evocode {
 		while(terminator.hasNext()) {
 			GenerationBuildingTask task = terminator.next();
 			try {
-				task.prepareDirectory();
+				task.prepare();
 				Generation generation;
 				Breeder breeder;
 				if(task.hasAnchestors()) {

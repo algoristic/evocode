@@ -64,7 +64,7 @@ public class GenerationBuildingTask {
 		return (generationNumber != 0);
 	}
 
-	public void prepareDirectory() {
+	public void prepare() {
 		File generationDirectory = context.getGenerationDirectory(generationNumber);
 		if(generationDirectory.exists()) {
 			cleanup(generationDirectory);
