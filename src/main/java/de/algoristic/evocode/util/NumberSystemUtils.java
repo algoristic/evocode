@@ -27,7 +27,6 @@ public class NumberSystemUtils {
 	}
 
 	public static String hexToBinary(String hexString) {
-		hexString = hexString.toUpperCase();
 		int val = Integer.parseInt(hexString, 16);
 		return Integer.toBinaryString(val);
 	}
@@ -56,6 +55,11 @@ public class NumberSystemUtils {
 	private static Character flip(Character zeroOrOne) {
 		if(zeroOrOne == '1') return '0';
 		else return '1';
+	}
+
+	public static String binaryToHex(String binaryString) {
+		int val = binaryToDecimal(binaryString);
+		return Integer.toHexString(val);
 	}
 
 	public static int hexToDecimal(String hexString) {

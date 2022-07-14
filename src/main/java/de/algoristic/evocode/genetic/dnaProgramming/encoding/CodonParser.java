@@ -21,7 +21,7 @@ public class CodonParser implements Iterator<ProgramCodon> {
 	public ControlCodon getControlCodon() {
 		String codon = chain.substring(0, 3);
 		// the control codon doesn't get transcribed with overlapping pattern
-		// becaus that would drastically reducde the number of possible sensor/actor
+		// because that would drastically reduce the number of possible sensor/actor
 		// combinations at each control block
 		chain = chain.substring(3);
 		return new ControlCodon(

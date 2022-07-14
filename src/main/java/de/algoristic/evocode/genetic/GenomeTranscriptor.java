@@ -2,7 +2,10 @@ package de.algoristic.evocode.genetic;
 
 import java.io.File;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.algoristic.evocode.app.conf.EvocodeSettings;
+import de.algoristic.evocode.app.conf.EvolutionSettings;
 import de.algoristic.evocode.app.conf.FilesystemContext;
 import de.algoristic.evocode.app.io.files.GenerationProperties;
 import de.algoristic.evocode.util.Pattern;
@@ -51,11 +54,19 @@ public class GenomeTranscriptor {
 	}
 
 	private String getRobotName() {
+		EvolutionSettings evolutionSettings = new EvolutionSettings();
+		
+		final int generationSize = evolutionSettings.getGenerationSize(generationNumber);
+		String literalSize = String.valueOf(generationSize);
+		int maxLength = literalSize.length();
+		String individualCode = String.valueOf(individualNumber);
+		individualCode = StringUtils.leftPad(individualCode, maxLength, '0');
+		
 		final String robotNamePattern = settings.getRobotNamePattern();
 		Pattern pattern = new Pattern(robotNamePattern);
 		pattern = pattern
 			.addVariable("[generation]", generationNumber)
-			.addVariable("[individual]", individualNumber);
+			.addVariable("[individual]", individualCode);
 		final String robotName = pattern.compile();
 		return robotName;
 	}

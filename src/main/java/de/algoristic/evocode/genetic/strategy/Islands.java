@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import de.algoristic.evocode.app.EvaluatedGeneration;
 import de.algoristic.evocode.app.EvaluatedIndividual;
+import de.algoristic.evocode.app.io.Logger;
 
 public class Islands implements Iterable<Island> {
 
@@ -14,6 +15,8 @@ public class Islands implements Iterable<Island> {
 	private final EvaluatedGeneration generation;
 	private final IslandSettings settings;
 	private List<ProtoIsland> protoIslands;
+
+	private Logger logger = Logger.getLogger(getClass());
 
 	public Islands(final int numberOfIslands, final EvaluatedGeneration generation) {
 		this.numberOfIslands = numberOfIslands;
@@ -52,6 +55,7 @@ public class Islands implements Iterable<Island> {
 			List<Integer> individuals = island.getIndividualIDs();
 			for (Migration migration : migrationBehaviour) {
 				if (migration.isApplicable(nextGeneration)) {
+					logger.write("Perform migration " + migration.getClass().getSimpleName() + " on island: " + currentIslandId);
 					int start = 0;
 					Integer size = individuals.size();
 					migration:
@@ -59,6 +63,7 @@ public class Islands implements Iterable<Island> {
 						if(migration.migrate()) {
 							int targetIsland = migration.getTargetIsland(currentIslandId, numberOfIslands);
 							int individual = individuals.remove(i);
+							logger.write("   Migrate " + individual + " to island " + targetIsland);
 							afterMigration.get(targetIsland).add(individual);
 							size--;
 							start = (i + 1);

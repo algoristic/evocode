@@ -149,4 +149,10 @@ public class EvocodeSettings {
 			.map(Double::valueOf)
 			.orElse(.0d);
 	}
+
+	public boolean writeLogfile() {
+		return properties.getProperty("evo.run.writeLog")
+			.map(Boolean::valueOf)
+			.orElse(true);
+	}
 }

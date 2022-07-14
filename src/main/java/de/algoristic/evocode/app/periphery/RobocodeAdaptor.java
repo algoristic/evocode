@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import de.algoristic.evocode.app.conf.EvocodeSettings;
 import de.algoristic.evocode.app.conf.EvolutionSettings;
 import de.algoristic.evocode.app.io.FitnessValue;
+import de.algoristic.evocode.app.io.Logger;
 import de.algoristic.evocode.genetic.FitnessFunction;
 import de.algoristic.evocode.genetic.Phaenotype;
 import de.algoristic.evocode.util.FileSystemUtils;
@@ -34,6 +35,8 @@ public class RobocodeAdaptor {
 	private final RobocodeEngine engine;
 	private final EvolutionSettings settings;
 	private final EvocodeSettings projectSettings;
+
+	private Logger logger = Logger.getLogger(getClass());
 
 	private RobocodeAdaptor(final RobocodeEngine engine) {
 		this.engine = engine;
@@ -90,7 +93,7 @@ public class RobocodeAdaptor {
 		});
 		engine.runBattle(spec);
 		engine.waitTillBattleOver();
-		System.out.println("Ran battle: " + robotName + ", eval: " + fitnessValue);
+		logger.write("Ran battle: " + robotName + ", eval: " + fitnessValue);
 		return fitnessValue;
 	}
 

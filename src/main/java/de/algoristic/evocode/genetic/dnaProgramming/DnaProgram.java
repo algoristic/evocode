@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import de.algoristic.evocode.app.io.Logger;
 import de.algoristic.evocode.genetic.GeneTranscriptionParameters;
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
@@ -25,6 +26,8 @@ import de.algoristic.evocode.genetic.dnaProgramming.encoding.StartCodon;
 import de.algoristic.evocode.util.NumberSystemUtils;
 
 public class DnaProgram implements Genome {
+
+	private static Logger log = Logger.getLogger(DnaProgram.class);
 
 	private final List<DnaProgrammingGene> genes;
 
@@ -70,15 +73,7 @@ public class DnaProgram implements Genome {
 
 	@Override
 	public String serialize() {
-		String serialized = genes.stream()
-			.map(gene -> {
-				StartCodon startCodon = gene.getStartCodon();
-				String code = startCodon.getCode();
-				String baseChain = gene.getBaseChain();
-				return (code + baseChain);
-			})
-			.collect(Collectors.joining(" "));
-		return serialized;
+		return serialize(genes);
 	}
 
 	/**
@@ -96,7 +91,15 @@ public class DnaProgram implements Genome {
 
 		DnaProgram otherDna = (DnaProgram) other;
 		List<DnaProgrammingGene> offspringDna = this.copyGenesUntil(crossoverPoint);
-		offspringDna.addAll(otherDna.copyGenesFrom(crossoverPoint));
+		List<DnaProgrammingGene> secondPart = otherDna.copyGenesFrom(crossoverPoint);
+		log.write("Crossover          :");
+		log.write("   Crossover point : " + crossoverPoint);
+		log.write("   Parent 1        : " + this);
+		log.write("      Selected part: " + serialize(offspringDna));
+		log.write("   Parent 2        : " + other);
+		log.write("      Selected part: " + serialize(secondPart));
+		offspringDna.addAll(secondPart);
+		log.write("   Result/Child    : " + serialize(offspringDna));
 		return new DnaProgram(offspringDna);
 	}
 
@@ -113,21 +116,30 @@ public class DnaProgram implements Genome {
 			.collect(Collectors.toList());
 		ignoreList.add(' ');
 		String serialized = serialize();
+		log.write("Mutate (" + mutatorSpec + ", " + mutationRate + "):");
+		log.write("   Before: " + serialized);
 		StringBuffer copyBuffer = new StringBuffer();
 		for(int point = 0; point < serialized.length(); point++) {
-			Character c = serialized.charAt(point);
+			char c = serialized.charAt(point);
 			if(ignoreList.contains(c)) {
 				copyBuffer.append(c);
 			} else {
 				String binaryString = NumberSystemUtils.hexToBinary(c);
 				binaryString = NumberSystemUtils.binaryFlip(binaryString, mutationRate);
-				copyBuffer.append(binaryString);
+				String hexString = NumberSystemUtils.binaryToHex(binaryString);
+				copyBuffer.append(hexString);
 			}
 		}
 		String alteredCopy = copyBuffer.toString();
+		log.write("   After : " + alteredCopy);
 		Genetics genetics = new DnaProgramming();
 		Genome alteredGenome = genetics.readFrom(alteredCopy);
 		return alteredGenome ;
+	}
+
+	@Override
+	public String toString() {
+		return serialize();
 	}
 
 	private List<DnaProgrammingGene> copyGenesFrom(int crossoverInclusive) {
@@ -146,5 +158,17 @@ public class DnaProgram implements Genome {
 			exactCopy.add(gene);
 		}
 		return exactCopy;
+	}
+
+	private static String serialize(List<DnaProgrammingGene> genes) {
+		String serialized = genes.stream()
+			.map(gene -> {
+				StartCodon startCodon = gene.getStartCodon();
+				String code = startCodon.getCode();
+				String baseChain = gene.getBaseChain();
+				return (code + baseChain);
+			})
+			.collect(Collectors.joining(" "));
+		return serialized;
 	}
 }

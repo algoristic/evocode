@@ -26,7 +26,7 @@ public class DnaProgramming implements Genetics {
 	@Override
 	public Genome initialize() {
 		int minGeneSize = evocodeSettings.getMinimumGeneSize();
-		int maxGeneSize = evocodeSettings.getMaximumGeneSize();
+		int maxGeneSize = (1 + evocodeSettings.getMaximumGeneSize()); // make the user input inclusive
 		int geneAmount = evocodeSettings.getGeneAmount();
 		boolean areGenesOverlapping = evocodeSettings.areGenesOverlapping();
 

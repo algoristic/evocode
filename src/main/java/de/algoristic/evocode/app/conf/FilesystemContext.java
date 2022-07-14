@@ -20,6 +20,12 @@ public class FilesystemContext {
 		this(new EvocodeSettings());
 	}
 
+	public File getLogfile() {
+		File projectLocation = settings.getProjectLocation();
+		File projectLogFile = projectLocation.toPath().resolve("evolution.log").toFile();
+		return projectLogFile;
+	}
+
 	public File getGenerationDirectory(final int generationNumber) {
 		final String directoryName = getGenerationDirectoryName(generationNumber);
 		final File projectLocation = settings.getProjectLocation();
