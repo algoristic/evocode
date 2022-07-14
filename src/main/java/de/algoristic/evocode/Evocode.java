@@ -49,7 +49,7 @@ public class Evocode {
 			} catch (RuntimeException e) {
 				task.breakdown();
 				System.err.println("Could not complete task: " + task + ", Stacktrace:");
-				e.printStackTrace(System.err);
+				throw e;
 			}
 		}
 	}
