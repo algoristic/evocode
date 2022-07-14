@@ -2,7 +2,6 @@ package de.algoristic.evocode.genetic.selection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.algoristic.evocode.app.EvaluatedIndividual;
 import de.algoristic.evocode.app.Individual;
@@ -23,7 +22,8 @@ public abstract class MatingSelector extends AbstractSelector {
 		List<Genome> offsprings = new ArrayList<>();
 		for (int i = 0; i < out; i++) {
 			Parents parents = selectParents(individuals);
-			// TODO generate offsprings
+			Genome offspring = parents.mate();
+			offsprings.add(offspring);
 		}
 		return new DefaultBreedingPipeline(offsprings);
 	}

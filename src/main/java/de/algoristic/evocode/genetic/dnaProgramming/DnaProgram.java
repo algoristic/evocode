@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import de.algoristic.evocode.genetic.GeneTranscriptionParameters;
@@ -76,5 +77,42 @@ public class DnaProgram implements Genome {
 			})
 			.collect(Collectors.joining(" "));
 		return serialized;
+	}
+
+	@Override
+	public Genome crossover(Genome other) {
+		if(other == null) throw new NullPointerException();
+		if(! (other instanceof DnaProgram)) throw new RuntimeException("Fatal: trying to crossover DnaProgram and " + other.getClass().getSimpleName());
+		
+		int max = genes.size();
+		int crossoverPoint = (new Random()).nextInt(max);
+
+		DnaProgram otherDna = (DnaProgram) other;
+		List<DnaProgrammingGene> offspringDna = this.copyGenesUntil(crossoverPoint);
+		offspringDna.addAll(otherDna.copyGenesFrom(crossoverPoint));
+		return new DnaProgram(offspringDna);
+	}
+
+	@Override
+	public Genome mutate(String mutatorSpec) {
+		
+	}
+
+	private List<DnaProgrammingGene> copyGenesFrom(int crossoverInclusive) {
+		List<DnaProgrammingGene> copy = new ArrayList<>();
+		for(int index = crossoverInclusive; index < genes.size(); index++) {
+			DnaProgrammingGene gene = genes.get(index);
+			copy.add(gene);
+		}
+		return copy;
+	}
+
+	private List<DnaProgrammingGene> copyGenesUntil(int crossoverExclusive) {
+		List<DnaProgrammingGene> exactCopy = new ArrayList<>();
+		for(int index = 0; index < crossoverExclusive; index++) {
+			DnaProgrammingGene gene = genes.get(index);
+			exactCopy.add(gene);
+		}
+		return exactCopy;
 	}
 }

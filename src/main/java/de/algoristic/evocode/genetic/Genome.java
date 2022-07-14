@@ -10,6 +10,7 @@ public interface Genome {
 	}
 	
 	Genotype transcribe(GeneTranscriptionParameters parameters, String compilationTargetPath);
-	
 	String serialize();
+	Genome crossover(Genome other);
+	Genome mutate(String mutatorSpec);
 }

@@ -1,10 +1,9 @@
 package de.algoristic.evocode.genetic.alteration;
 
+import java.util.Iterator;
 import java.util.List;
 
-import de.algoristic.evocode.app.Individuals;
-
-public class AlterationPipeline {
+public class AlterationPipeline implements Iterable<String> {
 
 	private final List<String> alterers;
 
@@ -12,9 +11,8 @@ public class AlterationPipeline {
 		this.alterers = alterers;
 	}
 
-	public void mutate(Individuals individuals) {
-		// TODO Auto-generated method stub
-
+	@Override
+	public Iterator<String> iterator() {
+		return alterers.iterator();
 	}
-
 }

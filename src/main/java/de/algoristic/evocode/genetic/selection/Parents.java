@@ -1,6 +1,7 @@
 package de.algoristic.evocode.genetic.selection;
 
 import de.algoristic.evocode.app.Individual;
+import de.algoristic.evocode.genetic.Genome;
 
 public class Parents {
 
@@ -18,5 +19,11 @@ public class Parents {
 
 	public Individual getSencondParent() {
 		return sencondParent;
+	}
+
+	public Genome mate() {
+		Genome firstSeed = firstParent.getGenome();
+		Genome secondSeed = sencondParent.getGenome();
+		return firstSeed.crossover(secondSeed);
 	}
 }
