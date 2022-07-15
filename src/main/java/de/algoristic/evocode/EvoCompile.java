@@ -30,14 +30,16 @@ public class EvoCompile {
 	}
 
 	public void run() {
-		GenerationProperties properties = context.getGenerationProperties(generation);
-		String serializedGenome = properties.getGenome(individual);
-		GenomeManager manager = new GenomeManager();
-		Genetics genetics = manager.getGenetics();
-		Genome genome = genetics.readFrom(serializedGenome);
-		Individual individual = new Individual(this.generation, this.individual, genome);
-		Generation generation = new Generation(this.generation);
-		generation.add(individual);
-		new Enviroment(true).test(generation);
+		int cores = Runtime.getRuntime().availableProcessors();
+		System.out.println(cores);
+//		GenerationProperties properties = context.getGenerationProperties(generation);
+//		String serializedGenome = properties.getGenome(individual);
+//		GenomeManager manager = new GenomeManager();
+//		Genetics genetics = manager.getGenetics();
+//		Genome genome = genetics.readFrom(serializedGenome);
+//		Individual individual = new Individual(this.generation, this.individual, genome);
+//		Generation generation = new Generation(this.generation);
+//		generation.add(individual);
+		//new Enviroment(true).test(generation);
 	}
 }

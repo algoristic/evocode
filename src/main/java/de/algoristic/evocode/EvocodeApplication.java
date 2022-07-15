@@ -60,6 +60,9 @@ public class EvocodeApplication {
 		System.setProperty(projectLocationKey, projectLocation);
 
 		Properties projectProperties = loadProjectProperties();
+		final String projectPropertiesFileKey = "evo.project.file";
+		System.setProperty(projectPropertiesFileKey, propertiesFileName);
+
 		Set<Entry<Object, Object>> entries = projectProperties.entrySet();
 		for(Entry<Object, Object> entry : entries) {
 			String key = (String) entry.getKey();

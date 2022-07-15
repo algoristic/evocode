@@ -25,14 +25,14 @@ public abstract class MatingSelector extends AbstractSelector {
 	public BreedingPipeline getOffsprings(Population population) {
 		logger.write("Select for mating (out=" + out + "):");
 		List<EvaluatedIndividual> individuals = population.getIndividuals();
-		int generation = population.getGeneration(); 
 		List<Genome> offsprings = new ArrayList<>();
 		for (int i = 0; i < out; i++) {
 			Parents parents = selectParents(individuals);
 			Genome offspring = parents.mate();
 			offsprings.add(offspring);
 		}
-		return new DefaultBreedingPipeline(offsprings, generation);
+		int filialGeneration = (1 + population.getGeneration());
+		return new DefaultBreedingPipeline(offsprings, filialGeneration);
 	}
 
 	private Parents selectParents(List<EvaluatedIndividual> individuals) {

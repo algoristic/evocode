@@ -10,7 +10,7 @@ import de.algoristic.evocode.genetic.alteration.AlterationPipeline;
 
 public class DefaultBreedingPipeline extends AbstractBreedingPipeline {
 
-	private final int generation;
+	private int generation;
 	private final EvolutionSettings settings;
 
 	public DefaultBreedingPipeline(List<Genome> offspringDna, int generation) {

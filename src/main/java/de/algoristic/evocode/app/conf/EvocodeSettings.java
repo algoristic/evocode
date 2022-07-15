@@ -1,16 +1,40 @@
 package de.algoristic.evocode.app.conf;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import de.algoristic.evocode.app.periphery.SystemPropertyFacade;
 
 public class EvocodeSettings {
 
 	private final SystemPropertyFacade properties;
+
+	public static void reloadSettings() {
+		String settingsFileName = new EvocodeSettings().getSettingsFile();
+		Properties properties = new Properties();
+		try (InputStream in = new FileInputStream(settingsFileName)) {
+			properties.load(in);
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find project properties file");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("IOException happened during loading");
+			e.printStackTrace();
+		}
+		Set<Entry<Object, Object>> entries = properties.entrySet();
+		for(Entry<Object, Object> entry : entries) {
+			String key = (String) entry.getKey();
+			String value = (String) entry.getValue();
+			System.setProperty(key, value);
+		}
+	}
 
 	public EvocodeSettings() {
 		this(new SystemPropertyFacade());
@@ -123,6 +147,12 @@ public class EvocodeSettings {
 			.orElse(60L);
 	}
 
+	public double getConvergenceValue() {
+		return properties.getProperty("evo.run.convergence")
+			.map(Double::valueOf)
+			.orElseThrow();
+	}
+
 	public int getNumberOfIslands() {
 		return properties.getProperty("evo.strategy.islands.num")
 			.map(Integer::valueOf)
@@ -133,5 +163,10 @@ public class EvocodeSettings {
 		return properties.getProperty("evo.run.writeLog")
 			.map(Boolean::valueOf)
 			.orElse(true);
+	}
+
+	public String getSettingsFile() {
+		return properties.getProperty("evo.project.file")
+			.orElseThrow();
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import de.algoristic.evocode.app.conditions.ConvergenceTerminator;
 import de.algoristic.evocode.app.conditions.GenerationNumberTerminator;
 import de.algoristic.evocode.app.conditions.Terminator;
 import de.algoristic.evocode.app.conditions.TimerTerminator;
@@ -92,6 +93,10 @@ public class EvocodeContext {
 			TimeUnit timeUnit = settings.getTerminatorTimeUnit();
 			long duration = settings.getTerminatorTime();
 			return new TimerTerminator(startGeneration, duration, timeUnit);
+		}
+		if("convergence".equalsIgnoreCase(terminator)) {
+			double convergenceValue = settings.getConvergenceValue();
+			return new ConvergenceTerminator(startGeneration, convergenceValue);
 		}
 		throw new IllegalArgumentException("Insufficient terminator definition: " + terminator);
 	}
