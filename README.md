@@ -19,3 +19,9 @@ Create robocode robots, using genetic programming
 
 ### Misc
 - Prüfe, ob dieses Problem auftritt https://stackoverflow.com/a/70600427
+
+## Consideration
+You may have wondered why there is no support for concurrency/multi-threading. Well, I have also tried around with this - in fact there is no way to run multiple instances of the robocode engine (API) in eclipse. You may instantiate multiple objects, but there will be always one underlying factory, performing all tasks, resulting in no improvement in performance...
+
+### Sidenote (for myself)
+Yes, I also considered running multiple copies of robocode (complete clones of `C:\robocode`) under `C:\robocode\<thread number>` to prevent the described problem. Sadly it is hardcoded in the robocode API to primarily use the instance that is part of the classpath of the caller.
