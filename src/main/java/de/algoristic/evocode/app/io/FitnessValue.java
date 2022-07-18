@@ -6,6 +6,7 @@ public class FitnessValue {
 
 	private double value;
 	private BattleResults rawData;
+	private long timeInMillis = -1;
 
 	public double getValue() {
 		return value;
@@ -57,6 +58,14 @@ public class FitnessValue {
 
 	public int getThirds() {
 		return rawData.getThirds();
+	}
+
+	public long getTimeInMillis() {
+		return timeInMillis;
+	}
+
+	public void setTimeInMillis(long timeInMillis) {
+		this.timeInMillis = timeInMillis;
 	}
 
 	public synchronized void setRawData(BattleResults rawData) {

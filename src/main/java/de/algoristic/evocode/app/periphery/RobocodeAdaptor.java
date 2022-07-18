@@ -54,6 +54,7 @@ public class RobocodeAdaptor {
 	}
 
 	public FitnessValue eval(Phaenotype phaenotype, FitnessFunction fitnessFunction, boolean visualize) {
+		long t_0 = System.currentTimeMillis();
 		int generation = phaenotype.getGeneration();
 
 		String enemies = settings.getEnemies(generation);
@@ -95,6 +96,8 @@ public class RobocodeAdaptor {
 		engine.runBattle(spec);
 		engine.waitTillBattleOver();
 		logger.write("Ran battle: " + robotName + ", eval: " + fitnessValue);
+		long t_1 = System.currentTimeMillis();
+		fitnessValue.setTimeInMillis(t_1 - t_0);
 		return fitnessValue;
 	}
 

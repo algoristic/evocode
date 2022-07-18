@@ -2,10 +2,10 @@ package de.algoristic.evocode.app.io.files;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
+import de.algoristic.evocode.app.io.EvocodeProtocol.Performance;
 import de.algoristic.evocode.genetic.strategy.IslandSettings;
 
 public class IslandsCSV extends RunningFile {
@@ -23,8 +23,9 @@ public class IslandsCSV extends RunningFile {
 		if(created) {
 			int numberOfIslands = settings.getNumberOfIslands();
 			StringBuffer lineBuffer = new StringBuffer("generation;");
-			for(int island = 0; island < numberOfIslands; island++) {
-				for(String fn : Arrays.asList("min", "max", "avg", "median")) {
+			for(PerformanceProperty property : PerformanceProperty.values()) {
+				for(int island = 0; island < numberOfIslands; island++) {
+					String fn = property.getName();
 					lineBuffer.append(fn).append("(").append(island).append(");");
 				}
 			}
@@ -35,10 +36,42 @@ public class IslandsCSV extends RunningFile {
 		return created;
 	}
 
-	public void writeIslandResults(int generation, List<Double> results) {
-		if(settings.getNumberOfIslands() > results.size()) throw new RuntimeException("FATAL ERROR");
-		String line = (generation + ";");
-		line += results.stream().map(String::valueOf).collect(Collectors.joining(";")).replace(".", ",");
+	public void writeIslandResults(int generation, List<Performance> results) {
+		int numberOfIslands = settings.getNumberOfIslands();
+		if(numberOfIslands != results.size()) throw new RuntimeException("FATAL ERROR");
+		StringBuffer lineBuffer = new StringBuffer(generation + ";");
+		for(PerformanceProperty property : PerformanceProperty.values()) {
+			for(Performance performance : results) {
+				double value = property.getValue(performance);
+				lineBuffer.append(value).append(";");
+			}
+		}
+		int end = (lineBuffer.length() - 1);
+		String line = lineBuffer.substring(0, end).replace(".", ",");		
 		writeLine(line);
+	}
+
+	private enum PerformanceProperty {
+		TIME("time", p -> (double) p.getTime()),
+		MIN("min", p -> p.getMin()),
+		MAX("max", p -> p.getMax()),
+		AVG("avg", p -> p.getAvg()),
+		MEDIAN("median", p -> p.getMedian());
+
+		private String name;
+		private Function<Performance, Double> valueExtractor;
+
+		private PerformanceProperty(String name, Function<Performance, Double> valueExtractor) {
+			this.name = name;
+			this.valueExtractor = valueExtractor;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public double getValue(Performance performance) {
+			return valueExtractor.apply(performance);
+		}
 	}
 }

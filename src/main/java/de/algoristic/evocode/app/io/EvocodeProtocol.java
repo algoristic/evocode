@@ -42,10 +42,13 @@ public class EvocodeProtocol {
 		double min = Double.MAX_VALUE;
 		double max = 0;
 		double sum = 0;
+		long totalTime = 0;
 		int count = 0;
 		for (Entry<Integer, FitnessValue> entry : fieldData) {
 			FitnessValue fitnessValue = entry.getValue();
 			double fitness = fitnessValue.getValue();
+			long time = fitnessValue.getTimeInMillis();
+			totalTime += time;
 			count++;
 			sum += fitness;
 			values.add(fitness);
@@ -58,7 +61,8 @@ public class EvocodeProtocol {
 		double avg = (sum / count);
 		Collections.sort(values);
 		double median = values.get(values.size() / 2);
-		projectCSV.writeLine(generation, min, max, avg, median);
+		totalTime /= 1000; // write time in seconds, not millis
+		projectCSV.writeLine(generation, totalTime, min, max, avg, median);
 	}
 
 	private void writeIslandProtocols(FieldData fieldData) {
@@ -66,18 +70,19 @@ public class EvocodeProtocol {
 		int generation = fieldData.getGenerationNumber();
 		int numberOfIslands = settings.getNumberOfIslands();
 
-		Stream<Double> performances = Stream.empty();
+		List<Performance> islandPerformances = new ArrayList<>();
 		for (int island = 0; island < numberOfIslands; island++) {
 			List<Integer> individualsOnIsland = settings.getIndividualsOnIsland(island, generation);
-			Performance performance = calcPerformance(fieldData, individualsOnIsland);
-			performances = Stream.concat(performances, performance.streamResults());
+			Performance performance = calcPerformance(fieldData, island, individualsOnIsland);
+			islandPerformances.add(performance);
 		}
 		IslandsCSV csv = context.getIslandsCSV();
-		csv.writeIslandResults(generation, performances.collect(Collectors.toList()));
+		csv.writeIslandResults(generation, islandPerformances);
 	}
 
-	private Performance calcPerformance(FieldData fieldData, List<Integer> ids) {
+	private Performance calcPerformance(FieldData fieldData, int island, List<Integer> ids) {
 		List<Double> values = new ArrayList<>();
+		long totalTime = 0;
 		double min = Double.MAX_VALUE;
 		double max = 0;
 		double sum = 0;
@@ -87,6 +92,8 @@ public class EvocodeProtocol {
 			if (ids.contains(individualId)) {
 				FitnessValue fitnessValue = entry.getValue();
 				double fitness = fitnessValue.getValue();
+				long time = fitnessValue.getTimeInMillis();
+				totalTime += time;
 				count++;
 				sum += fitness;
 				values.add(fitness);
@@ -97,24 +104,50 @@ public class EvocodeProtocol {
 		double avg = (sum / count);
 		Collections.sort(values);
 		double median = values.get(values.size() / 2);
-		return new Performance(min, max, avg, median);
+		totalTime /= 1000;
+		return new Performance(island, totalTime, min, max, avg, median);
 	}
 
-	private class Performance {
+	public static class Performance {
+		private final int island;
+		private final long time;
 		private final double min;
 		private final double max;
 		private final double avg;
 		private final double median;
 
-		Performance(final double min, final double max, final double avg, final double median) {
+		Performance(final int island, final long time, final double min, final double max, final double avg,
+				final double median) {
+			this.island = island;
+			this.time = time;
 			this.min = min;
 			this.max = max;
 			this.avg = avg;
 			this.median = median;
 		}
 
-		Stream<Double> streamResults() {
-			return Stream.of(min, max, avg, median);
+		public int getIsland() {
+			return island;
+		}
+
+		public long getTime() {
+			return time;
+		}
+
+		public double getMin() {
+			return min;
+		}
+
+		public double getMax() {
+			return max;
+		}
+
+		public double getAvg() {
+			return avg;
+		}
+
+		public double getMedian() {
+			return median;
 		}
 	}
 }
