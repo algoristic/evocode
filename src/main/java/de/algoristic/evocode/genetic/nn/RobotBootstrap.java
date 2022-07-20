@@ -10,6 +10,8 @@ public class RobotBootstrap {
 
 	private List<Sensor> globalSensors;
 	private List<RobotMethod> methods;
+	private List<Intermitter> intermitters;
+	private List<Actor> actors;
 
 	private List<Sensor> localSensors;
 	private List<EventObject> eventObjects;
@@ -190,6 +192,16 @@ public class RobotBootstrap {
 
 		RobotMethod status = new RobotMethod("status");
 		methods.add(status);
+
+		EvocodeSettings settings = new EvocodeSettings();
+		int numberOfHiddenNeurons = settings.getHiddenNeurons();
+		intermitters = new ArrayList<>();
+		for(int i = 0; i < numberOfHiddenNeurons; i++) {
+			intermitters.add(new Intermitter(i));
+		}
+
+		actors = new ArrayList<>();
+		// TODO
 	}
 
 	public List<Sensor> sensors() {

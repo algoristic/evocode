@@ -1,6 +1,9 @@
 package de.algoristic.evocode.genetic.nn;
 
-public class Sensor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Sensor implements SendingNeuron {
 	
 	private String signalEmitter;
 	private String variableName;
@@ -8,12 +11,25 @@ public class Sensor {
 	private String dataType;
 	private Resolvable obtainer;
 
+	private List<ReceivingNeuron> receivers;
+
 	public Sensor(String emitter, String variableName, String name, String dataType, Resolvable obtainer) {
 		this.signalEmitter = emitter;
 		this.variableName = variableName;
 		this.name = name;
 		this.dataType = dataType;
 		this.obtainer = obtainer;
+		receivers = new ArrayList<>();
+	}
+
+	@Override
+	public void addConnection(ReceivingNeuron neuron) {
+		receivers.add(neuron);
+	}
+
+	@Override
+	public List<ReceivingNeuron> getReceivers() {
+		return receivers;
 	}
 
 	public String getVariable() {

@@ -2,9 +2,12 @@ package de.algoristic.evocode;
 
 import java.util.List;
 
+import javax.security.auth.x500.X500Principal;
+
 import de.algoristic.evocode.app.Enviroment;
 import de.algoristic.evocode.app.Generation;
 import de.algoristic.evocode.app.Individual;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 import de.algoristic.evocode.app.conf.FilesystemContext;
 import de.algoristic.evocode.app.io.files.GenerationProperties;
 import de.algoristic.evocode.genetic.Genetics;
@@ -26,10 +29,23 @@ public class EvoCompile {
 		context = new FilesystemContext(); 
 	}
 
+	double arccot(double v) {
+		return (Math.PI / 2 - Math.atan(v));
+	}
+
+	double fn(double v) {
+		return (1 - arccot(v));
+	}
+
 	public void run() {
-		RobotBootstrap bootstrap = new RobotBootstrap();
-		List<Sensor> sensors = bootstrap.sensors();
-		sensors.stream().map(s -> s.getVariableDeclaration("")).forEach(System.out::println);
+//		EvocodeSettings settings = new EvocodeSettings();
+//		RobotBootstrap bootstrap = new RobotBootstrap();
+//		List<Sensor> sensors = bootstrap.sensors();
+//		sensors.stream().map(s -> s.getVariableDeclaration("")).forEach(System.out::println);
+
+		for(int i = 1; i <= 25; i++) {
+			System.out.println(i + ": " + fn(i));
+		}
 
 //		GenerationProperties properties = context.getGenerationProperties(generation);
 //		String serializedGenome = properties.getGenome(individual);

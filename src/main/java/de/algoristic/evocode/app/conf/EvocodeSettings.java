@@ -190,4 +190,15 @@ public class EvocodeSettings {
 			.map(String::trim)
 			.collect(Collectors.toList());
 	}
+
+	public int getHiddenNeurons() {
+		return properties.getProperty("evo.genome.nn.hiddenNeurons")
+			.map(Integer::valueOf)
+			.orElse(8);
+	}
+
+	public String getNNMainMethod() {
+		return properties.getProperty("evo.genome.nn.mainMethod")
+			.orElse("");
+	}
 }

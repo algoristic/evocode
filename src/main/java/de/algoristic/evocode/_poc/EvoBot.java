@@ -69,11 +69,10 @@ public class EvoBot extends Robot {
 	{   // ACTORS /* +Zahlenraum */
 		this.ahead(0d);          // in px,  z. B. -100 bis 100
 		this.back(0d);           // in px,  z. B. -100 bis 100
-		this.turnLeft(0d);       // in deg, z. B. -360 bis 360
-		this.turnRight(0d);      // in deg, z. B. -360 bis 360
 		this.doNothing();        // 
 		this.fire(0d);           // in abs, von 0.1 bis 3.0
-		this.fireBullet(0d);     // in abs, von 0.1 bis 3.0
+		this.turnLeft(0d);       // in deg, z. B. -360 bis 360
+		this.turnRight(0d);      // in deg, z. B. -360 bis 360
 		this.turnGunLeft(0d);    // in deg, von -360 bis 360
 		this.turnGunRight(0d);   // in deg, von -360 bis 360
 		this.turnRadarLeft(0d);  // in deg, von -360 bis 360
