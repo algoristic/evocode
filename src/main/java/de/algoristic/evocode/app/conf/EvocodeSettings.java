@@ -5,10 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import de.algoristic.evocode.app.periphery.SystemPropertyFacade;
 
@@ -168,5 +171,23 @@ public class EvocodeSettings {
 	public String getSettingsFile() {
 		return properties.getProperty("evo.project.file")
 			.orElseThrow();
+	}
+
+	public List<String> getDisabledSensors() {
+		return properties.getProperty("evo.genome.nn.disableSensors")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.collect(Collectors.toList());
+	}
+
+	public List<String> getDisabledActors() {
+		return properties.getProperty("evo.genome.nn.disableActors")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.collect(Collectors.toList());
 	}
 }

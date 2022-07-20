@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import de.algoristic.evocode.app.conf.FilesystemContext;
 import de.algoristic.evocode.app.io.files.GenerationCSV;

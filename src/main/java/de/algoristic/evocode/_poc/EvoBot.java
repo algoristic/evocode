@@ -41,25 +41,29 @@ public class EvoBot extends Robot {
 
 	// SENSORS
 	{
-		double battleFieldWidth = this.getBattleFieldWidth();//
-		double battleFieldHeight = this.getBattleFieldHeight();//
+//		double battleFieldWidth = this.getBattleFieldWidth();//
+//		double battleFieldHeight = this.getBattleFieldHeight();//
+//		double height = this.getHeight();
+//		double width = this.getWidth();
+//		double x = this.getX();
+//		double y = this.getY();
+		double others = this.getOtherPlayers();
+		double round = this.getRound();
 		double heading = this.getHeading();
-		double height = this.getHeight();
-		double width = this.getWidth();
-		double x = this.getX();
-		double y = this.getY();
-		double gunCoolingRate = this.getGunCoolingRate();
-		double gunHeading = this.getGunHeading();
-		double gunHeat = this.getGunHeat();
-		int numRounds = this.getNumRounds();
-		int sentryBorderSize = this.getSentryBorderSize();//
-		int others = this.getOthers();
-		int numSentries = this.getNumSentries();
 		double radarHeading = this.getRadarHeading();
-		int roundNum = this.getRoundNum();
-		long time = this.getTime();
+		double gunHeading = this.getGunHeading();
+//		double gunCoolingRate = this.getGunCoolingRate();
+		double gunHeat = this.getGunHeat();
 		double velocity = this.getVelocity();
 		double energy = this.getEnergy();
+
+//		int numRounds = this.getNumRounds();
+//		int sentryBorderSize = this.getSentryBorderSize();//
+//		int others = this.getOthers();
+//		int numSentries = this.getNumSentries();
+		int roundNum = this.getRoundNum();
+
+		long time = this.getTime();
 	}
 	
 	{   // ACTORS /* +Zahlenraum */
@@ -87,56 +91,80 @@ public class EvoBot extends Robot {
 		this.resume();
 	}
 
-	{	// TRANSFORMATORS
-		
-	}
-	private double min(double value, double min) {
-		return min;
-	}
-	
-	private double max(double value, double max) {
-		return max;
-	}
-	
-	private double limit(double value, double min, double max) {
-		double minDist = Math.abs(value - min);
-		double maxDist = Math.abs(max - value);
-		if(minDist == maxDist) {
-			return value;
-		} else if(maxDist > minDist) {
-			return max;
-		} else {
-			return min;
-		}
-	}
-	
-	private boolean on = true;
-	private synchronized double osc(double value, double min, double max) {
-		try {
-			if(on) {
-				return max;
-			} else {
-				return min;
-			}
-		} finally {
-			on = !on;
-		}
+	private double playersAtStart;
+	/** Impl. */
+	private double getOtherPlayers() {
+		return (((double) this.getOthers()) / playersAtStart);
 	}
 
-	private double asIs(double value) {
-		return value;
+	private double numberOfRounds;
+	/** Impl. */
+	private double getRound() {
+		return ((double) this.getRoundNum() / numberOfRounds);
 	}
-	
-	private double half(double value, double max) {
-		return (max / 2);
+
+	private double battleFieldWidth;
+	/** Impl. */
+	private double getPositionX() {
+		return (this.getX() / battleFieldWidth);
 	}
-	
-	private double quarter(double value, double max) {
-		return (max / 4);
+
+	private double battleFieldHeight;
+	/** Impl. */
+	private double getPositionY() {
+		return (this.getY() / battleFieldHeight);
 	}
-	
+
+	private double maxTurnAwareness;
+	/** Impl. */
+	private double getTurn() {
+		return Math.min(1, ((double) this.getTime() / maxTurnAwareness));
+	}
+
+	/** Impl. */
+	@Override
+	public double getHeading() {
+		return (super.getHeading() / 359d);
+	}
+
+	/** Impl. */
+	@Override
+	public double getGunHeading() {
+		return (super.getGunHeading() / 359d);
+	}
+
+	/** Impl. */
+	@Override
+	public double getGunHeat() {
+		//maxHeat = 1 + (Rules.MAX_BULLET_POWER / 5);
+		return (super.getGunHeat() / 1.6d);
+	}
+
+	/** Impl. */
+	@Override
+	public double getRadarHeading() {
+		return (super.getRadarHeading() / 359d);
+	}
+
+	/** Impl. */
+	@Override
+	public double getVelocity() {
+		return (super.getVelocity() / 8d);
+	}
+
+	/** Impl. */
+	@Override
+	public double getEnergy() {
+		return (super.getEnergy() / 100d);
+	}
+
 	@Override
 	public void run() {
+		playersAtStart = this.getOthers();
+		numberOfRounds = this.getNumRounds();
+		battleFieldWidth = this.getBattleFieldWidth();
+		battleFieldHeight = this.getBattleFieldHeight();
+		maxTurnAwareness = 10000; // configure this
 		{   // setup colors for better distinction of robots
 			this.setBodyColor(Color.RED);
 			this.setGunColor(Color.RED);
@@ -201,7 +229,7 @@ public class EvoBot extends Robot {
 	public void onScannedRobot(ScannedRobotEvent event) {
 		// SENSORS
 		double enemyBearing = event.getBearing();
-		double enemyDistance = event.getDistance();
+		double enemyDistance = event.getDistance() / Math.sqrt(Math.pow(battleFieldWidth, 2) + Math.pow(battleFieldHeight, 2));
 		double enemyEnergy = event.getEnergy();
 		double enemyHeading = event.getHeading();
 		boolean enemyIsSentryRobot = event.isSentryRobot();
@@ -210,7 +238,7 @@ public class EvoBot extends Robot {
 	@Override
 	public void onStatus(StatusEvent event) {
 		RobotStatus status = event.getStatus();
-		
+
 		// SENSORS
 		double distanceRemaining = status.getDistanceRemaining();
 		double gunTurnRemaining = status.getGunTurnRemaining();
