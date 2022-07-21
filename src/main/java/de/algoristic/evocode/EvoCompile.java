@@ -38,14 +38,10 @@ public class EvoCompile {
 	}
 
 	public void run() {
-//		EvocodeSettings settings = new EvocodeSettings();
-//		RobotBootstrap bootstrap = new RobotBootstrap();
-//		List<Sensor> sensors = bootstrap.sensors();
-//		sensors.stream().map(s -> s.getVariableDeclaration("")).forEach(System.out::println);
-
-		for(int i = 1; i <= 25; i++) {
-			System.out.println(i + ": " + fn(i));
-		}
+		EvocodeSettings settings = new EvocodeSettings();
+		RobotBootstrap bootstrap = new RobotBootstrap();
+		List<Sensor> sensors = bootstrap.sensors();
+		sensors.stream().map(s -> s.getVariableDeclaration("")).forEach(System.out::println);
 
 //		GenerationProperties properties = context.getGenerationProperties(generation);
 //		String serializedGenome = properties.getGenome(individual);

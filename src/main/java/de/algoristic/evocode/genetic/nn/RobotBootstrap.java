@@ -8,7 +8,6 @@ import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotBootstrap {
 
-	private List<Sensor> globalSensors;
 	private List<RobotMethod> methods;
 	private List<Intermitter> intermitters;
 	private List<Actor> actors;
@@ -17,104 +16,156 @@ public class RobotBootstrap {
 	private List<EventObject> eventObjects;
 	
 	{
-		globalSensors = new ArrayList<>();
-		globalSensors.add(new Sensor.Builder("positionX").build());
-		globalSensors.add(new Sensor.Builder("positionY").build());
-		globalSensors.add(new Sensor.Builder("otherPlayers").build());
-		globalSensors.add(new Sensor.Builder("round").build());
-		globalSensors.add(new Sensor.Builder("turn").build());
-		globalSensors.add(new Sensor.Builder("heading").build());
-		globalSensors.add(new Sensor.Builder("radarHeading").build());
-		globalSensors.add(new Sensor.Builder("gunHeading").build());
-		globalSensors.add(new Sensor.Builder("gunHeat").build());
-		globalSensors.add(new Sensor.Builder("velocity").build());
-		globalSensors.add(new Sensor.Builder("energy").build());
-
-		// Create local sensors, that can be used on multiple locations
-		// (remember, no matter if my bullet is obtained from
-		// "bulletHitBullet" or "bulletMissed" - it's still my bullet)
 		eventObjects = new ArrayList<>();
+		String robotStatusObject = "status";
+		EventObject robotStatus = new EventObject("RobotStatus", robotStatusObject);
+		robotStatus.addSensor(new Sensor.Builder("positionX")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("x")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "battleFieldWidth"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("positionY")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("y")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "battleFieldHeight"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("otherPlayers")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("others")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "playersAtStart"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("round")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("roundNum")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "numberOfRounds"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("turn")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("time")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "maxTurnAwareness"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("heading")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("heading")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "359d"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("radarHeading")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("radarHeading")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "359d"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("gunHeading")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("gunHeading")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "359d"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("gunHeat")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("gunHeat")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "1.6d"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("velocity")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("velocity")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "8d"))
+			.build());
+		robotStatus.addSensor(new Sensor.Builder("energy")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("energy")
+					.withSignalEmitter(robotStatusObject)
+					.build(), "100d"))
+			.build());
+		eventObjects.add(robotStatus);
 
-		String ownBulletName = "myBullet";
-		EventObject myBullet = new EventObject("Bullet", ownBulletName);
+		String ownBulletObject = "myBullet";
+		EventObject myBullet = new EventObject("Bullet", ownBulletObject);
 		myBullet.addSensor(new Sensor.Builder("heading")
 			.withVariableName("myBulletHeading")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("heading")
-					.withSignalEmitter(ownBulletName)
+					.withSignalEmitter(ownBulletObject)
 					.build(), "359d"))
 			.build());
 		myBullet.addSensor(new Sensor.Builder("power")
 			.withVariableName("myBulletPower")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("power")
-					.withSignalEmitter(ownBulletName)
+					.withSignalEmitter(ownBulletObject)
 					.build(), "3d"))
 			.build());
 		myBullet.addSensor(new Sensor.Builder("velocity")
 			.withVariableName("myBulletVelocity")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("velocity")
-					.withSignalEmitter(ownBulletName)
+					.withSignalEmitter(ownBulletObject)
 					.build(), "8d"))
 			.build());
 		myBullet.addSensor(new Sensor.Builder("x")
 			.withVariableName("myBulletX")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("x")
-					.withSignalEmitter(ownBulletName)
+					.withSignalEmitter(ownBulletObject)
 					.build(), "battleFieldWidth"))
 			.build());
 		myBullet.addSensor(new Sensor.Builder("y")
 			.withVariableName("myBulletY")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("y")
-					.withSignalEmitter(ownBulletName)
+					.withSignalEmitter(ownBulletObject)
 					.build(), "battleFieldHeight"))
 			.build());
 		eventObjects.add(myBullet);
 
-		String otherBulletName = "enemyBullet";
-		EventObject enemyBullet = new EventObject("Bullet", otherBulletName);
+		String enemyBulletObject = "enemyBullet";
+		EventObject enemyBullet = new EventObject("Bullet", enemyBulletObject);
 		enemyBullet.addSensor(new Sensor.Builder("heading")
 			.withVariableName("enemyBulletHeading")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("heading")
-					.withSignalEmitter(otherBulletName)
+					.withSignalEmitter(enemyBulletObject)
 					.build(), "359d"))
 			.build());
 		enemyBullet.addSensor(new Sensor.Builder("power")
 			.withVariableName("enemyBulletPower")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("power")
-					.withSignalEmitter(otherBulletName)
+					.withSignalEmitter(enemyBulletObject)
 					.build(), "3d"))
 			.build());
 		enemyBullet.addSensor(new Sensor.Builder("velocity")
 			.withVariableName("enemyBulletVelocity")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("velocity")
-					.withSignalEmitter(otherBulletName)
+					.withSignalEmitter(enemyBulletObject)
 					.build(), "8d"))
 			.build());
 		enemyBullet.addSensor(new Sensor.Builder("x")
 			.withVariableName("enemyBulletX")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("x")
-					.withSignalEmitter(otherBulletName)
+					.withSignalEmitter(enemyBulletObject)
 					.build(), "battleFieldWidth"))
 			.build());
 		enemyBullet.addSensor(new Sensor.Builder("y")
 			.withVariableName("enemyBulletY")
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("y")
-					.withSignalEmitter(otherBulletName)
+					.withSignalEmitter(enemyBulletObject)
 					.build(), "battleFieldHeight"))
 			.build());
 		eventObjects.add(enemyBullet);
 
 		localSensors = new ArrayList<>(); 
-
 		Sensor enemyEnergy = new Sensor.Builder("energy")
 			.withVariableName("enemyEnergy")
 			.withObtainer(new SensorDivider(
@@ -154,7 +205,6 @@ public class RobotBootstrap {
 
 		// initialize actual methods
 		methods = new ArrayList<>();
-
 		RobotMethod bulletHit = new RobotMethod("bulletHit");
 		bulletHit.addEventObject("getBullet", myBullet);
 		bulletHit.addLocalSensor(enemyEnergy);
@@ -191,6 +241,7 @@ public class RobotBootstrap {
 		methods.add(scannedRobot);
 
 		RobotMethod status = new RobotMethod("status");
+		status.addEventObject("getStatus", robotStatus);
 		methods.add(status);
 
 		EvocodeSettings settings = new EvocodeSettings();
@@ -205,7 +256,7 @@ public class RobotBootstrap {
 	}
 
 	public List<Sensor> sensors() {
-		List<Sensor> allKnownSensors = new ArrayList<>(globalSensors);
+		List<Sensor> allKnownSensors = new ArrayList<>();
 		for(EventObject eventObject : eventObjects) {
 			List<Sensor> eventObjectSensors = eventObject.getObjectSensors();
 			allKnownSensors.addAll(eventObjectSensors);
