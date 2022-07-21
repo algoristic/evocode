@@ -20,7 +20,7 @@ public class ValueRangeManager {
 	public List<ValueRange> getRanges(String actionName, int generation) {
 		List<Double> rangeValues = settings.getValueRanges(actionName, generation);
 		List<ValueRange> ranges = new ArrayList<>();
-		rangeValues.add(100d);
+		if(! rangeValues.contains(100d)) rangeValues.add(100d);
 		double start = 0;
 		for (double limit : rangeValues) {
 			double pMin = (start / 100);

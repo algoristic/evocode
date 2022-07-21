@@ -12,4 +12,15 @@ public class Action {
 		this.absMax = absMax;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public double getAbsMin() {
+		return absMin;
+	}
+
+	public double getAbsMax() {
+		return absMax;
+	}
 }

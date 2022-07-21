@@ -10,11 +10,13 @@ public class RobotMethod {
 	private String name;
 	private Map<String, EventObject> eventObjectMapping;
 	private List<Sensor> localSensors;
+	private List<String> boilerplateLOC;
 
 	public RobotMethod(String name) {
 		this.name = name;
 		eventObjectMapping = new HashMap<>();
 		localSensors = new ArrayList<>();
+		boilerplateLOC = new ArrayList<>();
 	}
 
 	public void addEventObject(String obtainer, EventObject eventObject) {
@@ -23,6 +25,10 @@ public class RobotMethod {
 
 	public void addLocalSensor(Sensor sensor) {
 		localSensors.add(sensor);
+	}
+
+	public void addBoilerplateCode(String line) {
+		boilerplateLOC.add(line);
 	}
 
 	public List<Sensor> getLocalSensors() {

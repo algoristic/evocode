@@ -41,6 +41,7 @@ public class EvoCompile {
 		EvocodeSettings settings = new EvocodeSettings();
 		RobotBootstrap bootstrap = new RobotBootstrap(1);
 		List<Sensor> sensors = bootstrap.sensors();
+		bootstrap.actors();
 		sensors.stream().map(s -> s.getVariableDeclaration("")).forEach(System.out::println);
 
 //		GenerationProperties properties = context.getGenerationProperties(generation);

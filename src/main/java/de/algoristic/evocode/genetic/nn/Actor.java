@@ -51,4 +51,24 @@ public class Actor {
 			return new Actor(id, action, pMin, pMax);
 		}
 	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public String getName() {
+		return action.getName();
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public double getpMin() {
+		return pMin;
+	}
+
+	public double getpMax() {
+		return pMax;
+	}
 }

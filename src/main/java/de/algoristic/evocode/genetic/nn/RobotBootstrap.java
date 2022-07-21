@@ -8,6 +8,7 @@ import de.algoristic.evocode.app.conf.EvocodeSettings;
 public class RobotBootstrap {
 
 	private final int generation;
+	private final EvocodeSettings settings;
 
 	private List<RobotMethod> methods;
 	private List<Intermitter> intermitters;
@@ -18,6 +19,7 @@ public class RobotBootstrap {
 
 	public RobotBootstrap(int generation) {
 		this.generation = generation;
+		settings = new EvocodeSettings();
 		init();
 	}
 
@@ -189,7 +191,7 @@ public class RobotBootstrap {
 			.build();
 		Sensor enemyDistance = new Sensor.Builder("distance")
 			.withVariableName("enemyDistance")
-			.withObtainer(new PlainResolvable("(event.getDistance() / (Math.sqrt(Math.pow(battleFieldWidth, 2) + Math.pow(battleFieldHeight, 2))))"))
+			.withObtainer(new PlainResolvable("(event.getDistance() / (Math.hypot(battleFieldWidth, battleFieldHeight))"))
 			.build();
 		Sensor enemyBulletBearing = new Sensor.Builder("bearing")
 			.withVariableName("enemyBulletBearing")
@@ -245,6 +247,7 @@ public class RobotBootstrap {
 
 		RobotMethod status = new RobotMethod("status");
 		status.addEventObject("getStatus", robotStatus);
+		status.addBoilerplateCode("processStimuli()");
 		methods.add(status);
 
 		EvocodeSettings settings = new EvocodeSettings();
@@ -281,19 +284,33 @@ public class RobotBootstrap {
 			allKnownSensors.addAll(eventObjectSensors);
 		}
 		allKnownSensors.addAll(localSensors);
-		return filterAllowed(allKnownSensors);
+		return filterAllowedSensors(allKnownSensors);
 	}
 
-	private List<Sensor> filterAllowed(List<Sensor> allKnownSensors) {
+	public List<Actor> actors() {
+		List<Actor> allKnownActors = new ArrayList<Actor>(actors);
+		return filterAllowedActors(allKnownActors);
+	}
+
+	private List<Sensor> filterAllowedSensors(List<Sensor> allKnownSensors) {
 		List<Sensor> allowedSensors = new ArrayList<>();
-		EvocodeSettings settings = new EvocodeSettings();
 		List<String> disabledSensors = settings.getDisabledSensors();
 		for(Sensor sensor : allKnownSensors) {
 			String identifier = sensor.getVariable();
-			if(!disabledSensors.contains(identifier)) {
-				allowedSensors.add(sensor);
-			}
+			if(disabledSensors.contains(identifier)) continue;
+			allowedSensors.add(sensor);
 		}
 		return allowedSensors;
+	}
+
+	private List<Actor> filterAllowedActors(List<Actor> allKnownActors) {
+		List<Actor> allowedActors = new ArrayList<Actor>();
+		List<String> disabledActors = settings.getDisabledActors();
+		for(Actor actor : allKnownActors) {
+			String name = actor.getName();
+			if(disabledActors.contains(name)) continue;
+			allowedActors.add(actor);
+		}
+		return allowedActors;
 	}
 }
