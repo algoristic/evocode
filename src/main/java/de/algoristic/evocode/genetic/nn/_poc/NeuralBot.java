@@ -20,7 +20,7 @@ public class NeuralBot extends Robot {
 
 	@Override
 	public void run() {
-		energySensor = new SensoryNeuron(1d);
+		energySensor = new SensoryNeuron();
 	}
 
 	@Override
@@ -36,8 +36,15 @@ public class NeuralBot extends Robot {
 
 	@Override
 	public void onStatus(StatusEvent e) {
-		// hier auch die globalen neuronen Feuern!
-		
+		// generated code
+		propagateStimuli();
+	}
+
+	void propagateStimuli() {
+		// das Propagieren ergibt so keinen Sinn:
+		// ich muss erst alle Schichten "feuern",
+		// um die Werte weiterzugeben und den State
+		// zurückzusetzen und dann akkumulieren
 		for(ActionNeuron action : actionLayer) {
 			action.propagate();
 		}
@@ -48,6 +55,4 @@ public class NeuralBot extends Robot {
 			sensor.propagate();
 		}
 	}
-
-	
 }

@@ -9,8 +9,8 @@ public class Intermitter implements SendingNeuron, ReceivingNeuron {
 	private List<SendingNeuron> senders;
 	private List<ReceivingNeuron> receivers;
 
-	public Intermitter(int number) {
-		uuid = "i_" + number;
+	public Intermitter(int id) {
+		uuid = ("i_" + id);
 		senders = new ArrayList<>();
 		receivers = new ArrayList<>();
 	}

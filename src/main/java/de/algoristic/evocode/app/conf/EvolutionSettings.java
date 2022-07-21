@@ -122,4 +122,15 @@ public class EvolutionSettings {
 			.map(Double::valueOf)
 			.orElseThrow();
 	}
+
+	public List<Double> getValueRanges(String action, int generation) {
+		return properties.forGeneration(generation)
+			.getProperty("evo.genome.nn.[]." + action + ".ranges")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.map(Double::valueOf)
+			.collect(Collectors.toList());
+	}
 }

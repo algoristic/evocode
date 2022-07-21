@@ -1,12 +1,13 @@
 package de.algoristic.evocode.genetic.nn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotBootstrap {
+
+	private final int generation;
 
 	private List<RobotMethod> methods;
 	private List<Intermitter> intermitters;
@@ -14,8 +15,13 @@ public class RobotBootstrap {
 
 	private List<Sensor> localSensors;
 	private List<EventObject> eventObjects;
-	
-	{
+
+	public RobotBootstrap(int generation) {
+		this.generation = generation;
+		init();
+	}
+
+	private void init() {
 		eventObjects = new ArrayList<>();
 		String robotStatusObject = "status";
 		EventObject robotStatus = new EventObject("RobotStatus", robotStatusObject);
@@ -44,10 +50,7 @@ public class RobotBootstrap {
 					.build(), "numberOfRounds"))
 			.build());
 		robotStatus.addSensor(new Sensor.Builder("turn")
-			.withObtainer(new SensorDivider(
-				new Sensor.Builder("time")
-					.withSignalEmitter(robotStatusObject)
-					.build(), "maxTurnAwareness"))
+			.withObtainer(new PlainResolvable("Math.min(1, ((double) " + robotStatusObject +".getTime() / maxTurnAwareness))"))
 			.build());
 		robotStatus.addSensor(new Sensor.Builder("heading")
 			.withObtainer(new SensorDivider(
@@ -252,7 +255,23 @@ public class RobotBootstrap {
 		}
 
 		actors = new ArrayList<>();
-		// TODO
+		int counter = 0;
+		ValueRangeManager rangeManager = new ValueRangeManager(); 
+		for(ActionPrototype prototype : ActionPrototype.values()) {
+			String name = prototype.getName();
+			double absMin = prototype.getAbsMin();
+			double absMax = prototype.getAbsMax();
+			List<ValueRange> ranges = rangeManager.getRanges(name, generation);
+			for(ValueRange range : ranges) {
+				double pMin = range.getFromIncluded();
+				double pMax = range.getToIncluded();
+				Actor actor = Actor.of(name, absMin, absMax)
+					.withRange(pMin, pMax)
+					.build(counter);
+				actors.add(actor);
+				counter++;
+			}
+		}
 	}
 
 	public List<Sensor> sensors() {

@@ -10,8 +10,11 @@ public interface Neuron {
 	 * und dem Roboter ein "Gedächtnis" zu geben. Mit jedem "onStatus" Event werden die Werte
 	 * eine Layer bzw. eine Connection weitergegeben.
 	 * */
-	void propagate();
-	
+	default void propagate() {
+		this.fire();
+		this.accumulate();
+	}
+
 	/**
 	 * Im Fall von Sensor: transformierten Wert an Connections geben.
 	 * Im Fall von Intermediate/Action: akkumulierten Wert weiterverarbeiten

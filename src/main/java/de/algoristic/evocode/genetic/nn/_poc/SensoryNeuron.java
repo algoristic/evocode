@@ -1,23 +1,35 @@
 package de.algoristic.evocode.genetic.nn._poc;
 
-public class SensoryNeuron {
+import java.util.ArrayList;
+import java.util.List;
 
-	private final Double DEFAULT = -100d;
+public class SensoryNeuron implements SendingNeuron {
 
-	private final double scale;
+	private static final Double DEFAULT = Double.NaN;
 
-	private double i0 = DEFAULT;
-	private double i1 = DEFAULT;
+	private double stimulus = DEFAULT;
+	private List<Connection> connections = new ArrayList<>();
 
-	public SensoryNeuron(double scale) {
-		this.scale = scale;
+	@Override
+	public void addConnection(Connection connection) {
+		connections.add(connection);
 	}
 
 	public void process(double stimulus) {
-		i0 = (stimulus * scale);
+		this.stimulus = stimulus;
 	}
 
-	public void propagate() {
-		
+	@Override
+	public void fire() {
+		if (stimulus == DEFAULT) return;
+		connections.forEach(connection -> connection.send(stimulus));
+	}
+
+	/**
+	 * Reset the sensor to default after firing.
+	 */
+	@Override
+	public void accumulate() {
+		stimulus = DEFAULT;
 	}
 }

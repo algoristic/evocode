@@ -39,7 +39,7 @@ public class EvoCompile {
 
 	public void run() {
 		EvocodeSettings settings = new EvocodeSettings();
-		RobotBootstrap bootstrap = new RobotBootstrap();
+		RobotBootstrap bootstrap = new RobotBootstrap(1);
 		List<Sensor> sensors = bootstrap.sensors();
 		sensors.stream().map(s -> s.getVariableDeclaration("")).forEach(System.out::println);
 

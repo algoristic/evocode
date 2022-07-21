@@ -1,40 +1,43 @@
 package de.algoristic.evocode.genetic.nn._poc;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
+import java.security.SecureRandom;
+import java.util.function.BiConsumer;
 
 import robocode.Robot;
 
-public class ActionNeuron implements Neuron {
+public class ActionNeuron implements ReceivingNeuron {
+
+	private static final double DEFAULT = Double.NaN;
 
 	private final Robot peer;
-	private final Consumer<Robot> action;
+	private final BiConsumer<Robot, Double> action;
 
-	private List<Double> accumulation = new ArrayList<>();
-	private Double result = null;
+	private double min;
+	private double max;
 
-	public ActionNeuron(Robot peer, Consumer<Robot> action) {
+	private double state = DEFAULT;
+
+	public ActionNeuron(Robot peer, BiConsumer<Robot, Double> action) {
 		this.peer = peer;
 		this.action = action;
 	}
 
 	@Override
-	public void propagate() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void fire() {
-		// TODO Auto-generated method stub
-		
+		if(state == DEFAULT) return;
+		double value = min + (max - min) * (new SecureRandom()).nextDouble();
+		action.accept(peer, value);
 	}
 
 	@Override
 	public void accumulate() {
-		// TODO Auto-generated method stub
-		
+		if(state == DEFAULT) return;
+		state = Math.max(0, Math.tanh(state));
 	}
 
+	@Override
+	public void receive(double stimulus) {
+		if(state == DEFAULT) state = 0d;
+		state += stimulus;
+	}
 }

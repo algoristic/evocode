@@ -1,25 +1,36 @@
 package de.algoristic.evocode.genetic.nn._poc;
 
-public class IntermediateNeuron implements Neuron {
+import java.util.ArrayList;
+import java.util.List;
 
-	private double state;
+public class IntermediateNeuron implements ReceivingNeuron, SendingNeuron {
+
+	private static final Double DEFAULT = Double.NaN;
+
+	private double state = DEFAULT;
+	private List<Connection> connections = new ArrayList<>();
 
 	@Override
-	public void propagate() {
-		// TODO Auto-generated method stub
-		
+	public void addConnection(Connection connection) {
+		connections.add(connection);
 	}
 
 	@Override
 	public void fire() {
-		// TODO Auto-generated method stub
-		
+		if(state == DEFAULT) return;
+		connections.forEach(connection -> connection.send(state));
+		state = DEFAULT;
 	}
 
 	@Override
 	public void accumulate() {
-		// TODO Auto-generated method stub
-		
+		if(state == DEFAULT) return;
+		state = Math.max(0, Math.tanh(state));
 	}
-	
+
+	@Override
+	public void receive(double stimulus) {
+		if(state == DEFAULT) state = 0d;
+		state += stimulus;
+	}
 }
