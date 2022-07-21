@@ -1,5 +1,6 @@
 package de.algoristic.evocode.util;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -26,9 +27,15 @@ public class NumberSystemUtils {
 		return pickRandom(hexChars());
 	}
 
+	public static String hexToBinaryWithLeadingZeroes(String hexString) {
+		int length = (4 * hexString.length());
+		String binary = hexToBinary(hexString);
+		binary = StringUtils.leftPad(binary, length, '0');
+		return binary;
+	}
+
 	public static String hexToBinary(String hexString) {
-		int val = Integer.parseInt(hexString, 16);
-		return Integer.toBinaryString(val);
+		return new BigInteger(hexString, 16).toString(2);
 	}
 
 	public static String hexToBinary(Character hexChar) {
@@ -58,8 +65,7 @@ public class NumberSystemUtils {
 	}
 
 	public static String binaryToHex(String binaryString) {
-		int val = binaryToDecimal(binaryString);
-		return Integer.toHexString(val);
+		return new BigInteger(binaryString, 2).toString(16);
 	}
 
 	public static int hexToDecimal(String hexString) {

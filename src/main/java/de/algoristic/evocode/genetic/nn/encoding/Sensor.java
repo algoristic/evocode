@@ -11,7 +11,7 @@ public class Sensor implements SendingNeuron {
 	private String dataType;
 	private Resolvable obtainer;
 
-	private List<ReceivingNeuron> receivers;
+	private List<Connection> receivers;
 
 	public Sensor(String emitter, String variableName, String name, String dataType, Resolvable obtainer) {
 		this.signalEmitter = emitter;
@@ -23,12 +23,12 @@ public class Sensor implements SendingNeuron {
 	}
 
 	@Override
-	public void addConnection(ReceivingNeuron neuron) {
-		receivers.add(neuron);
+	public void addConnection(Connection connection) {
+		receivers.add(connection);
 	}
 
 	@Override
-	public List<ReceivingNeuron> getReceivers() {
+	public List<Connection> getReceivers() {
 		return receivers;
 	}
 

@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface SendingNeuron {
 
-	void addConnection(ReceivingNeuron neuron);
-	List<ReceivingNeuron> getReceivers();
+	void addConnection(Connection connection);
+	List<Connection> getReceivers();
 }

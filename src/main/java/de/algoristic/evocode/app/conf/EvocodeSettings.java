@@ -197,8 +197,19 @@ public class EvocodeSettings {
 			.orElse(8);
 	}
 
-	public String getNNMainMethod() {
-		return properties.getProperty("evo.genome.nn.mainMethod")
-			.orElse("");
+	public List<Double> getValueRanges(String action) {
+		return properties.getProperty("evo.genome.nn." + action + ".ranges")
+			.map(specs -> specs.split(","))
+			.stream()
+			.flatMap(Arrays::stream)
+			.map(String::trim)
+			.map(Double::valueOf)
+			.collect(Collectors.toList());
+	}
+
+	public double getWeightFlattener() {
+		return properties.getProperty("evo.genome.nn.weightFlattener")
+			.map(Double::valueOf)
+			.orElse(8192d);
 	}
 }

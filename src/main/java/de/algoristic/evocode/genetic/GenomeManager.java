@@ -2,6 +2,7 @@ package de.algoristic.evocode.genetic;
 
 import de.algoristic.evocode.app.conf.EvocodeSettings;
 import de.algoristic.evocode.genetic.dnaProgramming.DnaProgramming;
+import de.algoristic.evocode.genetic.nn.NeuralNetworkProgramming;
 
 public class GenomeManager {
 
@@ -19,6 +20,9 @@ public class GenomeManager {
 		String structure = settings.getGenomeStructure();
 		if ("LinearGP.dnaProgramming".equalsIgnoreCase(structure)) {
 			return new DnaProgramming();
+		}
+		if("LinearGP.nn".equalsIgnoreCase(structure)) {
+			return new NeuralNetworkProgramming();
 		}
 		return null;
 	}

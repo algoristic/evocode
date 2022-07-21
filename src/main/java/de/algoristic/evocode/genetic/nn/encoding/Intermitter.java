@@ -6,32 +6,20 @@ import java.util.List;
 public class Intermitter implements SendingNeuron, ReceivingNeuron {
 
 	private final String uuid;
-	private List<SendingNeuron> senders;
-	private List<ReceivingNeuron> receivers;
+	private List<Connection> receivers;
 
 	public Intermitter(int id) {
 		uuid = ("i_" + id);
-		senders = new ArrayList<>();
 		receivers = new ArrayList<>();
 	}
 
 	@Override
-	public void addConnection(SendingNeuron sendingNeuron) {
-		senders.add(sendingNeuron);
+	public void addConnection(Connection connection) {
+		receivers.add(connection);
 	}
 
 	@Override
-	public void addConnection(ReceivingNeuron neuron) {
-		receivers.add(neuron);
-	}
-
-	@Override
-	public List<SendingNeuron> getSenders() {
-		return senders;
-	}
-
-	@Override
-	public List<ReceivingNeuron> getReceivers() {
+	public List<Connection> getReceivers() {
 		return receivers;
 	}
 }

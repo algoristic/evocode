@@ -1,6 +1,6 @@
 package de.algoristic.evocode.genetic.nn.encoding;
 
-public class Actor {
+public class Actor implements ReceivingNeuron {
 
 	private String uuid;
 	private Action action;

@@ -3,22 +3,22 @@ package de.algoristic.evocode.genetic.nn.encoding;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.algoristic.evocode.app.conf.EvolutionSettings;
+import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class ValueRangeManager {
 
-	private EvolutionSettings settings;
+	private EvocodeSettings settings;
 
 	public ValueRangeManager() {
-		this(new EvolutionSettings());
+		this(new EvocodeSettings());
 	}
 
-	private ValueRangeManager(EvolutionSettings settings) {
+	private ValueRangeManager(EvocodeSettings settings) {
 		this.settings = settings;
 	}
 
-	public List<ValueRange> getRanges(String actionName, int generation) {
-		List<Double> rangeValues = settings.getValueRanges(actionName, generation);
+	public List<ValueRange> getRanges(String actionName) {
+		List<Double> rangeValues = settings.getValueRanges(actionName);
 		List<ValueRange> ranges = new ArrayList<>();
 		if(! rangeValues.contains(100d)) rangeValues.add(100d);
 		double start = 0;

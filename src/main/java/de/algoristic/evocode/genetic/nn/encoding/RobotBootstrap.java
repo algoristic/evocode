@@ -7,7 +7,6 @@ import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotBootstrap {
 
-	private final int generation;
 	private final EvocodeSettings settings;
 
 	private List<RobotMethod> methods;
@@ -17,8 +16,7 @@ public class RobotBootstrap {
 	private List<Sensor> localSensors;
 	private List<EventObject> eventObjects;
 
-	public RobotBootstrap(int generation) {
-		this.generation = generation;
+	public RobotBootstrap() {
 		settings = new EvocodeSettings();
 		init();
 	}
@@ -264,7 +262,7 @@ public class RobotBootstrap {
 			String name = prototype.getName();
 			double absMin = prototype.getAbsMin();
 			double absMax = prototype.getAbsMax();
-			List<ValueRange> ranges = rangeManager.getRanges(name, generation);
+			List<ValueRange> ranges = rangeManager.getRanges(name);
 			for(ValueRange range : ranges) {
 				double pMin = range.getFromIncluded();
 				double pMax = range.getToIncluded();
@@ -285,6 +283,11 @@ public class RobotBootstrap {
 		}
 		allKnownSensors.addAll(localSensors);
 		return filterAllowedSensors(allKnownSensors);
+	}
+
+	public List<Intermitter> intermitters() {
+		List<Intermitter> allKnownIntermitters = new ArrayList<Intermitter>(intermitters);
+		return allKnownIntermitters;
 	}
 
 	public List<Actor> actors() {
