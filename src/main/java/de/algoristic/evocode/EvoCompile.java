@@ -13,8 +13,8 @@ import de.algoristic.evocode.app.io.files.GenerationProperties;
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
 import de.algoristic.evocode.genetic.GenomeManager;
-import de.algoristic.evocode.genetic.nn.RobotBootstrap;
-import de.algoristic.evocode.genetic.nn.Sensor;
+import de.algoristic.evocode.genetic.nn.encoding.RobotBootstrap;
+import de.algoristic.evocode.genetic.nn.encoding.Sensor;
 
 public class EvoCompile {
 

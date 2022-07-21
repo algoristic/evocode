@@ -1,4 +1,4 @@
-package de.algoristic.evocode.genetic.nn;
+package de.algoristic.evocode.genetic.nn.encoding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

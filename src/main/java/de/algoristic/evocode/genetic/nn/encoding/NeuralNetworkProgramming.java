@@ -1,4 +1,4 @@
-package de.algoristic.evocode.genetic.nn;
+package de.algoristic.evocode.genetic.nn.encoding;
 
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;

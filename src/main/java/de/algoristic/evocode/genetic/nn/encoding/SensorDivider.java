@@ -1,4 +1,4 @@
-package de.algoristic.evocode.genetic.nn;
+package de.algoristic.evocode.genetic.nn.encoding;
 
 public class SensorDivider implements Resolvable {
 
