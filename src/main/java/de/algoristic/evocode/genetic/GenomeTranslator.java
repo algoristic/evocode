@@ -1,9 +1,13 @@
 package de.algoristic.evocode.genetic;
 
+import java.awt.Component;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 import de.algoristic.evocode.app.conf.EvocodeSettings;
 import de.algoristic.evocode.app.periphery.JavaCompilerAdaptor;
@@ -23,8 +27,12 @@ public class GenomeTranslator {
 	public Phaenotype translate(final Genotype genotype, final int generation) {
 		final Path javaFileSource = genotype.getJavaFile().toPath();
 		final Path classFileSource = compiler.compile(javaFileSource).toPath();
-
-		if (!readyForRun) return new Phaenotype(javaFileSource.toFile(), classFileSource.toFile(), generation);
+		File[] classFileArray = classFileSource.getParent().toFile().listFiles(new FilenameFilter() {
+			@Override public boolean accept(File dir, String name) {
+				return name.endsWith(".class");
+			}
+		});
+		final List<File> sourceClassFiles = Arrays.asList(classFileArray);
 
 		final Path robotLocation = settings.getRobocodeLocation().toPath().resolve("robots");
 		final Path targetPath = robotLocation.resolve(genotype.getCompilationTargetPathName());
@@ -33,20 +41,23 @@ public class GenomeTranslator {
 		if(! targetDir.exists()) targetDir.mkdirs();
 
 		final Path javaFileTarget = targetPath.resolve(javaFileSource.getFileName());
-		final Path classFileTarget = targetPath.resolve(classFileSource.getFileName());
-		
 		try {
 			Files.copy(javaFileSource, javaFileTarget);
-			Files.copy(classFileSource, classFileTarget);
+			for(File fileSource : sourceClassFiles) {
+				String classFileName = fileSource.getName();
+				Path targetFile = targetPath.resolve(classFileName);
+				Path sourceFile = fileSource.toPath();
+				Files.copy(sourceFile, targetFile);
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		File parentDirectory = javaFileSource.getParent().toFile();
 		javaFileSource.toFile().delete();
-		classFileSource.toFile().delete();
-		classFileSource.getParent().toFile().delete();
+		sourceClassFiles.forEach(file -> file.delete());
+		parentDirectory.delete();
 		return new Phaenotype(
 			javaFileTarget.toFile(),
-			classFileTarget.toFile(),
 			generation);
 	}
 

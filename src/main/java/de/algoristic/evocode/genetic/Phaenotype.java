@@ -2,7 +2,10 @@ package de.algoristic.evocode.genetic;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -12,22 +15,12 @@ public class Phaenotype implements Closeable {
 
 	private final int generation;
 	private final File javaFile;
-	private final File classFile;
 	private final EvocodeSettings settings;
 
-	public Phaenotype(final File javaFile, final File classFile, int generation) {
+	public Phaenotype(final File javaFile, int generation) {
 		this.javaFile = javaFile;
-		this.classFile = classFile;
 		this.generation = generation;
 		settings = new EvocodeSettings();
-	}
-
-	public File getJavaFile() {
-		return javaFile;
-	}
-
-	public File getClassFile() {
-		return classFile;
 	}
 
 	public int getGeneration() {
@@ -48,7 +41,13 @@ public class Phaenotype implements Closeable {
 	@Override
 	public void close() throws IOException {
 		// delete resources under /robocode/robots/**
+		List<File> classFiles = Arrays.asList(javaFile.getParentFile().listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".class");
+			}
+		}));
 		javaFile.delete();
-		classFile.delete();
+		classFiles.forEach(File::delete);
 	}
 }
