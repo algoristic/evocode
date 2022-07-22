@@ -28,7 +28,7 @@ public class RobotFile {
 	public File writeTo(Path targetPath) {
 		try {
 			RobotImplementation implementation = new RobotImplementation(robot);
-			String mainMethod = settings.getMainMethod();
+			String mainMethod = settings.getMainMethod().replace(";", ";\n\t\t");
 			String maxTurnAwareness = settings.getMaximumTurnAwareness();
 			String javaCode = Files.readString(Paths.get(bootstrapFileName))
 				.replace("/*package*/", packageName)

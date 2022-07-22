@@ -17,6 +17,10 @@ public class RobotBootstrap {
 	private List<Sensor> localSensors;
 	private List<EventObject> eventObjects;
 
+	private List<Sensor> _lazy_connectedSensors;
+	private List<Intermitter> _lazy_connectedIntermitters;
+	private List<Actor> _lazy_connectedActors;
+
 	public RobotBootstrap() {
 		settings = new EvocodeSettings();
 		init();
@@ -289,7 +293,10 @@ public class RobotBootstrap {
 	}
 
 	public List<Sensor> getConnectedSensors() {
-		return getConnectedNeurons(sensors());
+		if(_lazy_connectedSensors == null) {
+			_lazy_connectedSensors = getConnectedNeurons(sensors());
+		}
+		return _lazy_connectedSensors;
 	}
 
 	public List<Intermitter> intermitters() {
@@ -297,7 +304,10 @@ public class RobotBootstrap {
 	}
 
 	public List<Intermitter> getConnectedIntermitters() {
-		return getConnectedNeurons(intermitters());
+		if(_lazy_connectedIntermitters == null) {
+			_lazy_connectedIntermitters = getConnectedNeurons(intermitters());
+		}
+		return _lazy_connectedIntermitters;
 	}
 
 	private <N extends SendingNeuron> List<N> getConnectedNeurons(List<N> ls) {
@@ -312,7 +322,8 @@ public class RobotBootstrap {
 					break;
 				}
 				if(receiver instanceof Intermitter) {
-					foundConnection = searchOutboundConnections((Intermitter) receiver);
+					Intermitter intermitter = (Intermitter) receiver;
+					foundConnection = searchOutboundConnections(intermitter, new ArrayList<>());
 					if(foundConnection) break;
 				}
 			}
@@ -321,13 +332,18 @@ public class RobotBootstrap {
 		return connected;
 	}
 
-	public static boolean searchOutboundConnections(Intermitter intermitter) {
+	public static boolean searchOutboundConnections(Intermitter intermitter, List<Intermitter> connectionChain) {
+		connectionChain.add(intermitter);
 		List<Connection> connections = intermitter.getReceivers();
 		for(Connection connection : connections) {
 			ReceivingNeuron receiver = connection.getSink();
 			if(receiver instanceof Actor) return true;
-			boolean foundConnection = searchOutboundConnections((Intermitter) receiver);
-			if(foundConnection) return true;
+			else {
+				Intermitter next = (Intermitter) receiver;
+				if(connectionChain.contains(next)) continue;
+				boolean foundConnection = searchOutboundConnections(next, new ArrayList<>(connectionChain));
+				if(foundConnection) return true;
+			}
 		}
 		return false;
 	}
@@ -337,17 +353,20 @@ public class RobotBootstrap {
 	}
 
 	public List<Actor> getConnectedActors() {
-		List<Actor> connectedActors = new ArrayList<>();
-		List<Sensor> sensors = getConnectedSensors();
-		addConnectedActors(connectedActors, sensors);
-		List<Intermitter> intermitters = getConnectedIntermitters();
-		addConnectedActors(connectedActors, intermitters);
-		connectedActors.sort(new Comparator<Actor>() {
-			@Override public int compare(Actor a_1, Actor a_2) {
-				return a_1.getUUID().compareTo(a_2.getUUID());
-			}
-		});
-		return connectedActors;
+		if(_lazy_connectedActors == null) {
+			List<Actor> connectedActors = new ArrayList<>();
+			List<Sensor> sensors = getConnectedSensors();
+			addConnectedActors(connectedActors, sensors);
+			List<Intermitter> intermitters = getConnectedIntermitters();
+			addConnectedActors(connectedActors, intermitters);
+			connectedActors.sort(new Comparator<Actor>() {
+				@Override public int compare(Actor a_1, Actor a_2) {
+					return a_1.getUUID().compareTo(a_2.getUUID());
+				}
+			});
+			_lazy_connectedActors = connectedActors;
+		}
+		return _lazy_connectedActors;
 	}
 
 	private <S extends SendingNeuron> void addConnectedActors(List<Actor> actors, List<S> list) {
@@ -383,5 +402,13 @@ public class RobotBootstrap {
 			allowedActors.add(actor);
 		}
 		return allowedActors;
+	}
+
+	public List<RobotMethod> getMethods() {
+		return methods;
+	}
+
+	public void setMethods(List<RobotMethod> methods) {
+		this.methods = methods;
 	}
 }

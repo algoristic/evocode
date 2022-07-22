@@ -36,4 +36,13 @@ public class Intermitter implements SendingNeuron, ReceivingNeuron {
 	public String getUUID() {
 		return uuid;
 	}
+
+	@Override
+	public String getLayerAdder() {
+		return new StringBuffer()
+			.append("hiddenLayer.add(")
+			.append(uuid)
+			.append(")")
+			.toString();
+	}
 }

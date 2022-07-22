@@ -96,4 +96,13 @@ public class Actor implements ReceivingNeuron {
 	public String getUUID() {
 		return uuid;
 	}
+
+	@Override
+	public String getLayerAdder() {
+		return new StringBuffer()
+			.append("actionLayer.add(")
+			.append(uuid)
+			.append(")")
+			.toString();
+	}
 }

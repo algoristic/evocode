@@ -20,7 +20,8 @@ public interface SendingNeuron extends Neuron {
 			ReceivingNeuron receiver = connection.getSink();
 			if(receiver instanceof Actor) viableConnections.add(connection);
 			if(receiver instanceof Intermitter) {
-				if(RobotBootstrap.searchOutboundConnections((Intermitter) receiver)) viableConnections.add(connection);
+				Intermitter intermitter = (Intermitter) receiver;
+				if(RobotBootstrap.searchOutboundConnections(intermitter, new ArrayList<>())) viableConnections.add(connection);
 			}
 		}
 		return viableConnections;

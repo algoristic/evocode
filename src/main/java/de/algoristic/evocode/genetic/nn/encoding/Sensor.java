@@ -42,15 +42,22 @@ public class Sensor implements SendingNeuron {
 		return obtainer();
 	}
 
-	public String getVariableDeclaration(String indent) {
+	public String getVariableDeclaration() {
 		return new StringBuffer()
-			.append(indent)
 			.append(dataType)
 			.append(" ")
 			.append(variable())
 			.append(" = ")
 			.append(obtainer())
-			.append(";")
+			.toString();
+	}
+
+	public String getSensorCall() {
+		return new StringBuffer()
+			.append(uuid)
+			.append(".process(")
+			.append(variable())
+			.append(")")
 			.toString();
 	}
 
@@ -118,5 +125,14 @@ public class Sensor implements SendingNeuron {
 	@Override
 	public String getUUID() {
 		return uuid;
+	}
+
+	@Override
+	public String getLayerAdder() {
+		return new StringBuffer()
+			.append("sensorLayer.add(")
+			.append(uuid)
+			.append(")")
+			.toString();
 	}
 }

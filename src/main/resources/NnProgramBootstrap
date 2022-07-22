@@ -44,7 +44,7 @@ public class /*robotName*/ extends Robot {
 		/*mainMethod*/
 	}
 
-	/*methods*/
+/*methods*/
 
 	void raiseMaxTurnAwareness(double amount) {
 		maxTurnAwareness += amount;
@@ -109,7 +109,8 @@ public class /*robotName*/ extends Robot {
 
 		private static final double DEFAULT = Double.NaN;
 
-		private double state = DEFAULT;
+		private double outBoundState = DEFAULT;
+		private double inBoundState = DEFAULT;
 		private List<Connection> connections = new ArrayList<>();
 
 		@Override
@@ -119,21 +120,22 @@ public class /*robotName*/ extends Robot {
 
 		@Override
 		public void fire() {
-			if(Double.isNaN(state)) return;
-			connections.forEach(connection -> connection.send(state));
-			state = DEFAULT;
+			if(Double.isNaN(outBoundState)) return;
+			connections.forEach(connection -> connection.send(outBoundState));
+			outBoundState = DEFAULT;
 		}
 
 		@Override
 		public void accumulate() {
-			if(Double.isNaN(state)) return;
-			state = Math.tanh(state);
+			if(Double.isNaN(inBoundState)) return;
+			outBoundState = Math.tanh(inBoundState);
+			inBoundState = DEFAULT;
 		}
 
 		@Override
 		public void receive(double stimulus) {
-			if(Double.isNaN(state)) state = 0d;
-			state += stimulus;
+			if(Double.isNaN(inBoundState)) inBoundState = 0d;
+			inBoundState += stimulus;
 		}
 	}
 

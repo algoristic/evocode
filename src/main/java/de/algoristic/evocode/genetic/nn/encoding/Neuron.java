@@ -4,4 +4,5 @@ public interface Neuron {
 
 	public String getUUID();
 	public String getInitializer();
+	public String getLayerAdder();
 }
