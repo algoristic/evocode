@@ -42,7 +42,7 @@ public class RobotImplementation {
 			.stream()
 			.map(Intermitter::getConnectionInitilizers)
 			.flatMap(List::stream)
-			.collect(Collectors.joining(";\n\t\t", "\t\t", ""));
+			.collect(Collectors.joining(";\n\t\t", "\t\t", ";"));
 		return new StringBuffer()
 			.append(sensorBlock)
 			.append(intermitterBlock)

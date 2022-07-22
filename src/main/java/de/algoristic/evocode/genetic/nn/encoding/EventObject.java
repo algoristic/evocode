@@ -28,7 +28,7 @@ public class EventObject {
 			.append(objectType)
 			.append(" ")
 			.append(name)
-			.append(" = event.get")
+			.append(" = event.")
 			.append(obtainer)
 			.append("();")
 			.toString();

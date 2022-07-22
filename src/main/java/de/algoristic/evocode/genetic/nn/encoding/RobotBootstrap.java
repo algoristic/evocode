@@ -195,7 +195,7 @@ public class RobotBootstrap {
 			.build(sensorCounter++);
 		Sensor enemyDistance = new Sensor.Builder("distance")
 			.withVariableName("enemyDistance")
-			.withObtainer(new PlainResolvable("(event.getDistance() / (Math.hypot(battleFieldWidth, battleFieldHeight))"))
+			.withObtainer(new PlainResolvable("(event.getDistance() / (Math.hypot(battleFieldWidth, battleFieldHeight)))"))
 			.build(sensorCounter++);
 		Sensor enemyBulletBearing = new Sensor.Builder("bearing")
 			.withVariableName("enemyBulletBearing")

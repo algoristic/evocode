@@ -30,8 +30,8 @@ public class GenomeTranslator {
 		final Path targetPath = robotLocation.resolve(genotype.getCompilationTargetPathName());
 		
 		File targetDir = targetPath.toFile();
-		if(!targetDir.exists()) targetDir.mkdirs();
-		
+		if(! targetDir.exists()) targetDir.mkdirs();
+
 		final Path javaFileTarget = targetPath.resolve(javaFileSource.getFileName());
 		final Path classFileTarget = targetPath.resolve(classFileSource.getFileName());
 		
