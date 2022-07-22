@@ -5,6 +5,7 @@ import robocode.BattleResults;
 public class FitnessValue {
 
 	private double value;
+	private double percentage;
 	private BattleResults rawData;
 	private long timeInMillis = -1;
 
@@ -68,8 +69,16 @@ public class FitnessValue {
 		this.timeInMillis = timeInMillis;
 	}
 
-	public synchronized void setRawData(BattleResults rawData) {
+	public void setRawData(BattleResults rawData) {
 		this.rawData = rawData;
+	}
+
+	public int getPercentage() {
+		return Double.valueOf((100 * percentage)).intValue();
+	}
+
+	public void setPercentage(double percentage) {
+		this.percentage = percentage;
 	}
 
 	@Override

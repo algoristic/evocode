@@ -22,4 +22,18 @@ public class Intermitter implements SendingNeuron, ReceivingNeuron {
 	public List<Connection> getReceivers() {
 		return receivers;
 	}
+
+	@Override
+	public String getInitializer() {
+		return new StringBuffer()
+			.append("IntermediateNeuron ")
+			.append(uuid)
+			.append(" = new IntermediateNeuron()")
+			.toString();
+	}
+
+	@Override
+	public String getUUID() {
+		return uuid;
+	}
 }

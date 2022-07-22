@@ -197,8 +197,22 @@ public class EvocodeSettings {
 			.orElse(8);
 	}
 
+	public double getActionMin(String action, double absMin) {
+		double min = properties.getProperty("evo.genome.nn.action." + action + ".min")
+			.map(Double::valueOf)
+			.orElse(absMin);
+		return Math.max(absMin, min);
+	}
+
+	public double getActionMax(String action, double absMax) {
+		double max = properties.getProperty("evo.genome.nn.action." + action + ".max")
+			.map(Double::valueOf)
+			.orElse(absMax);
+		return Math.min(absMax, max);
+	}
+
 	public List<Double> getValueRanges(String action) {
-		return properties.getProperty("evo.genome.nn." + action + ".ranges")
+		return properties.getProperty("evo.genome.nn.action." + action + ".ranges")
 			.map(specs -> specs.split(","))
 			.stream()
 			.flatMap(Arrays::stream)
@@ -211,5 +225,12 @@ public class EvocodeSettings {
 		return properties.getProperty("evo.genome.nn.weightFlattener")
 			.map(Double::valueOf)
 			.orElse(8192d);
+	}
+
+	public String getMaximumTurnAwareness() {
+		return properties.getProperty("evo.genome.nn.maxTurnAwareness")
+			.map(Integer::valueOf)
+			.map(String::valueOf)
+			.orElse("10000");
 	}
 }

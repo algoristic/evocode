@@ -48,6 +48,7 @@ public class NNGeneParser {
 		int start = (sourceTypeIdentifier + 2 * neuronIdentifier + sinkTypeIdentifier);
 		int end = (start + weight);
 		double weight = parseBinaryPart(start, end);
+		weight -= 32768; // because it's not an signed integer we need this step to produce numbers above and below zero
 		double flattener = settings.getWeightFlattener();
 		return (weight / flattener);
 	}

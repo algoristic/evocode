@@ -70,6 +70,8 @@ public class RobocodeAdaptor {
 
 		BattleSpecification spec = new BattleSpecification(rounds, battlefield, robots);
 		FitnessValue fitnessValue = new FitnessValue();
+
+		WinPercentageCalculator calc = new WinPercentageCalculator();
 		engine.addBattleListener(new IBattleListener() {
 			@Override public void onTurnStarted(TurnStartedEvent event) { }
 			@Override public void onTurnEnded(TurnEndedEvent event) { }
@@ -83,11 +85,11 @@ public class RobocodeAdaptor {
 			@Override public void onBattleError(BattleErrorEvent event) { }
 			@Override public void onBattleCompleted(BattleCompletedEvent event) {
 				for(BattleResults results : event.getIndexedResults()) {
+					int score = results.getScore();
+					calc.addScore(score);
 					if(results.getTeamLeaderName().equalsIgnoreCase(robotName)) {
-						double fitness = fitnessFunction.evaluate(results);
-						fitnessValue.setValue(fitness);
+						calc.setOwnScore(score);
 						fitnessValue.setRawData(results);
-						break;
 					}
 				}
 			}
@@ -95,6 +97,11 @@ public class RobocodeAdaptor {
 		engine.setVisible(visualize);
 		engine.runBattle(spec);
 		engine.waitTillBattleOver();
+
+		double percentage = calc.getWinPercentages();
+		fitnessValue.setPercentage(percentage);
+		fitnessFunction.evaluate(fitnessValue);
+
 		logger.write("Ran battle: " + robotName + ", eval: " + fitnessValue);
 		long t_1 = System.currentTimeMillis();
 		fitnessValue.setTimeInMillis(t_1 - t_0);
@@ -110,6 +117,23 @@ public class RobocodeAdaptor {
 		File[] dismissableContent = directory.listFiles();
 		for(File dismissableFile : dismissableContent) {
 			dismissableFile.delete();
+		}
+	}
+
+	private static class WinPercentageCalculator {
+		private int ownScore = 0;
+		private int scoreSum = 0;
+
+		void setOwnScore(int ownScore) {
+			this.ownScore = ownScore;
+		}
+
+		void addScore(int score) {
+			scoreSum += score;
+		}
+
+		double getWinPercentages() {
+			return ((double) ownScore / (double) scoreSum);
 		}
 	}
 }

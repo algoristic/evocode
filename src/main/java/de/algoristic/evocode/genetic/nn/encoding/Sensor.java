@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sensor implements SendingNeuron {
-	
+
+	private String uuid;
 	private String signalEmitter;
 	private String variableName;
 	private String name;
@@ -13,7 +14,8 @@ public class Sensor implements SendingNeuron {
 
 	private List<Connection> receivers;
 
-	public Sensor(String emitter, String variableName, String name, String dataType, Resolvable obtainer) {
+	private Sensor(int id, String emitter, String variableName, String name, String dataType, Resolvable obtainer) {
+		uuid = ("s_" + id);
 		this.signalEmitter = emitter;
 		this.variableName = variableName;
 		this.name = name;
@@ -79,8 +81,8 @@ public class Sensor implements SendingNeuron {
 			this.variableName = name;
 		}
 
-		public Sensor build() {
-			return new Sensor(signalEmitter, variableName, name, dataType, obtainer);
+		public Sensor build(int id) {
+			return new Sensor(id, signalEmitter, variableName, name, dataType, obtainer);
 		}
 
 		public Builder withVariableName(String variableName) {
@@ -102,5 +104,19 @@ public class Sensor implements SendingNeuron {
 			this.obtainer = obtainer;
 			return this;
 		}
+	}
+
+	@Override
+	public String getInitializer() {
+		return new StringBuffer()
+			.append("SensoryNeuron ")
+			.append(uuid)
+			.append(" = new SensoryNeuron()")
+			.toString();
+	}
+
+	@Override
+	public String getUUID() {
+		return uuid;
 	}
 }

@@ -71,4 +71,29 @@ public class Actor implements ReceivingNeuron {
 	public double getpMax() {
 		return pMax;
 	}
+
+	@Override
+	public String getInitializer() {
+		String method = action.getName();
+		double absMin = action.getAbsMin();
+		double absMax = action.getAbsMax();
+		double min = (pMin * (absMax - absMin) + absMin);
+		double max = (pMax * (absMax - absMin) + absMin);
+		return new StringBuffer()
+			.append("ActionNeuron ")
+			.append(uuid)
+			.append(" = new ActionNeuron(this, ")
+			.append(min)
+			.append(", ")
+			.append(max)
+			.append(", (r, v) -> r.")
+			.append(method)
+			.append("(v))")
+			.toString();
+	}
+
+	@Override
+	public String getUUID() {
+		return uuid;
+	}
 }

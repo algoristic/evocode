@@ -1,5 +1,7 @@
 package de.algoristic.evocode.genetic.nn;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +16,7 @@ import de.algoristic.evocode.genetic.nn.encoding.Connection;
 import de.algoristic.evocode.genetic.nn.encoding.Intermitter;
 import de.algoristic.evocode.genetic.nn.encoding.ReceivingNeuron;
 import de.algoristic.evocode.genetic.nn.encoding.RobotBootstrap;
+import de.algoristic.evocode.genetic.nn.encoding.RobotFile;
 import de.algoristic.evocode.genetic.nn.encoding.SendingNeuron;
 import de.algoristic.evocode.genetic.nn.encoding.Sensor;
 import de.algoristic.evocode.util.NumberSystemUtils;
@@ -29,7 +32,13 @@ public class NeuralNetwork implements Genome {
 	@Override
 	public Genotype transcribe(GeneTranscriptionParameters parameters, String compilationTargetPath) {
 		RobotBootstrap robot = decode(genes);
-		return null;
+		String packageName = parameters.getPackageName();
+		String robotName = parameters.getRobotName();
+		RobotFile robotFile = new RobotFile(robot, packageName, robotName);
+		Path targetPath = parameters.getIndividualDirectory().toPath().resolve(robotName.concat(".java"));
+		File javaFile = robotFile.writeTo(targetPath);
+		Genotype genotype = new Genotype(javaFile, compilationTargetPath, robotName);
+		return genotype;
 	}
 
 	@Override
