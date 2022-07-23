@@ -105,4 +105,9 @@ public class Actor implements ReceivingNeuron {
 			.append(")")
 			.toString();
 	}
+
+	@Override
+	public String toString() {
+		return action.getName() + "[" + uuid + "]";
+	}
 }

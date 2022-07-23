@@ -173,8 +173,8 @@ public class EvocodeSettings {
 			.orElseThrow();
 	}
 
-	public List<String> getDisabledSensors() {
-		return properties.getProperty("evo.genome.nn.disableSensors")
+	public List<String> getAllowedSensors() {
+		return properties.getProperty("evo.genome.nn.allowedSensors")
 			.map(specs -> specs.split(","))
 			.stream()
 			.flatMap(Arrays::stream)
@@ -182,8 +182,8 @@ public class EvocodeSettings {
 			.collect(Collectors.toList());
 	}
 
-	public List<String> getDisabledActors() {
-		return properties.getProperty("evo.genome.nn.disableActors")
+	public List<String> getAllowedActors() {
+		return properties.getProperty("evo.genome.nn.allowedActors")
 			.map(specs -> specs.split(","))
 			.stream()
 			.flatMap(Arrays::stream)

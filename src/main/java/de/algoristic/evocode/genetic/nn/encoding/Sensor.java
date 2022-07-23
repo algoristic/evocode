@@ -135,4 +135,9 @@ public class Sensor implements SendingNeuron {
 			.append(")")
 			.toString();
 	}
+
+	@Override
+	public String toString() {
+		return variableName + "[" + uuid + "]";
+	}
 }

@@ -45,4 +45,9 @@ public class Intermitter implements SendingNeuron, ReceivingNeuron {
 			.append(")")
 			.toString();
 	}
+
+	@Override
+	public String toString() {
+		return uuid;
+	}
 }

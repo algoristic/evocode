@@ -80,7 +80,7 @@ public class RobotBootstrap {
 			.withObtainer(new SensorDivider(
 				new Sensor.Builder("gunHeat")
 					.withSignalEmitter(robotStatusObject)
-					.build(-1), "1.6d"))
+					.build(-1), "3.0d"))
 			.build(sensorCounter++));
 		robotStatus.addSensor(new Sensor.Builder("velocity")
 			.withObtainer(new SensorDivider(
@@ -383,25 +383,23 @@ public class RobotBootstrap {
 	}
 
 	private List<Sensor> filterAllowedSensors(List<Sensor> allKnownSensors) {
-		List<Sensor> allowedSensors = new ArrayList<>();
-		List<String> disabledSensors = settings.getDisabledSensors();
+		List<Sensor> sensors = new ArrayList<>();
+		List<String> allowedSensors = settings.getAllowedSensors();
 		for(Sensor sensor : allKnownSensors) {
 			String identifier = sensor.getVariable();
-			if(disabledSensors.contains(identifier)) continue;
-			allowedSensors.add(sensor);
+			if(allowedSensors.contains(identifier)) sensors.add(sensor);
 		}
-		return allowedSensors;
+		return sensors;
 	}
 
 	private List<Actor> filterAllowedActors(List<Actor> allKnownActors) {
-		List<Actor> allowedActors = new ArrayList<Actor>();
-		List<String> disabledActors = settings.getDisabledActors();
+		List<Actor> actors = new ArrayList<Actor>();
+		List<String> allowedActors = settings.getAllowedActors();
 		for(Actor actor : allKnownActors) {
 			String name = actor.getName();
-			if(disabledActors.contains(name)) continue;
-			allowedActors.add(actor);
+			if(allowedActors.contains(name)) actors.add(actor);
 		}
-		return allowedActors;
+		return actors;
 	}
 
 	public List<RobotMethod> getMethods() {
