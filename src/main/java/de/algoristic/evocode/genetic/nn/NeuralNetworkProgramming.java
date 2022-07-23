@@ -2,12 +2,15 @@ package de.algoristic.evocode.genetic.nn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import de.algoristic.evocode.app.conf.EvocodeSettings;
 import de.algoristic.evocode.genetic.Genetics;
 import de.algoristic.evocode.genetic.Genome;
+import de.algoristic.evocode.genetic.nn.encoding.RobotBootstrap;
+
 import static de.algoristic.evocode.util.NumberSystemUtils.randomHexChar;
 
 public class NeuralNetworkProgramming implements Genetics {
@@ -41,28 +44,36 @@ public class NeuralNetworkProgramming implements Genetics {
 		return genome;
 	}
 
+	private Integer _lazy_geneLength;
 	public int calculateGeneLength() {
-		int neuronIdentifier = calculateNeuronIdentifierLength();
-		int sourceTypeIdentifier = 1;
-		int sinkTypeIdentifier = 1;
-		int weight = 16;
+		if(_lazy_geneLength == null) {
+			int neuronIdentifier = calculateNeuronIdentifierLength();
+			int sourceTypeIdentifier = 1;
+			int sinkTypeIdentifier = 1;
+			int weight = 16;
 
-		int binaryGeneLength = 0;
-		binaryGeneLength += sourceTypeIdentifier;
-		binaryGeneLength += neuronIdentifier;
-		binaryGeneLength += sinkTypeIdentifier;
-		binaryGeneLength += neuronIdentifier;
-		binaryGeneLength += weight;
-		binaryGeneLength += (binaryGeneLength % 4);
-		int hexGeneLength = (binaryGeneLength / 4);
-		return hexGeneLength;
+			int binaryGeneLength = 0;
+			binaryGeneLength += sourceTypeIdentifier;
+			binaryGeneLength += neuronIdentifier;
+			binaryGeneLength += sinkTypeIdentifier;
+			binaryGeneLength += neuronIdentifier;
+			binaryGeneLength += weight;
+			binaryGeneLength += (binaryGeneLength % 4);
+			int hexGeneLength = (binaryGeneLength / 4);
+			_lazy_geneLength = hexGeneLength;
+		}
+		return _lazy_geneLength;
 	}
 
+	private Integer _lazy_neuronIdentifierLength;
 	public int calculateNeuronIdentifierLength() {
-		int hiddenNeurons = settings.getHiddenNeurons();
-		String binary = Integer.toBinaryString(hiddenNeurons);
-		int identifierLength = binary.length();
-		return identifierLength;
+		if(_lazy_neuronIdentifierLength == null) {
+			int maxLayerSize = getBiggestLayer();
+			String binary = Integer.toBinaryString(maxLayerSize);
+			_lazy_neuronIdentifierLength = binary.length();
+			
+		}
+		return _lazy_neuronIdentifierLength;
 	}
 
 	public int getSourceTypeIdetifierLength() {
@@ -75,6 +86,35 @@ public class NeuralNetworkProgramming implements Genetics {
 
 	public int getWeightLength() {
 		return 16;
+	}
+
+	private int getBiggestLayer() {
+		List<Integer> layerSizes = Arrays.asList(
+			numberOfSensors(),
+			numberOfHiddenNeurons(),
+			numberOfActors());
+		Collections.sort(layerSizes, Collections.reverseOrder());
+		return layerSizes.get(0);
+	}
+
+	private int numberOfHiddenNeurons() {
+		return prototype().intermitters().size();
+	}
+
+	private int numberOfActors() {
+		return prototype().actors().size();
+	}
+
+	private int numberOfSensors() {
+		return prototype().sensors().size();
+	}
+
+	private RobotBootstrap _lazy_bootstrap;
+	private RobotBootstrap prototype() {
+		if(_lazy_bootstrap == null) {
+			_lazy_bootstrap = new RobotBootstrap();
+		}
+		return _lazy_bootstrap;
 	}
 
 	@Override
