@@ -65,13 +65,15 @@ evo.run.convergence=5000
 The total amount of individuals of a generation will be equally distributed over the defined number of islands. The islands stay isolated fro each other unless a migration happens. This leads to a partition of the search space and can produce a number of totally different apporaches to the solution.
 
 There are two types of migration: _random_ and _ring_. The random migration let's individuals more or less uncrolled jump between islands (just as the name states). The ring migration leads to a more controlled behaviour where the migration individuals travel to the next adjascent island. Each migration is defined by an epoch (the mount of generations until the next generation happens) and a percentual migration chance for each individual of a generation. So a migration happens if `generation % epoch == 0`.
+
+The island setup is dependent on the generation (`$g`). See evolution control for more information.
 ```
 evo.strategy.islands.num=5
-evo.gen.0.islands.migration=ring, random
-evo.gen.0.islands.migration.ring.epoch=30
-evo.gen.0.islands.migration.ring.chance=0.01
-evo.gen.0.islands.migration.random.epoch=30
-evo.gen.0.islands.migration.random.chance=0.01
+evo.gen.$g.islands.migration=ring, random
+evo.gen.$g.islands.migration.ring.epoch=30
+evo.gen.$g.islands.migration.ring.chance=0.01
+evo.gen.$g.islands.migration.random.epoch=30
+evo.gen.$g.islands.migration.random.chance=0.01
 ```
 
 ### Evolution control
