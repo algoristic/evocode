@@ -75,6 +75,22 @@ evo.gen.0.islands.migration.random.chance=0.01
 ```
 
 ### Evolution control
+*Iportant*: every of this properties can be set generation-specific, denoted by `$g`. So, if you replace `$g` with `10`, the property will be used from generation 10 onward. If the same property is also set for generation `100` it will be ignored, until generation 100 is reached.
+
+#### Basics
+The generation size sets the amount of individuals per generation. Keep in mind that the individuals will be distributed over the amount of defined islands.
+```
+evo.gen.$g.generation.size=250
+```
+The fitness function is a mathematical expression, used to evaluate the fitness of an evaluated individual. Ranking and selection of an individual is dependent of its fitness value.
+
+Usable variables:
+- `[score]`
+- ...
+```
+evo.gen.$g.fitnessFunction=[percentage]
+```
+
 // TODO
 
 ## 🚀 Running the application
