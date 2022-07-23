@@ -21,8 +21,60 @@ Create _robocode_ robots, using [genetic programming](https://en.wikipedia.org/w
 - Check, if this problem occurs: https://stackoverflow.com/a/70600427.
 
 ## 🔧 Configuration
+The configuration of the simulation happens inside a ´.properties´ file.
 
+### Project properties
+This settings control mostly the naming in your project. They will determine the naming structure of the folders in your project and the scheme for your robot-names as well.
+```
+evo.project.name=Name of your project
+evo.project.robocodeLocation=path/to/robocode
+evo.project.packageName=name.of.your.package
+evo.project.robotClassName=Evocode_[individual]_[generation]
+evo.project.generationDirectoryPrefix=g_
+evo.project.individualDirectoryPrefix=tmp.i_
+```
 
+### Run configurations
+```
+evo.run.writeLog=true|false
+evo.run.termination=iterations|timer|convergence
+```
+#### Timer options
+Depending on the value of `evo.run.termination`:
+
+Produce a specific amount of generations.
+```
+evo.run.iterations=4
+```
+
+Run a specific amount of time, defined over a `java.util.concurrent.TimeUnit`.
+```
+evo.run.timer.unit=hours
+evo.run.timer.time=2
+```
+
+Run the simulation until any generation produces an individual that hits the denoted fitness.
+```
+evo.run.convergence=5000
+```
+
+### Genome generation and structure
+// TODO
+
+### Island setup
+The total amount of individuals of a generation will be equally distributed over the defined number of islands. The islands stay isolated fro each other unless a migration happens. This leads to a partition of the search space and can produce a number of totally different apporaches to the solution.
+
+There are two types of migration: _random_ and _ring_. The random migration let's individuals more or less uncrolled jump between islands (just as the name states). The ring migration leads to a more controlled behaviour where the migration individuals travel to the next adjascent island. Each migration is defined by an epoch (the mount of generations until the next generation happens) and a percentual migration chance for each individual of a generation. So a migration happens if `generation % epoch == 0`.
+```
+evo.strategy.islands.num=5
+evo.gen.0.islands.migration=ring, random
+evo.gen.0.islands.migration.ring.epoch=30
+evo.gen.0.islands.migration.ring.chance=0.01
+evo.gen.0.islands.migration.random.epoch=30
+evo.gen.0.islands.migration.random.chance=0.01
+```
+
+### Evolution control
 // TODO
 
 ## 🚀 Running the application
