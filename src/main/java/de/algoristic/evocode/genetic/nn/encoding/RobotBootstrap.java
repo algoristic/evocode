@@ -27,6 +27,8 @@ public class RobotBootstrap {
 	}
 
 	private void init() {
+		EvocodeSettings settings = new EvocodeSettings();
+
 		eventObjects = new ArrayList<>();
 		int sensorCounter = 0;
 		String robotStatusObject = "status";
@@ -203,7 +205,10 @@ public class RobotBootstrap {
 			.build(sensorCounter++);
 		Sensor wallBearing = new Sensor.Builder("bearing")
 			.withVariableName("wallBearing")
-			.withObtainer(new PlainResolvable("((event.getBearing() + 179d) / 359d)"))
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("bearing")
+					.withSignalEmitter("event")
+					.build(-1), "359d"))
 			.build(sensorCounter++);
 		localSensors.add(enemyEnergy);
 		localSensors.add(enemyBearing);
@@ -211,6 +216,60 @@ public class RobotBootstrap {
 		localSensors.add(enemyDistance);
 		localSensors.add(enemyBulletBearing);
 		localSensors.add(wallBearing);
+
+		// advanced robot sensors
+		double maxMoveDistance = settings.getCategoryMax(ActionCategory.move);
+		Sensor distanceRemaining = new Sensor.Builder("distanceRemaining")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("distanceRemaining")
+					.build(-1), maxMoveDistance))
+			.build(sensorCounter++);
+		double maxTurnDistance = settings.getCategoryMax(ActionCategory.turn);
+		Sensor turnRemaining = new Sensor.Builder("turnRemaining")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("turnRemaining")
+					.build(-1), maxTurnDistance))
+			.build(sensorCounter++);
+		Sensor gunTurnRemaining = new Sensor.Builder("gunTurnRemaining")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("gunTurnRemaining")
+					.build(-1), maxTurnDistance))
+			.build(sensorCounter++);
+		Sensor radarTurnRemaining = new Sensor.Builder("radarTurnRemaining")
+			.withObtainer(new SensorDivider(
+				new Sensor.Builder("radarTurnRemaining")
+					.build(-1), maxTurnDistance))
+			.build(sensorCounter++);
+		localSensors.add(distanceRemaining);
+		localSensors.add(turnRemaining);
+		localSensors.add(gunTurnRemaining);
+		localSensors.add(radarTurnRemaining);
+
+		Sensor moveFeedback = new Sensor.Builder("feedback")
+			.withVariableName("moveFeedback")
+			.withSignalEmitter("this.moveFeedback")
+			.build(sensorCounter++);
+		Sensor turnFeedback = new Sensor.Builder("feedback")
+			.withVariableName("turnFeedback")
+			.withSignalEmitter("this.turnFeedback")
+			.build(sensorCounter++);
+		Sensor turnGunFeedback = new Sensor.Builder("feedback")
+			.withVariableName("turnGunFeedback")
+			.withSignalEmitter("this.turnGunFeedback")
+			.build(sensorCounter++);
+		Sensor turnRadarFeedback = new Sensor.Builder("feedback")
+			.withVariableName("turnRadarFeedback")
+			.withSignalEmitter("this.turnRadarFeedback")
+			.build(sensorCounter++);
+		Sensor fireFeedback = new Sensor.Builder("feedback")
+			.withVariableName("fireFeedback")
+			.withSignalEmitter("this.fireFeedback")
+			.build(sensorCounter++);
+		localSensors.add(moveFeedback);
+		localSensors.add(turnFeedback);
+		localSensors.add(turnGunFeedback);
+		localSensors.add(turnRadarFeedback);
+		localSensors.add(fireFeedback);
 
 		// initialize actual methods
 		methods = new ArrayList<>();
@@ -251,10 +310,19 @@ public class RobotBootstrap {
 
 		RobotMethod status = new RobotMethod("status");
 		status.addEventObject("getStatus", robotStatus);
+		status.addLocalSensor(distanceRemaining);
+		status.addLocalSensor(turnRemaining);
+		status.addLocalSensor(gunTurnRemaining);
+		status.addLocalSensor(radarTurnRemaining);
+		status.addLocalSensor(moveFeedback);
+		status.addLocalSensor(turnFeedback);
+		status.addLocalSensor(turnGunFeedback);
+		status.addLocalSensor(turnRadarFeedback);
+		status.addLocalSensor(fireFeedback);
+		status.addBoilerplateCode("ticks()");
 		status.addBoilerplateCode("processStimuli()");
 		methods.add(status);
 
-		EvocodeSettings settings = new EvocodeSettings();
 		int numberOfHiddenNeurons = settings.getHiddenNeurons();
 		intermitters = new ArrayList<>();
 		for(int i = 0; i < numberOfHiddenNeurons; i++) {
@@ -266,11 +334,12 @@ public class RobotBootstrap {
 		ValueRangeManager rangeManager = new ValueRangeManager(); 
 		for(ActionPrototype prototype : ActionPrototype.values()) {
 			String action = prototype.getName();
+			String category = prototype.getCategory();
 			double absMin = prototype.getAbsMin();
 			double absMax = prototype.getAbsMax();
-			double min = settings.getActionMin(action, absMin);
-			double max = settings.getActionMax(action, absMax);
-			List<ValueRange> ranges = rangeManager.getRanges(action);
+			double min = settings.getCategoryMin(category, absMin);
+			double max = settings.getCategoryMax(category, absMax);
+			List<ValueRange> ranges = rangeManager.getRanges(category);
 			for(ValueRange range : ranges) {
 				double pMin = range.getFromIncluded();
 				double pMax = range.getToIncluded();

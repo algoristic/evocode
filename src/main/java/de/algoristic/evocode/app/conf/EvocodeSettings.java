@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import de.algoristic.evocode.app.periphery.SystemPropertyFacade;
+import de.algoristic.evocode.genetic.nn.encoding.ActionCategory;
 
 public class EvocodeSettings {
 
@@ -197,22 +198,34 @@ public class EvocodeSettings {
 			.orElse(8);
 	}
 
-	public double getActionMin(String action, double absMin) {
-		double min = properties.getProperty("evo.genome.nn.action." + action + ".min")
+	public double getCategoryMin(ActionCategory category) {
+		double defaultMin = category.getAbsMin();
+		String name = category.name();
+		return getCategoryMin(name, defaultMin);
+	}
+
+	public double getCategoryMin(String category, double absMin) {
+		double min = properties.getProperty("evo.genome.nn.action." + category + ".min")
 			.map(Double::valueOf)
 			.orElse(absMin);
 		return Math.max(absMin, min);
 	}
 
-	public double getActionMax(String action, double absMax) {
-		double max = properties.getProperty("evo.genome.nn.action." + action + ".max")
+	public double getCategoryMax(ActionCategory category) {
+		double defaultMax = category.getAbsMax();
+		String name = category.name();
+		return getCategoryMax(name, defaultMax);
+	}
+
+	public double getCategoryMax(String category, double absMax) {
+		double max = properties.getProperty("evo.genome.nn.action." + category + ".max")
 			.map(Double::valueOf)
 			.orElse(absMax);
 		return Math.min(absMax, max);
 	}
 
-	public List<Double> getValueRanges(String action) {
-		return properties.getProperty("evo.genome.nn.action." + action + ".ranges")
+	public List<Double> getValueRanges(String category) {
+		return properties.getProperty("evo.genome.nn.action." + category + ".ranges")
 			.map(specs -> specs.split(","))
 			.stream()
 			.flatMap(Arrays::stream)
@@ -232,5 +245,10 @@ public class EvocodeSettings {
 			.map(Integer::valueOf)
 			.map(String::valueOf)
 			.orElse("10000");
+	}
+
+	public String getRobotTemplate() {
+		return properties.getProperty("evo.genome.nn.robot.template")
+			.orElse("basic");
 	}
 }

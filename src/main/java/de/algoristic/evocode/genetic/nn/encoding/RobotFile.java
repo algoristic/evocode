@@ -11,7 +11,7 @@ import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotFile {
 
-	private static final String bootstrapFileName = "src/main/resources/NnProgramBootstrap";
+	private static final String bootstrapFileName = "src/main/resources/nn.[].template";
 
 	private final EvocodeSettings settings;
 	private final RobotBootstrap robot;
@@ -30,11 +30,15 @@ public class RobotFile {
 			RobotImplementation implementation = new RobotImplementation(robot);
 			String mainMethod = settings.getMainMethod().replace(";", ";\n\t\t");
 			String maxTurnAwareness = settings.getMaximumTurnAwareness();
-			String javaCode = Files.readString(Paths.get(bootstrapFileName))
+			String maxMoveDistance = String.valueOf(settings.getCategoryMax(ActionCategory.move));
+			String template = settings.getRobotTemplate();
+			String templateFile = bootstrapFileName.replace("[]", template);
+			String javaCode = Files.readString(Paths.get(templateFile))
 				.replace("/*package*/", packageName)
 				.replace("/*robotName*/", robotName)
 				.replace("/*mainMethod*/", mainMethod)
 				.replace("/*maxTurnAwareness*/", maxTurnAwareness)
+				.replace("/*maxMoveDistance*/", maxMoveDistance)
 				.replace("/*neurons*/", implementation.getNeurons())
 				.replace("/*connections*/", implementation.getConnections())
 				.replace("/*addToLayers*/", implementation.getAddToLayers())

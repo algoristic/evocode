@@ -17,8 +17,8 @@ public class ValueRangeManager {
 		this.settings = settings;
 	}
 
-	public List<ValueRange> getRanges(String actionName) {
-		List<Double> rangeValues = settings.getValueRanges(actionName);
+	public List<ValueRange> getRanges(String category) {
+		List<Double> rangeValues = settings.getValueRanges(category);
 		List<ValueRange> ranges = new ArrayList<>();
 		if(! rangeValues.contains(100d)) rangeValues.add(100d);
 		double start = 0;

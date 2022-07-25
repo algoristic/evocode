@@ -1,4 +1,4 @@
-package de.algoristic.evocode._poc;
+package /*package*/;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
 
 import robocode.*;
 
-public class EvoBot extends AdvancedRobot {
+public class /*robotName*/ extends AdvancedRobot {
 
 	private double playersAtStart;
 	private double numberOfRounds;
@@ -26,12 +26,7 @@ public class EvoBot extends AdvancedRobot {
 	private List<IntermediateNeuron> hiddenLayer = new ArrayList<>();
 	private List<ActionNeuron> actionLayer = new ArrayList<>();
 
-	SensoryNeuron s_2 = new SensoryNeuron();
-	SensoryNeuron s_3 = new SensoryNeuron();
-
-	IntermediateNeuron i_1 = new IntermediateNeuron();
-
-	ActionNeuron a_1 = new ActionNeuron(this, .1, 3.0, (robot, power) -> robot.fire(power));
+	/*neurons*/
 
 	@Override
 	public void run() {
@@ -42,14 +37,15 @@ public class EvoBot extends AdvancedRobot {
 			this.setRadarColor(Color.ORANGE);
 			this.setScanColor(Color.ORANGE);
 		}
+		{
+			playersAtStart = this.getOthers();
+			numberOfRounds = this.getNumRounds();
+			battleFieldWidth = this.getBattleFieldWidth();
+			battleFieldHeight = this.getBattleFieldHeight();
+			maxTurnAwareness = /*maxTurnAwareness*/;
+		}
 
-		playersAtStart = this.getOthers();
-		numberOfRounds = this.getNumRounds();
-		battleFieldWidth = this.getBattleFieldWidth();
-		battleFieldHeight = this.getBattleFieldHeight();
-		maxTurnAwareness = 10000d;
-
-		moveFeedback = new Feedback(100); //FIXME -> there is no hard limit here
+		moveFeedback = new Feedback(/*maxMoveDistance*/);
 		turnFeedback = new Feedback(359d);
 		turnGunFeedback = new Feedback(359d);
 		turnRadarFeedback = new Feedback(359d);
@@ -61,38 +57,19 @@ public class EvoBot extends AdvancedRobot {
 		feedbacks.add(turnRadarFeedback);
 		feedbacks.add(fireFeedback);
 
-		sensorLayer.add(s_2);
-		sensorLayer.add(s_3);
+		/*connections*/
+		/*addToLayers*/
 
-		hiddenLayer.add(i_1);
-
-		actionLayer.add(a_1);
-
-		s_2.addConnection(new Connection(1.0d, i_1));
-		s_3.addConnection(new Connection(1.0d, i_1));
-
-		i_1.addConnection(new Connection(1.0d, i_1));
-		i_1.addConnection(new Connection(1.0d, a_1));
+		/*mainMethod*/
 	}
 
-	@Override
-	public void onStatus(StatusEvent event) {
-		RobotStatus status = event.getStatus();
-		double turn = (status.getTime() / maxTurnAwareness);
-		double fireFeedback = this.fireFeedback.getFeedback();
+/*methods*/
 
-		s_2.process(turn);
-		s_3.process(fireFeedback);
-
-		ticks();
-		processStimuli();
-	}
-
-	void raiseTurnAwareness(double amount) {
+	public void raiseTurnAwareness(double amount) {
 		maxTurnAwareness += amount;
 	}
 
-	void reduceTurnAwareness(double amount) {
+	public void reduceTurnAwareness(double amount) {
 		if(maxTurnAwareness == 0) return;
 		maxTurnAwareness -= amount;
 	}
@@ -253,15 +230,15 @@ public class EvoBot extends AdvancedRobot {
 
 		private static final double DEFAULT = Double.NaN;
 
-		private final EvoBot peer;
-		private final BiConsumer<EvoBot, Double> action;
+		private final /*robotName*/ peer;
+		private final BiConsumer</*robotName*/, Double> action;
 
 		private double min;
 		private double max;
 
 		private double state = DEFAULT;
 
-		public ActionNeuron(EvoBot peer, double min, double max, BiConsumer<EvoBot, Double> action) {
+		public ActionNeuron(/*robotName*/ peer, double min, double max, BiConsumer</*robotName*/, Double> action) {
 			this.peer = peer;
 			this.min = min;
 			this.max = max;
