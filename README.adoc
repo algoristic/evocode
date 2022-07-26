@@ -21,11 +21,11 @@ Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programmin
 - Check, if this problem occurs: https://stackoverflow.com/a/70600427.
 
 == Configuration
-The configuration of the simulation happens inside a ´.properties´ file.
+The configuration of the simulation happens inside a `.properties` file.
 
 [source]
 ----
-include::default.properties[]
+include::./default.properties[]
 ----
 
 == Running the application
