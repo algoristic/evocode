@@ -1,7 +1,7 @@
 = _evocode_
 Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programming[genetic programming].
 
-== Getting Started
+== 🚀 Getting Started
 === Installation
 . Download _robocode_ from https://sourceforge.net/projects/robocode/files/robocode/[sourceforge.net].
 . Install, using `java -jar robocode-installer.x.y.z.jar`.
@@ -20,12 +20,12 @@ Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programmin
 === Misc
 - Check, if this problem occurs: https://stackoverflow.com/a/70600427.
 
-== Configuration
+== 🔧 Configuration
 The configuration of the simulation happens inside a `.properties` file. This file controls the current run of the simulation as well as the general configuration of the simulation project.
 
 See link:./default.properties[default.properties] for a general reference. Also see link:./genome.dna.properties[genome.dna.properties] and link:./genome.nn.properties[genome.nn.properties] for the different implementations of genetics in this project.
 
-== Running the application
+== 🚧 Running the application
 As of now there are two possibilities to run the app:
 
 === Run the simulation
@@ -34,7 +34,7 @@ Run: `de.algoristic.evocode.EvocodeApplication` `absolute/path/to/your/config.pr
 === Run and display a specific individual
 Run: `de.algoristic.evocode.EvocodeApplication` `absolute/path/to/your/config.properties` `<generation>` `<individual>` to re-run and display a already evaluated individual from a generation in that directory.
 
-== Consideration
+== 💬 Consideration
 You may have wondered why there is no support for concurrency/multi-threading. Well, I have also tried around with this - in fact there is no way to run multiple instances of the robocode engine (API) in eclipse. You may instantiate multiple objects, but there will be always one underlying factory, performing all tasks, resulting in no improvement in performance...
 
 === Sidenote (for myself)
