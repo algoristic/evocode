@@ -3,19 +3,19 @@ Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programmin
 
 == Getting Started
 === Installation
-1. Download _robocode_ from https://sourceforge.net/projects/robocode/files/robocode/[sourceforge.net].
-2. Install, using `java -jar robocode-installer.x.y.z.jar`.
-  2.1. Install to `C:\robocode`.
-4. In `C:\robocode\robocode.bat` adjust the lines depending on your Java version.
-5. _Test run_ via `robocode.bat` or from start menu.
+. Download _robocode_ from https://sourceforge.net/projects/robocode/files/robocode/[sourceforge.net].
+. Install, using `java -jar robocode-installer.x.y.z.jar`.
+  .. Install to `C:\robocode`.
+. In `C:\robocode\robocode.bat` adjust the lines depending on your Java version.
+. _Test run_ via `robocode.bat` or from start menu.
 
 === Link to eclipse
-1. Follow the guide https://www.robowiki.net/wiki/Robocode/Eclipse/Create_a_Project[Create a project] on https://www.robowiki.net[robowiki].
-  1.1. Add `C:\robocode\libs\robocode.jar` according to guide.
-  1.2. Link _javadoc_ according to guide.
-2. Also add the https://mvnrepository.com/artifact/net.sf.robocode/robocode.api[`robocode.api`] at correct version to `pom.xml` for your convenience.
-3. In _robocode_ under `Options > Preferences > Development Options` add your Eclipse project and...
-4. ...in Eclipse follow the guide https://robowiki.net/wiki/Robocode/Eclipse/Running_from_Eclipse[Running from Eclipse] to make your robots runnable and debuggable from Eclipse.
+. Follow the guide https://www.robowiki.net/wiki/Robocode/Eclipse/Create_a_Project[Create a project] on https://www.robowiki.net[robowiki].
+.. Add `C:\robocode\libs\robocode.jar` according to guide.
+.. Link _javadoc_ according to guide.
+. Also add the https://mvnrepository.com/artifact/net.sf.robocode/robocode.api[`robocode.api`] at correct version to `pom.xml` for your convenience.
+. In _robocode_ under `Options > Preferences > Development Options` add your Eclipse project and...
+. ...in Eclipse follow the guide https://robowiki.net/wiki/Robocode/Eclipse/Running_from_Eclipse[Running from Eclipse] to make your robots runnable and debuggable from Eclipse.
 
 === Misc
 - Check, if this problem occurs: https://stackoverflow.com/a/70600427.
