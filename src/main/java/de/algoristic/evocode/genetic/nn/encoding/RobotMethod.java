@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import de.algoristic.evocode.app.conf.EvocodeSettings;
+
 public class RobotMethod {
 
 	private String name;
@@ -26,6 +28,12 @@ public class RobotMethod {
 
 	public void addLocalSensor(Sensor sensor) {
 		localSensors.add(sensor);
+	}
+
+	public void addSettingsBoilerplate() {
+		EvocodeSettings settings = new EvocodeSettings();
+		List<String> configuredBoilerplate = settings.getMethodBoilerplate(name);
+		boilerplateLOC.addAll(configuredBoilerplate);
 	}
 
 	public void addBoilerplateCode(String line) {

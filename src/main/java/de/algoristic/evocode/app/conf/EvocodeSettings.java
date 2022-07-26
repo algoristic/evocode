@@ -5,13 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import de.algoristic.evocode.app.periphery.SystemPropertyFacade;
 import de.algoristic.evocode.genetic.nn.encoding.ActionCategory;
@@ -250,5 +253,21 @@ public class EvocodeSettings {
 	public String getRobotTemplate() {
 		return properties.getProperty("evo.genome.nn.robot.template")
 			.orElse("basic");
+	}
+
+	public List<String> getMethodBoilerplate(String method) {
+		int lines = getMethodBoilerplateLines(method);
+		if(lines == 0) return new ArrayList<>();
+		return IntStream.rangeClosed(1, lines)
+			.mapToObj(i -> properties.getProperty("evo.genome.nn." + method + ".boilerplate." + i))
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.collect(Collectors.toList());
+	}
+
+	private int getMethodBoilerplateLines(String method) {
+		return properties.getProperty("evo.genome.nn." + method + ".boilerplate")
+			.map(Integer::valueOf)
+			.orElse(0);
 	}
 }

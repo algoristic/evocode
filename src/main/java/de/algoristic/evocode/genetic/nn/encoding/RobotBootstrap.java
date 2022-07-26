@@ -276,29 +276,35 @@ public class RobotBootstrap {
 		RobotMethod bulletHit = new RobotMethod("bulletHit");
 		bulletHit.addEventObject("getBullet", myBullet);
 		bulletHit.addLocalSensor(enemyEnergy);
+		bulletHit.addSettingsBoilerplate();
 		methods.add(bulletHit);
 
 		RobotMethod bulletHitBullet = new RobotMethod("bulletHitBullet");
 		bulletHitBullet.addEventObject("getBullet", myBullet);
 		bulletHitBullet.addEventObject("getHitBullet", enemyBullet);
+		bulletHitBullet.addSettingsBoilerplate();
 		methods.add(bulletHitBullet);
 
 		RobotMethod bulletMissed = new RobotMethod("bulletMissed");
 		bulletMissed.addEventObject("getBullet", myBullet);
+		bulletMissed.addSettingsBoilerplate();
 		methods.add(bulletMissed);
 
 		RobotMethod hitByBullet = new RobotMethod("hitByBullet");
 		hitByBullet.addEventObject("getBullet", enemyBullet);
 		hitByBullet.addLocalSensor(enemyBulletBearing);
+		hitByBullet.addSettingsBoilerplate();
 		methods.add(hitByBullet);
 
 		RobotMethod hitRobot = new RobotMethod("hitRobot");
 		hitRobot.addLocalSensor(enemyBearing);
 		hitRobot.addLocalSensor(enemyEnergy);
+		hitRobot.addSettingsBoilerplate();
 		methods.add(hitRobot);
 
 		RobotMethod hitWall = new RobotMethod("hitWall");
 		hitWall.addLocalSensor(wallBearing);
+		hitWall.addSettingsBoilerplate();
 		methods.add(hitWall);
 
 		RobotMethod scannedRobot = new RobotMethod("scannedRobot");
@@ -306,6 +312,7 @@ public class RobotBootstrap {
 		scannedRobot.addLocalSensor(enemyDistance);
 		scannedRobot.addLocalSensor(enemyEnergy);
 		scannedRobot.addLocalSensor(enemyHeading);
+		scannedRobot.addSettingsBoilerplate();
 		methods.add(scannedRobot);
 
 		RobotMethod status = new RobotMethod("status");
@@ -319,8 +326,9 @@ public class RobotBootstrap {
 		status.addLocalSensor(turnGunFeedback);
 		status.addLocalSensor(turnRadarFeedback);
 		status.addLocalSensor(fireFeedback);
-		status.addBoilerplateCode("ticks()");
-		status.addBoilerplateCode("processStimuli()");
+		status.addSettingsBoilerplate();
+		status.addBoilerplateCode("ticks();");
+		status.addBoilerplateCode("processStimuli();");
 		methods.add(status);
 
 		int numberOfHiddenNeurons = settings.getHiddenNeurons();

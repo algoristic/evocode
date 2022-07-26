@@ -15,11 +15,11 @@ public class /*robotName*/ extends AdvancedRobot {
 	private double battleFieldHeight;
 	private double maxTurnAwareness;
 
-	private Feedback moveFeedback;
-	private Feedback turnFeedback;
-	private Feedback turnGunFeedback;
-	private Feedback turnRadarFeedback;
-	private Feedback fireFeedback;
+	private Feedback moveFeedback = new Feedback(/*maxMoveDistance*/);
+	private Feedback turnFeedback = new Feedback(359d);
+	private Feedback turnGunFeedback = new Feedback(359d);
+	private Feedback turnRadarFeedback = new Feedback(359d);
+	private Feedback fireFeedback = new Feedback(3.0d);
 	private List<Feedback> feedbacks = new ArrayList<>();
 
 	private List<SensoryNeuron> sensorLayer = new ArrayList<>();
@@ -44,12 +44,6 @@ public class /*robotName*/ extends AdvancedRobot {
 			battleFieldHeight = this.getBattleFieldHeight();
 			maxTurnAwareness = /*maxTurnAwareness*/;
 		}
-
-		moveFeedback = new Feedback(/*maxMoveDistance*/);
-		turnFeedback = new Feedback(359d);
-		turnGunFeedback = new Feedback(359d);
-		turnRadarFeedback = new Feedback(359d);
-		fireFeedback = new Feedback(3.0d);
 
 		feedbacks.add(moveFeedback);
 		feedbacks.add(turnFeedback);

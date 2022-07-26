@@ -109,7 +109,7 @@ public class RobotImplementation {
 			String boilerplateCode = "";
 			if(! boilerplate.isEmpty()) {
 				boilerplateCode = boilerplate.stream()
-					.collect(Collectors.joining(";\n\t\t", "\n\t\t", ";\n"));
+					.collect(Collectors.joining("\n\t\t", "\n\t\t", "\n"));
 			}
 			String methodFood = method.getMethodFoot("\t");
 			buffer.append(methodHead)

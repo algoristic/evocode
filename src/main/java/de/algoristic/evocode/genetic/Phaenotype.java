@@ -41,10 +41,13 @@ public class Phaenotype implements Closeable {
 	@Override
 	public void close() throws IOException {
 		// delete resources under /robocode/robots/**
-		List<File> classFiles = Arrays.asList(javaFile.getParentFile().listFiles(new FilenameFilter() {
+		File directory = javaFile.getParentFile();
+		List<File> classFiles = Arrays.asList(directory.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.endsWith(".class");
+				String baseFileName = javaFile.getName();
+				baseFileName = baseFileName.substring(0, baseFileName.lastIndexOf("."));
+				return (name.startsWith(baseFileName) && name.endsWith(".class"));
 			}
 		}));
 		javaFile.delete();

@@ -18,7 +18,7 @@ public class GenomeManager {
 
 	public Genetics getGenetics() {
 		String structure = settings.getGenomeStructure();
-		if ("LinearGP.dnaProgramming".equalsIgnoreCase(structure)) {
+		if ("LinearGP.dna".equalsIgnoreCase(structure)) {
 			return new DnaProgramming();
 		}
 		if("LinearGP.nn".equalsIgnoreCase(structure)) {
