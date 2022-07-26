@@ -23,9 +23,10 @@ Create _robocode_ robots, using [genetic programming](https://en.wikipedia.org/w
 == Configuration
 The configuration of the simulation happens inside a ´.properties´ file.
 
-'''
+[source]
+----
 include::default.properties[]
-'''
+----
 
 == Running the application
 As of now there are two possibilities to run the app:
