@@ -23,10 +23,7 @@ Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programmin
 == Configuration
 The configuration of the simulation happens inside a `.properties` file.
 
-[source]
-----
-include::./default.properties[]
-----
+See link:./default.properties[default.properties] for a general reference. Also see link:./genome.dna.properties[genome.dna.properties] and link:./genome.nn.properties[genome.nn.properties] for the different implementations of genetics in this project.
 
 == Running the application
 As of now there are two possibilities to run the app:
