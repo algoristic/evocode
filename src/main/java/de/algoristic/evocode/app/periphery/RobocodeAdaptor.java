@@ -97,6 +97,9 @@ public class RobocodeAdaptor {
 		engine.setVisible(visualize);
 		engine.runBattle(spec);
 		engine.waitTillBattleOver();
+		if(projectSettings.closeEngineAfterRun()) {
+			engine.close();
+		}
 
 		double percentage = calc.getWinPercentages();
 		fitnessValue.setPercentage(percentage);

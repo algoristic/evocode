@@ -9,57 +9,85 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 public class EvocodeApplication {
 
+	static Options cli = new Options();
+
+	static {
+		cli.addOption("p", "project", true, "*.properties");
+		cli.addOption("m", "mode", true, "run|compile|test");
+		cli.addOption("v", "visualize", false, "display battlefield when -m=test");
+		cli.addOption("g", "generation", true, "generation number for -m=compile|test");
+		cli.addOption("i", "individual", true, "individual number for -m=compile|test");
+		cli.addOption("h", "help", false, "help");
+	}
+
 	public static void main(String[] args) {
-		if (args.length == 0) throw new RuntimeException("No arguments provided; provide on argument for project properties");
-		EvocodeApplication application;
-		if(args.length == 1) application = new EvocodeApplication(args[0]);
-		else application = new EvocodeApplication(args[0], args[1], args[2]);
-		application.runApplication();
-	}
-
-	private final String propertiesFileName;
-
-	private String compileGen;
-	private String compileIndiv;
-
-	private EvocodeApplication(final String propertiesFileName) {
-		this.propertiesFileName = propertiesFileName;
-	}
-
-	private EvocodeApplication(
-		final String propertiesFileName,
-		final String compileGen,
-		final String compileIndiv) {
-		this(propertiesFileName);
-		this.compileGen = compileGen;
-		this.compileIndiv = compileIndiv;
-	}
-
-	private void runApplication() {
-		loadProperties();
-		if(compileMode()) {
-			int generation = Integer.valueOf(compileGen);
-			int individual = Integer.valueOf(compileIndiv);
-			EvoCompile evoCompile = new EvoCompile(generation, individual);
-			evoCompile.run();
-		} else {
-			Evocode evocode = new Evocode();
-			evocode.run();
+		CommandLineParser clParser = new DefaultParser();
+		try {
+			CommandLine cl = clParser.parse(cli, args);
+			EvocodeApplication application = new EvocodeApplication(cl);
+			application.runApplication();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
 
-	private boolean compileMode() {
-		return ((compileGen != null) && (compileIndiv != null));
+	private final CommandLine command;
+
+	private EvocodeApplication(CommandLine command) {
+		this.command = command;
+	}
+
+	private void runApplication() throws ParseException {
+		if(command.hasOption("help")) {
+			HelpFormatter help = new HelpFormatter();
+			help.printHelp("evocode", cli);
+			return;
+		}
+		loadProperties();
+		String mode = command.getOptionValue("mode");
+		Application application;
+		switch (mode) {
+			case "run":
+				application = new Evocode();
+				break;
+			case "compile":
+			case "test":
+				int generation = Integer.valueOf(command.getOptionValue("generation"));
+				int individual = Integer.valueOf(command.getOptionValue("individual"));
+				if(mode.equals("compile")) {
+					System.setProperty("evo.run.onlyCompile", "true");
+					System.setProperty("evo.run.deleteJavaFiles", "false");
+					System.setProperty("evo.run.deleteClassFiles", "false");
+					application = new EvoCompile(generation, individual);
+				} else {
+					boolean visualize = command.hasOption("visualize");
+					System.setProperty("evo.run.closeEngine", String.valueOf(visualize));
+					application = new EvoFight(generation, individual, visualize);
+				}
+				break;
+			default:
+				throw new RuntimeException("Unknown mode: " + mode);
+		}
+		application.run();
 	}
 
 	private void loadProperties() {
+		String propertiesFileName = command.getOptionValue("project");
+
 		final String projectLocationKey = "evo.project.location";
-		final String projectLocation = determineProjectLocation();
+		final String projectLocation = determineProjectLocation(propertiesFileName);
 		System.setProperty(projectLocationKey, projectLocation);
 
-		Properties projectProperties = loadProjectProperties();
+		Properties projectProperties = loadProjectProperties(propertiesFileName);
 		final String projectPropertiesFileKey = "evo.project.file";
 		System.setProperty(projectPropertiesFileKey, propertiesFileName);
 
@@ -72,14 +100,14 @@ public class EvocodeApplication {
 		}
 	}
 
-	private String determineProjectLocation() {
+	private String determineProjectLocation(String propertiesFileName) {
 		File anchorFile = new File(propertiesFileName);
 		File projectDirectory = anchorFile.getParentFile();
 		String location = projectDirectory.getAbsolutePath();
 		return location;
 	}
 
-	private Properties loadProjectProperties() {
+	private Properties loadProjectProperties(String propertiesFileName) {
 		Properties properties = new Properties();
 		try (InputStream in = new FileInputStream(propertiesFileName)) {
 			properties.load(in);

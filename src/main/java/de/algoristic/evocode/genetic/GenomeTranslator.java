@@ -1,6 +1,5 @@
 package de.algoristic.evocode.genetic;
 
-import java.awt.Component;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -16,8 +15,6 @@ public class GenomeTranslator {
 
 	private final JavaCompilerAdaptor compiler;
 	private final EvocodeSettings settings;
-
-	private boolean readyForRun = true;
 
 	public GenomeTranslator() {
 		compiler = JavaCompilerAdaptor.getInstance();
@@ -41,27 +38,33 @@ public class GenomeTranslator {
 		if(! targetDir.exists()) targetDir.mkdirs();
 
 		final Path javaFileTarget = targetPath.resolve(javaFileSource.getFileName());
-		try {
-			Files.copy(javaFileSource, javaFileTarget);
-			for(File fileSource : sourceClassFiles) {
-				String classFileName = fileSource.getName();
-				Path targetFile = targetPath.resolve(classFileName);
-				Path sourceFile = fileSource.toPath();
-				Files.copy(sourceFile, targetFile);
+		if(! settings.onlyCompile()) {
+			try {
+				Files.copy(javaFileSource, javaFileTarget);
+				for(File fileSource : sourceClassFiles) {
+					String classFileName = fileSource.getName();
+					Path targetFile = targetPath.resolve(classFileName);
+					Path sourceFile = fileSource.toPath();
+					Files.copy(sourceFile, targetFile);
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 		File parentDirectory = javaFileSource.getParent().toFile();
-		javaFileSource.toFile().delete();
-		sourceClassFiles.forEach(file -> file.delete());
-		parentDirectory.delete();
+		boolean deleteJavaFiles = settings.deleteJavaFiles();
+		boolean deleteClassFiles = settings.deleteClassFiles();
+		if(deleteJavaFiles) {
+			javaFileSource.toFile().delete();
+		}
+		if(deleteClassFiles) {
+			sourceClassFiles.forEach(file -> file.delete());
+		}
+		if(deleteJavaFiles && deleteClassFiles) {
+			parentDirectory.delete();
+		}
 		return new Phaenotype(
 			javaFileTarget.toFile(),
 			generation);
-	}
-
-	public void setReadyForRun(final boolean readyForRun) {
-		this.readyForRun = readyForRun;
 	}
 }

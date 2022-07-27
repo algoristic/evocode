@@ -13,7 +13,7 @@ import de.algoristic.evocode.genetic.breeding.Breeder;
 import de.algoristic.evocode.genetic.breeding.FilialGenerationBreeder;
 import de.algoristic.evocode.genetic.breeding.FirstGenerationBreeder;
 
-public class Evocode {
+public class Evocode implements Application {
 
 	private final EvocodeContext evocodeContext;
 	
@@ -25,6 +25,7 @@ public class Evocode {
 		this.evocodeContext = context;
 	}
 
+	@Override
 	public void run() {
 		ProjectSetupTask setupTask = evocodeContext.getSetupTask();
 		EvocodeProtocol files = new EvocodeProtocol();

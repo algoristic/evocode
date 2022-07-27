@@ -270,4 +270,28 @@ public class EvocodeSettings {
 			.map(Integer::valueOf)
 			.orElse(0);
 	}
+
+	public boolean closeEngineAfterRun() {
+		return properties.getProperty("evo.run.closeEngine")
+			.map(Boolean::valueOf)
+			.orElse(false);
+	}
+
+	public boolean onlyCompile() {
+		return properties.getProperty("evo.run.onlyCompile")
+			.map(Boolean::valueOf)
+			.orElse(false);
+	}
+
+	public boolean deleteJavaFiles() {
+		return properties.getProperty("evo.run.deleteJavaFiles")
+			.map(Boolean::valueOf)
+			.orElse(true);
+	}
+
+	public boolean deleteClassFiles() {
+		return properties.getProperty("evo.run.deleteClassFiles")
+			.map(Boolean::valueOf)
+			.orElse(true);
+	}
 }
