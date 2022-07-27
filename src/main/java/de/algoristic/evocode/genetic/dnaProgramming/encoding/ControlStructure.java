@@ -9,20 +9,29 @@ import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 
+import de.algoristic.evocode.app.conf.EvocodeSettings;
+
 public abstract class ControlStructure {
 
 	private final static String[] OPERATORS = {
 		"<", ">", "<=", ">="
 	};
 	
-	private final static List<Function<String, ControlStructure>> CONTROL_STRUCTURES;
-	
+	private final static List<Function<String, ControlStructure>> BASIC_STRUCTURES;
+	private final static List<Function<String, ControlStructure>> ADVANCED_STRUCTURES;
+
 	static {
-		CONTROL_STRUCTURES = new ArrayList<>();
-		CONTROL_STRUCTURES.add(operator -> new SimpleCondition(operator) );
-		CONTROL_STRUCTURES.add(operator -> new HeadControlLoop(operator));
-		CONTROL_STRUCTURES.add(operator -> new TailControlLoop(operator));
-		CONTROL_STRUCTURES.add(_o -> new SimpleCodeBlock());
+		BASIC_STRUCTURES = new ArrayList<>();
+		BASIC_STRUCTURES.add(operator -> new SimpleCondition(operator) );
+		BASIC_STRUCTURES.add(operator -> new HeadControlLoop(operator));
+		BASIC_STRUCTURES.add(operator -> new TailControlLoop(operator));
+		BASIC_STRUCTURES.add(_o -> new SimpleCodeBlock());
+
+		ADVANCED_STRUCTURES = new ArrayList<>();
+		ADVANCED_STRUCTURES.add(operator -> new SimpleCondition(operator) );
+//		ADVANCED_STRUCTURES.add(operator -> new HeadControlLoop(operator));
+//		ADVANCED_STRUCTURES.add(operator -> new TailControlLoop(operator));
+		ADVANCED_STRUCTURES.add(_o -> new SimpleCodeBlock());
 	}
 
 	protected final String operator;
@@ -76,15 +85,16 @@ public abstract class ControlStructure {
 		controlEncoding = StringUtils.leftPad(controlEncoding, 4, "0");
 		String controlStructureCode = controlEncoding.substring(0, 2);
 		String controlOperatorCode = controlEncoding.substring(2);
-		
+
 		int controlOperatorPosition = binaryToDecimal(controlOperatorCode);
 		int controlStructurePosition = binaryToDecimal(controlStructureCode);
-		
+
 		int operatorIndex = (controlOperatorPosition % OPERATORS.length);
 		String operator = OPERATORS[operatorIndex];
-		
-		int controlStructureIndex = (controlStructurePosition % CONTROL_STRUCTURES.size());
-		Function<String, ControlStructure> constructor = CONTROL_STRUCTURES.get(controlStructureIndex);
+
+		List<Function<String, ControlStructure>> controlStructures = (new EvocodeSettings()).getRobotTemplate().equals("basic") ? BASIC_STRUCTURES : ADVANCED_STRUCTURES;
+		int controlStructureIndex = (controlStructurePosition % controlStructures.size());
+		Function<String, ControlStructure> constructor = controlStructures.get(controlStructureIndex);
 		return constructor.apply(operator)
 			.withLeftHand(leftOperand)
 			.withRightHand(rightOperand);
