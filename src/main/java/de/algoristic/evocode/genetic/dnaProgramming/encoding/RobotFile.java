@@ -11,7 +11,7 @@ import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotFile {
 
-	private static final String bootstrapFileName = "src/main/resources/dna.basic.template";
+	private static final String bootstrapFileName = "src/main/resources/dna.[].template";
 
 	private final EvocodeSettings settings;
 	private final RobotMethods methods;
@@ -29,7 +29,8 @@ public class RobotFile {
 		try {
 			String implementation = methods.resolve();
 			String mainMethod = settings.getMainMethod();
-			String javaCode = Files.readString(Paths.get(bootstrapFileName))
+			String template = settings.getRobotTemplate();
+			String javaCode = Files.readString(Paths.get(bootstrapFileName.replace("[]", template)))
 				.replace("[package]", packageName)
 				.replace("[robotName]", robotName)
 				.replace("[mainMethod]", mainMethod)

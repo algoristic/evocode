@@ -1,0 +1,136 @@
+package [package];
+
+import java.awt.Color;
+
+import robocode.*;
+
+public class [robotName] extends AdvancedRobot {
+
+	private double playersAtStart = 1d;
+	private double maxTurnAwareness = 1d;
+
+	@Override
+	public void run() {
+		playersAtStart = this.getOthers();
+		maxTurnAwareness = 10000d;
+		// setup colors for better distinction of robots
+		{
+			this.setBodyColor(Color.RED);
+			this.setGunColor(Color.RED);
+			this.setBulletColor(Color.MAGENTA);
+			this.setRadarColor(Color.ORANGE);
+			this.setScanColor(Color.ORANGE);
+		}
+		[mainMethod]
+	}
+
+	public double getOtherPlayers() {
+		return (super.getOthers() / playersAtStart);
+	}
+
+	@Override
+	public double getHeading() {
+		return (super.getHeading() / 359d);
+	}
+
+	@Override
+	public double getGunHeading() {
+		return (super.getGunHeading() / 359d);
+	}
+
+	@Override
+	public double getRadarHeading() {
+		return (super.getRadarHeading() / 359d);
+	}
+
+	@Override
+	public double getX() {
+		return (super.getX() / getBattleFieldWidth());
+	}
+
+	@Override
+	public double getY() {
+		return (super.getY() / getBattleFieldHeight());
+	}
+
+	@Override
+	public double getGunHeat() {
+		// at the start of the game the gun heat is 3.0
+		// but will later never be higher than 1.6
+		return Math.min(1, (super.getGunHeat() / 1.6d));
+	}
+
+	public double getRound() {
+		return (super.getRoundNum() / (getNumRounds() - 1));
+	}
+
+	public double getTurn() {
+		return Math.min(1, (super.getTime() / maxTurnAwareness));
+	}
+
+	@Override
+	public double getVelocity() {
+		return (super.getVelocity() / Rules.MAX_VELOCITY);
+	}
+
+	@Override
+	public double getEnergy() {
+		return (super.getEnergy() / 100d);
+	}
+
+	@Override
+	public void ahead(double distance) {
+		if(getDistanceRemaining() != 0) return;
+		super.ahead(distance);
+	}
+
+	@Override
+	public void back(double distance) {
+		if(getDistanceRemaining() != 0) return;
+		super.back(distance);
+	}
+
+	@Override
+	public void turnLeft(double degrees) {
+		if(getTurnRemaining() != 0) return;
+		super.turnLeft(degrees);
+	}
+
+	@Override
+	public void turnRight(double degrees) {
+		if(getTurnRemaining() != 0) return;
+		super.turnRight(degrees);
+	}
+
+	@Override
+	public void fire(double power) {
+		if(getGunHeat() != 0) return;
+		super.fire(power);
+	}
+
+	@Override
+	public void turnGunLeft(double degrees) {
+		if(getGunTurnRemaining() != 0) return;
+		super.turnGunLeft(degrees);
+	}
+
+	@Override
+	public void turnGunRight(double degrees) {
+		if(getGunTurnRemaining() != 0) return;
+		super.turnGunRight(degrees);
+	}
+
+	@Override
+	public void turnRadarLeft(double degrees) {
+		if(getRadarTurnRemaining() != 0) return;
+		super.turnRadarLeft(degrees);
+	}
+
+	@Override
+	public void turnRadarRight(double degrees) {
+		if(getRadarTurnRemaining() != 0) return;
+		super.turnRadarRight(degrees);
+	}
+
+[implementation]
+}

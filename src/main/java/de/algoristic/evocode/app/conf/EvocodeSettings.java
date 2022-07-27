@@ -251,7 +251,7 @@ public class EvocodeSettings {
 	}
 
 	public String getRobotTemplate() {
-		return properties.getProperty("evo.genome.nn.robot.template")
+		return properties.getProperty("evo.genome.robotTemplate")
 			.orElse("basic");
 	}
 
