@@ -1,6 +1,6 @@
 = _evocode_
 
-Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programming[genetic programming].
+Create https://robocode.sourceforge.io/[_robocode_] robots, using https://en.wikipedia.org/wiki/Genetic_programming[genetic programming].
 
 == 🔧 Configuration
 The configuration of the simulation happens inside a `.properties` file. This file controls the current run of the simulation as well as the general configuration of the simulation project.
