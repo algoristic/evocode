@@ -54,7 +54,7 @@ Compile and run the test for a specific individual. (Delete all generated resour
 [source]
 ----
 de.algoristic.evocode.EvocodeApplication
-  -m,--mode        compile
+  -m,--mode        test
   -p,--project     /absolute/path/to/your/config.properties
   -g,--generation  generation number
   -i,--individual  individual number
