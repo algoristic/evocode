@@ -27,13 +27,39 @@ The configuration of the simulation happens inside a `.properties` file. This fi
 An extensive and documented configuration can be found under link:./default.properties[default.properties].
 
 == 🚧 Running the application
-As of now there are two possibilities to run the app:
+As of now there are two possibilities to run the application:
 
 === Run the simulation
-Run: `de.algoristic.evocode.EvocodeApplication` `absolute/path/to/your/config.properties` to run a project inside the directory where your configuration file resides.
+Run the simulation until the termination condition is met.
+[source]
+----
+de.algoristic.evocode.EvocodeApplication
+  -m,--mode     run
+  -p,--project  /absolute/path/to/your/config.properties
+----
 
-=== Run and display a specific individual
-Run: `de.algoristic.evocode.EvocodeApplication` `absolute/path/to/your/config.properties` `<generation>` `<individual>` to re-run and display a already evaluated individual from a generation in that directory.
+=== Compile a specific individual
+Compile a specific individual to its default target directory.
+[source]
+----
+de.algoristic.evocode.EvocodeApplication
+  -m,--mode        compile
+  -p,--project     /absolute/path/to/your/config.properties
+  -g,--generation  generation number
+  -i,--individual  individual number
+----
+
+=== Compile and test a specific individual
+Compile and run the test for a specific individual. (Delete all generated resources afterwards.)
+[source]
+----
+de.algoristic.evocode.EvocodeApplication
+  -m,--mode        compile
+  -p,--project     /absolute/path/to/your/config.properties
+  -g,--generation  generation number
+  -i,--individual  individual number
+  -v,--visualize   [optional] set flag to display the battle
+----
 
 == 💬 Consideration
 You may have wondered why there is no support for concurrency/multi-threading. Well, I have also tried around with this - in fact there is no way to run multiple instances of the robocode engine (API) in eclipse. You may instantiate multiple objects, but there will be always one underlying factory, performing all tasks, resulting in no improvement in performance...
