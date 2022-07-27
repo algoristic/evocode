@@ -9,19 +9,14 @@ public abstract class Sensors {
 
 	private static final List<Sensor> SENSORS = Arrays.asList(
 		new Sensor("getHeading"),
-		new Sensor("getHeight"),
-		new Sensor("getWidth"),
 		new Sensor("getX"),
 		new Sensor("getY"),
-		new Sensor("getGunCoolingRate"),
 		new Sensor("getGunHeading"),
 		new Sensor("getGunHeat"),
-		new Sensor("getNumRounds"),
-		new Sensor("getOthers"),
-		new Sensor("getNumSentries"),
+		new Sensor("getOtherPlayers"),
 		new Sensor("getRadarHeading"),
-		new Sensor("getRoundNum"),
-		new Sensor("getTime"),
+		new Sensor("getRound"),
+		new Sensor("getTurn"),
 		new Sensor("getVelocity"),
 		new Sensor("getEnergy"));
 

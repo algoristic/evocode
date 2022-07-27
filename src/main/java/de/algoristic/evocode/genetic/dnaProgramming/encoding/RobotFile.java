@@ -11,7 +11,7 @@ import de.algoristic.evocode.app.conf.EvocodeSettings;
 
 public class RobotFile {
 
-	private static final String bootstrapFileName = "src/main/resources/DnaProgramBootstrap";
+	private static final String bootstrapFileName = "src/main/resources/dna.basic.template";
 
 	private final EvocodeSettings settings;
 	private final RobotMethods methods;
