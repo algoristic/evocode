@@ -1,24 +1,6 @@
 = _evocode_
+
 Create _robocode_ robots, using https://en.wikipedia.org/wiki/Genetic_programming[genetic programming].
-
-== 🚀 Getting Started
-=== Installation
-. Download _robocode_ from https://sourceforge.net/projects/robocode/files/robocode/[sourceforge.net].
-. Install, using `java -jar robocode-installer.x.y.z.jar`.
-  .. Install to `C:\robocode`.
-. In `C:\robocode\robocode.bat` adjust the lines depending on your Java version.
-. _Test run_ via `robocode.bat` or from start menu.
-
-=== Link to eclipse
-. Follow the guide https://www.robowiki.net/wiki/Robocode/Eclipse/Create_a_Project[Create a project] on https://www.robowiki.net[robowiki].
-.. Add `C:\robocode\libs\robocode.jar` according to guide.
-.. Link _javadoc_ according to guide.
-. Also add the https://mvnrepository.com/artifact/net.sf.robocode/robocode.api[`robocode.api`] at correct version to `pom.xml` for your convenience.
-. In _robocode_ under `Options > Preferences > Development Options` add your Eclipse project and...
-. ...in Eclipse follow the guide https://robowiki.net/wiki/Robocode/Eclipse/Running_from_Eclipse[Running from Eclipse] to make your robots runnable and debuggable from Eclipse.
-
-=== Misc
-- Check, if this problem occurs: https://stackoverflow.com/a/70600427.
 
 == 🔧 Configuration
 The configuration of the simulation happens inside a `.properties` file. This file controls the current run of the simulation as well as the general configuration of the simulation project.
@@ -27,7 +9,7 @@ The configuration of the simulation happens inside a `.properties` file. This fi
 An extensive and documented configuration can be found under link:./default.properties[default.properties].
 
 == 🚧 Running the application
-As of now there are two possibilities to run the application:
+As of now there are three possibilities to run the application:
 
 === Run the simulation
 Run the simulation until the termination condition is met.
@@ -60,6 +42,26 @@ de.algoristic.evocode.EvocodeApplication
   -i,--individual  individual number
   -v,--visualize   [optional] set flag to display the battle
 ----
+
+== 🚀 Getting Started
+=== Installation
+Download _robocode_ from https://sourceforge.net/projects/robocode/files/robocode/[sourceforge.net].
+
+Install _robocode_ to `C:\robocode`, using `java -jar robocode-installer.x.y.z.jar`.
+
+In `C:\robocode\robocode.bat` adjust the lines depending on your Java version. _Test run_ via `robocode.bat` or from start menu.
+
+=== Link to eclipse
+Follow the guide https://www.robowiki.net/wiki/Robocode/Eclipse/Create_a_Project[Create a project] on https://www.robowiki.net[robowiki].
+
+. Add `C:\robocode\libs\robocode.jar` according to guide.
+. Link _javadoc_ according to guide.
+
+Also add the https://mvnrepository.com/artifact/net.sf.robocode/robocode.api[`robocode.api`] at correct version to `pom.xml` for your convenience.
+In _robocode_ under `Options > Preferences > Development Options` add your Eclipse project. In Eclipse follow the guide https://robowiki.net/wiki/Robocode/Eclipse/Running_from_Eclipse[Running from Eclipse] to make your robots runnable and debuggable from Eclipse.
+
+=== Misc
+Check, if this problem occurs: https://stackoverflow.com/a/70600427.
 
 == 💬 Consideration
 You may have wondered why there is no support for concurrency/multi-threading. Well, I have also tried around with this - in fact there is no way to run multiple instances of the robocode engine (API) in eclipse. You may instantiate multiple objects, but there will be always one underlying factory, performing all tasks, resulting in no improvement in performance...
